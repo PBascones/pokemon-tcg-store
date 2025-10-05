@@ -1,0 +1,86 @@
+╔══════════════════════════════════════════════════════════════╗
+║           🎴 POKÉSTORE - E-COMMERCE DE CARTAS POKÉMON       ║
+║                   GUÍA DE INICIO RÁPIDO                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 PASO 1: INSTALAR DEPENDENCIAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cd pokemon-store
+npm install
+
+📋 PASO 2: CONFIGURAR BASE DE DATOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Instalar PostgreSQL
+2. Crear base de datos: CREATE DATABASE pokemon_store;
+3. Editar .env con tu URL de conexión
+
+📋 PASO 3: CONFIGURAR VARIABLES DE ENTORNO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+El archivo .env ya existe. Editalo:
+
+nano .env
+
+Cambiar:
+- DATABASE_URL (tu conexión PostgreSQL)
+- NEXTAUTH_SECRET (generar con: openssl rand -base64 32)
+- MERCADOPAGO_ACCESS_TOKEN (obtener de mercadopago.com.ar/developers)
+- MERCADOPAGO_PUBLIC_KEY (obtener de mercadopago.com.ar/developers)
+
+📋 PASO 4: MIGRAR BASE DE DATOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+npm run db:migrate
+
+📋 PASO 5: POBLAR CON DATOS DE PRUEBA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+npm run db:seed
+
+Esto crea:
+- Usuario Admin: admin@pokestore.com / admin123
+- Usuario Cliente: cliente@test.com / test123
+- 8 categorías
+- 8 productos de ejemplo
+
+📋 PASO 6: INICIAR SERVIDOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+npm run dev
+
+🌐 Abrir navegador en: http://localhost:3000
+
+╔══════════════════════════════════════════════════════════════╗
+║                    ✅ VERIFICAR TODO                         ║
+╚══════════════════════════════════════════════════════════════╝
+
+1. Homepage: http://localhost:3000
+2. Productos: http://localhost:3000/productos
+3. Admin: http://localhost:3000/admin
+   Login: admin@pokestore.com / admin123
+
+╔══════════════════════════════════════════════════════════════╗
+║                  📚 DOCUMENTACIÓN COMPLETA                   ║
+╚══════════════════════════════════════════════════════════════╝
+
+README.md                      - Documentación principal
+GUIA_INICIO.md                 - Guía detallada de inicio
+CONFIGURACION_MERCADOPAGO.md   - Configurar MercadoPago
+DEPLOYMENT.md                  - Subir a producción
+RESUMEN_PROYECTO.md            - Resumen del proyecto
+
+╔══════════════════════════════════════════════════════════════╗
+║                   🆘 PROBLEMAS COMUNES                       ║
+╚══════════════════════════════════════════════════════════════╝
+
+❌ Error de conexión a DB
+→ Verificar que PostgreSQL esté corriendo
+→ Verificar DATABASE_URL en .env
+
+❌ NEXTAUTH_SECRET not defined
+→ Asegurate que .env esté en la raíz del proyecto
+→ Reiniciar servidor después de editar .env
+
+❌ MercadoPago no funciona
+→ Usar credenciales de TEST para desarrollo
+→ Obtener en: mercadopago.com.ar/developers
+
+╔══════════════════════════════════════════════════════════════╗
+║                  🎉 ¡LISTO PARA EMPEZAR!                     ║
+╚══════════════════════════════════════════════════════════════╝
