@@ -212,8 +212,8 @@ export default function CheckoutPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-4 p-4 border rounded-lg">
-                  <div className="bg-blue-100 p-3 rounded">
-                    <svg className="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="bg-primary-100 p-3 rounded">
+                    <svg className="h-8 w-8 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
                     </svg>
                   </div>
@@ -260,7 +260,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Total</span>
-                    <span className="text-blue-600">{formatPrice(total)}</span>
+                    <span className="text-primary-600">{formatPrice(total)}</span>
                   </div>
                 </div>
 

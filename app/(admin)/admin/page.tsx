@@ -52,7 +52,7 @@ export default async function AdminDashboard() {
       title: 'Total Productos',
       value: totalProducts,
       icon: Package,
-      color: 'bg-blue-500',
+      color: 'bg-primary-500',
     },
     {
       title: 'Total Órdenes',

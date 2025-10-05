@@ -116,7 +116,7 @@ export default async function OrdersPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <Link
                         href={`/admin/ordenes/${order.id}`}
-                        className="text-blue-600 hover:text-blue-900 inline-flex items-center gap-1"
+                        className="text-primary-600 hover:text-primary-900 inline-flex items-center gap-1"
                       >
                         <Eye className="h-4 w-4" />
                         Ver

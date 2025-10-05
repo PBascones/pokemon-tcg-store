@@ -17,7 +17,7 @@ export function Footer() {
               href="https://www.instagram.com/pokeaddictionok/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block"
+              className="text-primary-400 hover:text-primary-300 text-sm mt-2 inline-block"
             >
               @pokeaddictionok
             </a>

@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Poke Addiction Brand Colors */
+  --primary: #F25430;
+  --primary-hover: #D94722;
+  --primary-light: #FF6B47;
+  --secondary: #1F2937;
+  --accent: #FF8B6D;
 }
 
 @theme inline {
@@ -10,6 +17,31 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Custom Brand Colors */
+  --color-primary-*: initial;
+  --color-primary-50: #FFF3F0;
+  --color-primary-100: #FFE5DE;
+  --color-primary-200: #FFCFC2;
+  --color-primary-300: #FFB09B;
+  --color-primary-400: #FF8B6D;
+  --color-primary-500: #F25430;
+  --color-primary-600: #D94722;
+  --color-primary-700: #B8381B;
+  --color-primary-800: #8F2C15;
+  --color-primary-900: #6B2110;
+  
+  --color-secondary-*: initial;
+  --color-secondary-50: #F9FAFB;
+  --color-secondary-100: #F3F4F6;
+  --color-secondary-200: #E5E7EB;
+  --color-secondary-300: #D1D5DB;
+  --color-secondary-400: #9CA3AF;
+  --color-secondary-500: #6B7280;
+  --color-secondary-600: #4B5563;
+  --color-secondary-700: #374151;
+  --color-secondary-800: #1F2937;
+  --color-secondary-900: #111827;
 }
 
 @media (prefers-color-scheme: dark) {

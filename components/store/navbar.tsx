@@ -34,16 +34,16 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/productos" className="text-gray-700 hover:text-blue-600 transition font-medium">
+            <Link href="/productos" className="text-gray-700 hover:text-primary-600 transition font-medium">
               Productos
             </Link>
-            <Link href="/categorias" className="text-gray-700 hover:text-blue-600 transition font-medium">
+            <Link href="/categorias" className="text-gray-700 hover:text-primary-600 transition font-medium">
               Categorías
             </Link>
-            <Link href="/ofertas" className="text-gray-700 hover:text-blue-600 transition font-medium">
+            <Link href="/ofertas" className="text-gray-700 hover:text-primary-600 transition font-medium">
               Ofertas
             </Link>
-            <Link href="/nosotros" className="text-gray-700 hover:text-blue-600 transition font-medium">
+            <Link href="/nosotros" className="text-gray-700 hover:text-primary-600 transition font-medium">
               Nosotros
             </Link>
           </div>
@@ -54,7 +54,7 @@ export function Navbar() {
               <input
                 type="text"
                 placeholder="Buscar cartas..."
-                className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
               <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-600" />
             </div>
@@ -128,16 +128,16 @@ export function Navbar() {
                 placeholder="Buscar cartas..."
                 className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-900 placeholder:text-gray-500"
               />
-              <Link href="/productos" className="text-gray-700 hover:text-blue-600 font-medium">
+              <Link href="/productos" className="text-gray-700 hover:text-primary-600 font-medium">
                 Productos
               </Link>
-              <Link href="/categorias" className="text-gray-700 hover:text-blue-600 font-medium">
+              <Link href="/categorias" className="text-gray-700 hover:text-primary-600 font-medium">
                 Categorías
               </Link>
-              <Link href="/ofertas" className="text-gray-700 hover:text-blue-600 font-medium">
+              <Link href="/ofertas" className="text-gray-700 hover:text-primary-600 font-medium">
                 Ofertas
               </Link>
-              <Link href="/nosotros" className="text-gray-700 hover:text-blue-600 font-medium">
+              <Link href="/nosotros" className="text-gray-700 hover:text-primary-600 font-medium">
                 Nosotros
               </Link>
               <div className="border-t pt-4">
@@ -147,7 +147,7 @@ export function Navbar() {
                       Hola, {session.user?.name}
                     </p>
                     {(session.user as any).role === 'ADMIN' && (
-                      <Link href="/admin" className="block py-2 text-gray-700 hover:text-blue-600 font-medium">
+                      <Link href="/admin" className="block py-2 text-gray-700 hover:text-primary-600 font-medium">
                         Panel Admin
                       </Link>
                     )}
@@ -159,9 +159,9 @@ export function Navbar() {
                     </button>
                   </>
                 ) : (
-                  <Link href="/auth/login" className="text-gray-700 hover:text-blue-600 font-medium">
-                    Iniciar Sesión
-                  </Link>
+                    <Link href="/auth/login" className="text-gray-700 hover:text-primary-600 font-medium">
+                      Iniciar Sesión
+                    </Link>
                 )}
               </div>
             </div>

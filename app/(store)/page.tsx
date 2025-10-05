@@ -49,10 +49,10 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <Badge className="mb-4 bg-yellow-400 text-gray-900 hover:bg-yellow-300">
+            <Badge className="mb-4 bg-white text-gray-900">
               <Sparkles className="h-3 w-3 mr-1" />
               Nuevos productos cada semana
             </Badge>
@@ -65,12 +65,12 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/productos">
-                <Button size="lg" className="bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold">
+                <Button size="lg" className="text-gray-900 hover:font-semibold">
                   Ver Catálogo
                 </Button>
               </Link>
               <Link href="/ofertas">
-                <Button size="lg" variant="outline" className="bg-white text-blue-600 border-white hover:bg-gray-100 font-semibold">
+                <Button size="lg" variant="outline" className="bg-white text-primary-600 border-white hover:bg-gray-100 font-semibold">
                   Ver Ofertas
                 </Button>
               </Link>
@@ -84,7 +84,7 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="flex items-center gap-4">
-              <div className="bg-blue-600 p-3 rounded-lg">
+              <div className="bg-primary-600 p-3 rounded-lg">
                 <Shield className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -94,7 +94,7 @@ export default async function HomePage() {
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="bg-blue-600 p-3 rounded-lg">
+              <div className="bg-primary-600 p-3 rounded-lg">
                 <Truck className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -104,7 +104,7 @@ export default async function HomePage() {
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="bg-blue-600 p-3 rounded-lg">
+              <div className="bg-primary-600 p-3 rounded-lg">
                 <Package className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -114,7 +114,7 @@ export default async function HomePage() {
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="bg-blue-600 p-3 rounded-lg">
+              <div className="bg-primary-600 p-3 rounded-lg">
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -175,7 +175,7 @@ export default async function HomePage() {
                       />
                     </div>
                   )}
-                  <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition">
+                  <h3 className="font-bold text-gray-900 group-hover:text-primary-600 transition">
                     {category.name}
                   </h3>
                 </Link>
@@ -209,7 +209,7 @@ export default async function HomePage() {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-primary-700 to-primary-900 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
             ¿Tenés cartas para vender?
@@ -218,7 +218,7 @@ export default async function HomePage() {
             Compramos tus cartas Pokémon al mejor precio del mercado
           </p>
           <Link href="/vender">
-            <Button size="lg" className="bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold">
+            <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold">
               Vender mis Cartas
             </Button>
           </Link>

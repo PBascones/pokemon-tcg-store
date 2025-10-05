@@ -118,7 +118,7 @@ function LoginForm() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               ¿No tenés cuenta?{' '}
-              <Link href="/auth/register" className="text-blue-600 hover:underline font-semibold">
+              <Link href="/auth/register" className="text-primary-600 hover:underline font-semibold">
                 Registrate
               </Link>
             </p>
@@ -131,7 +131,7 @@ function LoginForm() {
           </div>
 
           {/* Credenciales de prueba */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+          <div className="mt-6 p-4 bg-primary-50 rounded-lg">
             <p className="text-xs font-semibold text-blue-900 mb-2">Credenciales de prueba:</p>
             <div className="text-xs text-blue-700 space-y-1">
               <p><strong>Admin:</strong> admin@pokestore.com / admin123</p>

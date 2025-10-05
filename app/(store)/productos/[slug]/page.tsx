@@ -88,7 +88,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Price */}
           <div className="mb-6">
             <div className="flex items-baseline gap-3 mb-2">
-              <span className="text-4xl font-bold text-blue-600">
+              <span className="text-4xl font-bold text-primary-600">
                 {formatPrice(product.price)}
               </span>
               {product.compareAtPrice && (
@@ -163,15 +163,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Features */}
           <div className="mt-6 grid grid-cols-3 gap-4">
             <div className="text-center">
-              <Shield className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+              <Shield className="h-8 w-8 mx-auto mb-2 text-primary-600" />
               <p className="text-sm font-semibold">100% Original</p>
             </div>
             <div className="text-center">
-              <Package className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+              <Package className="h-8 w-8 mx-auto mb-2 text-primary-600" />
               <p className="text-sm font-semibold">Empaque Seguro</p>
             </div>
             <div className="text-center">
-              <Truck className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+              <Truck className="h-8 w-8 mx-auto mb-2 text-primary-600" />
               <p className="text-sm font-semibold">Envío Rápido</p>
             </div>
           </div>

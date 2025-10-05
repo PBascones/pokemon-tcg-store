@@ -85,13 +85,13 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.rarity && (
               <p className="text-xs text-gray-700 uppercase font-medium">{product.rarity}</p>
             )}
-            <h3 className="font-bold text-sm line-clamp-2 text-gray-900 group-hover:text-blue-600 transition">
+            <h3 className="font-bold text-sm line-clamp-2 text-gray-900 group-hover:text-primary-600 transition">
               {product.name}
             </h3>
             
             {/* Price */}
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-blue-600">
+              <span className="text-lg font-bold text-primary-600">
                 {formatPrice(product.price)}
               </span>
               {product.compareAtPrice && (

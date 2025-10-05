@@ -76,8 +76,8 @@ export default async function ProductsPage({
                 <div className="space-y-2">
                   <a
                     href="/productos"
-                    className={`block text-sm py-1 hover:text-blue-600 transition ${
-                      !params.category ? 'text-blue-600 font-semibold' : ''
+                    className={`block text-sm py-1 hover:text-primary-600 transition ${
+                      !params.category ? 'text-primary-600 font-semibold' : ''
                     }`}
                   >
                     Todas
@@ -86,8 +86,8 @@ export default async function ProductsPage({
                     <a
                       key={category.id}
                       href={`/productos?category=${category.slug}`}
-                      className={`block text-sm py-1 hover:text-blue-600 transition ${
-                        params.category === category.slug ? 'text-blue-600 font-semibold' : ''
+                      className={`block text-sm py-1 hover:text-primary-600 transition ${
+                        params.category === category.slug ? 'text-primary-600 font-semibold' : ''
                       }`}
                     >
                       {category.name}
