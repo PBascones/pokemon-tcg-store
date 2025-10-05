@@ -132,6 +132,7 @@ export async function POST(request: Request) {
         quantity: 1,
         unit_price: shipping,
         currency_id: 'ARS',
+        picture_url: '',
       })
     }
 
