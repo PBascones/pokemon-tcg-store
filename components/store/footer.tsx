@@ -8,11 +8,19 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Sobre Nosotros */}
           <div>
-            <h3 className="text-xl font-bold mb-4">PokéStore</h3>
+            <h3 className="text-xl font-bold mb-4">Poke Addiction</h3>
             <p className="text-gray-400 text-sm">
               Tu tienda de confianza para cartas Pokémon en Argentina. 
               Productos 100% originales y auténticos.
             </p>
+            <a 
+              href="https://www.instagram.com/pokeaddictionok/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block"
+            >
+              @pokeaddictionok
+            </a>
           </div>
 
           {/* Links Rápidos */}
@@ -74,7 +82,7 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Síguenos</h3>
             <div className="flex space-x-4">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/pokeaddictionok/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition"
@@ -109,7 +117,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} PokéStore. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Poke Addiction. Todos los derechos reservados.</p>
           <div className="mt-2 space-x-4">
             <Link href="/terminos" className="hover:text-white transition">
               Términos y Condiciones

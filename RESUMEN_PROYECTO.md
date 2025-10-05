@@ -1,4 +1,4 @@
-# 📋 Resumen del Proyecto - PokéStore
+# 📋 Resumen del Proyecto - Poke Addiction
 
 ## 🎯 Descripción General
 

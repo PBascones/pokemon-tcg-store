@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PokéStore - Tienda de Cartas Pokémon en Argentina",
-  description: "La mejor tienda online de cartas Pokémon en Argentina. Productos 100% originales y auténticos.",
+  title: "Poke Addiction - Tienda de Cartas Pokémon en Argentina",
+  description: "La mejor tienda online de cartas Pokémon en Argentina. Productos 100% originales y auténticos. @pokeaddictionok",
 };
 
 export default function RootLayout({
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={inter.className}>
         <Providers>{children}</Providers>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

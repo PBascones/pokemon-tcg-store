@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 function LoginForm() {
   const router = useRouter()
@@ -35,8 +36,14 @@ function LoginForm() {
 
       if (result?.error) {
         setError('Email o contraseña incorrectos')
+        toast.error('Error al iniciar sesión', {
+          description: 'Email o contraseña incorrectos',
+        })
         setLoading(false)
       } else {
+        toast.success('Sesión iniciada', {
+          description: 'Redirigiendo...',
+        })
         router.push(callbackUrl)
         router.refresh()
       }
@@ -52,7 +59,7 @@ function LoginForm() {
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold">Iniciar Sesión</CardTitle>
           <CardDescription>
-            Ingresá a tu cuenta de PokéStore
+            Ingresá a tu cuenta de Poke Addiction
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ShoppingCart, Search, User, Menu, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/stores/cart-store'
@@ -17,8 +18,18 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            PokéStore
+          <Link href="/" className="flex items-center gap-2">
+            <Image 
+              src="/images/logo.jpeg" 
+              alt="Poke Addiction" 
+              width={40}
+              height={40}
+              className="object-contain rounded-md"
+              priority
+            />
+            <span className="text-xl font-bold text-gray-900">
+              Poke Addiction
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

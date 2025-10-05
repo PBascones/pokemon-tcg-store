@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -58,9 +59,17 @@ export default function RegisterPage() {
       }
 
       // Registro exitoso, redirigir a login
-      router.push('/auth/login?registered=true')
+      toast.success('Cuenta creada', {
+        description: 'Ya podés iniciar sesión con tu cuenta',
+      })
+      setTimeout(() => {
+        router.push('/auth/login')
+      }, 1000)
     } catch (error: any) {
       setError(error.message)
+      toast.error('Error al registrarse', {
+        description: error.message,
+      })
       setLoading(false)
     }
   }
@@ -71,7 +80,7 @@ export default function RegisterPage() {
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold">Crear Cuenta</CardTitle>
           <CardDescription>
-            Registrate para empezar a comprar en PokéStore
+            Registrate para empezar a comprar en Poke Addiction
           </CardDescription>
         </CardHeader>
         <CardContent>

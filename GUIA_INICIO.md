@@ -1,4 +1,4 @@
-# 🚀 Guía de Inicio Rápido - PokéStore
+# 🚀 Guía de Inicio Rápido - Poke Addiction
 
 Esta guía te ayudará a poner en marcha el e-commerce de cartas Pokémon en pocos pasos.
 

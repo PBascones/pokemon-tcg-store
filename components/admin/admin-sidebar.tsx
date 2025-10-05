@@ -54,7 +54,7 @@ export function AdminSidebar() {
     <aside className="w-64 bg-gray-900 text-white flex flex-col">
       <div className="p-6">
         <Link href="/admin" className="text-2xl font-bold">
-          PokéStore Admin
+          Poke Addiction Admin
         </Link>
       </div>
 

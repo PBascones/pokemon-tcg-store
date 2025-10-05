@@ -24,7 +24,7 @@ Esta guía detalla paso a paso cómo configurar MercadoPago para tu tienda de ca
 
 1. Click en "Crear aplicación"
 2. Completar:
-   - **Nombre:** PokéStore (o el nombre de tu tienda)
+   - **Nombre:** Poke Addiction (o el nombre de tu tienda)
    - **Descripción:** E-commerce de cartas Pokémon
    - **Tipo:** Marketplace o E-commerce
 

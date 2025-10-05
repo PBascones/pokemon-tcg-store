@@ -1,4 +1,4 @@
-# 🎴 ¡Bienvenido a PokéStore!
+# 🎴 ¡Bienvenido a Poke Addiction!
 
 ## ✅ El Proyecto Está Completo
 

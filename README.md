@@ -1,4 +1,4 @@
-# 🎴 PokéStore - E-commerce de Cartas Pokémon
+# 🎴 Poke Addiction - E-commerce de Cartas Pokémon
 
 E-commerce completo para venta de cartas Pokémon en Argentina. Construido con Next.js 14, TypeScript, Prisma y MercadoPago.
 

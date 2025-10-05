@@ -30,7 +30,7 @@ export function ProductCard({ product }: ProductCardProps) {
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
     : 0
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
     addItem({
       id: product.id,
@@ -39,6 +39,12 @@ export function ProductCard({ product }: ProductCardProps) {
       image: product.images[0]?.url || '/placeholder.png',
       slug: product.slug,
       stock: product.stock,
+    })
+    
+    const { toast } = await import('sonner')
+    toast.success('Producto agregado', {
+      description: `${product.name} se agregó al carrito`,
+      duration: 2000,
     })
   }
 

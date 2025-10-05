@@ -7,9 +7,24 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useCartStore } from '@/stores/cart-store'
 import { formatPrice } from '@/lib/utils'
+import { toast } from 'sonner'
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore()
+  
+  const handleRemoveItem = (id: string, name: string) => {
+    removeItem(id)
+    toast.success('Producto eliminado', {
+      description: `${name} se eliminó del carrito`,
+    })
+  }
+  
+  const handleClearCart = () => {
+    clearCart()
+    toast.success('Carrito vaciado', {
+      description: 'Se eliminaron todos los productos',
+    })
+  }
 
   const subtotal = getTotalPrice()
   const shipping = subtotal > 50000 ? 0 : 5000 // Envío gratis por compras mayores a $50.000
@@ -71,7 +86,7 @@ export default function CartPage() {
                 {/* Quantity Controls */}
                 <div className="flex flex-col items-end gap-4">
                   <button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => handleRemoveItem(item.id, item.name)}
                     className="text-gray-400 hover:text-red-600 transition"
                   >
                     <Trash2 className="h-5 w-5" />
@@ -105,7 +120,7 @@ export default function CartPage() {
 
           <Button
             variant="outline"
-            onClick={clearCart}
+            onClick={handleClearCart}
             className="w-full"
           >
             Vaciar Carrito
