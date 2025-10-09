@@ -10,7 +10,7 @@ export function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Poke Addiction</h3>
             <p className="text-gray-400 text-sm">
-              Tu tienda de confianza para cartas Pokémon en Argentina. 
+              Tu tienda de confianza para sobres Pokémon en Argentina. 
               Productos 100% originales y auténticos.
             </p>
             <a 

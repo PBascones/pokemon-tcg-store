@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/store/navbar'
 import { Footer } from '@/components/store/footer'
+import { WhatsAppButton } from '@/components/store/whatsapp-button'
 
 export default function StoreLayout({
   children,
@@ -13,6 +14,7 @@ export default function StoreLayout({
         {children}
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   )
 }

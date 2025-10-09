@@ -7,24 +7,8 @@ import { prisma } from '@/lib/prisma'
 import { Sparkles, Package, Shield, Truck } from 'lucide-react'
 
 export default async function HomePage() {
-  // Obtener productos destacados
-  const featuredProducts = await prisma.product.findMany({
-    where: {
-      featured: true,
-      isActive: true,
-    },
-    include: {
-      images: {
-        orderBy: {
-          order: 'asc',
-        },
-      },
-    },
-    take: 8,
-  })
-
-  // Obtener productos recientes
-  const recentProducts = await prisma.product.findMany({
+  // Obtener productos (unificado) - del más nuevo al más reciente
+  const products = await prisma.product.findMany({
     where: {
       isActive: true,
     },
@@ -57,10 +41,10 @@ export default async function HomePage() {
               Nuevos productos cada semana
             </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
-              Coleccioná las mejores cartas Pokémon
+              Los mejores Sobres Pokémon de Argentina
             </h1>
             <p className="text-xl mb-8 text-white font-medium drop-shadow-md">
-              Productos 100% originales. Envíos a todo Argentina. 
+              Booster packs 100% originales. Envíos a todo el país. 
               Los mejores precios del mercado.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -126,22 +110,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Products */}
-      {featuredProducts.length > 0 && (
+      {/* Productos (unificado) */}
+      {products.length > 0 && (
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-3xl font-bold mb-2">Productos Destacados</h2>
-                <p className="text-gray-600">Las cartas más buscadas por coleccionistas</p>
+                <h2 className="text-3xl font-bold mb-2">Productos</h2>
+                <p className="text-gray-600">Últimos agregados, ordenados del más nuevo al más reciente</p>
               </div>
-              <Link href="/productos?featured=true">
+              <Link href="/productos">
                 <Button variant="default">Ver Todos</Button>
               </Link>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProducts.map((product) => (
+              {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -185,41 +169,20 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Recent Products */}
-      {recentProducts.length > 0 && (
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Recién Llegados</h2>
-                <p className="text-gray-600">Los últimos productos agregados</p>
-              </div>
-              <Link href="/productos">
-                <Button variant="default">Ver Todos</Button>
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {recentProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* (Sección unificada reemplaza la de Recién Llegados) */}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary-700 to-primary-900 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
-            ¿Tenés cartas para vender?
+            ¿Buscás sobres de sets antiguos?
           </h2>
           <p className="text-xl mb-8 text-white font-medium drop-shadow-md">
-            Compramos tus cartas Pokémon al mejor precio del mercado
+            Contactanos y te conseguimos los sobres que necesitás
           </p>
-          <Link href="/vender">
+          <Link href="/contacto">
             <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold">
-              Vender mis Cartas
+              Solicitar Sobres
             </Button>
           </Link>
         </div>

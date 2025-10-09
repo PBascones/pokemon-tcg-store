@@ -58,12 +58,12 @@ export default function CartPage() {
             <Card key={item.id} className="p-4">
               <div className="flex gap-4">
                 {/* Image */}
-                <div className="relative w-24 h-24 flex-shrink-0">
+                <div className="relative flex-shrink-0 bg-gray-100 rounded-lg" style={{ width: '6rem', aspectRatio: '3 / 4' }}>
                   <Image
                     src={item.image}
                     alt={item.name}
                     fill
-                    className="object-cover rounded-lg"
+                    className="object-contain p-1 rounded-lg"
                   />
                 </div>
 

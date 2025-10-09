@@ -16,44 +16,47 @@ export function Navbar() {
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <Image 
-              src="/images/logo.jpeg" 
-              alt="Poke Addiction" 
-              width={40}
-              height={40}
-              className="object-contain rounded-md"
-              priority
-            />
-            <span className="text-xl font-bold text-gray-900">
-              Poke Addiction
-            </span>
-          </Link>
+        <div className="flex items-center justify-between h-16 gap-4">
+          {/* Left cluster: Logo + Desktop nav */}
+          <div className="flex items-center gap-6 min-w-0">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2">
+              <Image 
+                src="/images/logo.jpeg" 
+                alt="Poke Addiction" 
+                width={40}
+                height={40}
+                className="object-contain rounded-md"
+                priority
+              />
+              <span className="text-xl font-bold text-gray-900 whitespace-nowrap">
+                Poke Addiction
+              </span>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link href="/productos" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              Productos
-            </Link>
-            <Link href="/categorias" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              Categorías
-            </Link>
-            <Link href="/ofertas" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              Ofertas
-            </Link>
-            <Link href="/nosotros" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              Nosotros
-            </Link>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link href="/productos" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Productos
+              </Link>
+              <Link href="/categorias" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Categorías
+              </Link>
+              <Link href="/ofertas" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Ofertas
+              </Link>
+              <Link href="/nosotros" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Nosotros
+              </Link>
+            </div>
           </div>
 
           {/* Search Bar */}
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
+          <div className="hidden md:flex items-center flex-1 max-w-lg mx-6">
             <div className="relative w-full">
               <input
                 type="text"
-                placeholder="Buscar cartas..."
+                placeholder="Buscar sobres..."
                 className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
               <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-600" />
@@ -125,7 +128,7 @@ export function Navbar() {
             <div className="flex flex-col space-y-4">
               <input
                 type="text"
-                placeholder="Buscar cartas..."
+                placeholder="Buscar sobres..."
                 className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-900 placeholder:text-gray-500"
               />
               <Link href="/productos" className="text-gray-700 hover:text-primary-600 font-medium">

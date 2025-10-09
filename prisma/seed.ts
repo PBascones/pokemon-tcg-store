@@ -36,209 +36,269 @@ async function main() {
 
   console.log('✅ Usuario de prueba creado:', testUser.email)
 
-  // Crear categorías
+  // Crear categorías (Sets/Expansiones de Pokémon)
   const categories = [
     {
-      name: 'Cartas Base',
-      slug: 'cartas-base',
-      description: 'Cartas del set Base de Pokémon',
+      name: 'Scarlet & Violet',
+      slug: 'scarlet-violet',
+      description: 'Serie más reciente de Pokémon TCG (2023-2024)',
     },
     {
-      name: 'Cartas EX',
-      slug: 'cartas-ex',
-      description: 'Cartas Pokémon EX de alta rareza',
+      name: 'Sword & Shield',
+      slug: 'sword-shield',
+      description: 'Serie Sword & Shield (2020-2023)',
     },
     {
-      name: 'Cartas GX',
-      slug: 'cartas-gx',
-      description: 'Cartas Pokémon GX con ataques especiales',
+      name: 'Sun & Moon',
+      slug: 'sun-moon',
+      description: 'Serie Sun & Moon (2017-2020)',
     },
     {
-      name: 'Cartas V',
-      slug: 'cartas-v',
-      description: 'Cartas Pokémon V de la era moderna',
+      name: 'XY Series',
+      slug: 'xy-series',
+      description: 'Serie XY (2014-2017)',
     },
     {
-      name: 'Cartas VMAX',
-      slug: 'cartas-vmax',
-      description: 'Cartas Pokémon VMAX Gigamax',
+      name: 'Black & White',
+      slug: 'black-white',
+      description: 'Serie Black & White (2011-2014)',
     },
     {
-      name: 'Cartas Vintage',
-      slug: 'cartas-vintage',
-      description: 'Cartas antiguas y de colección',
-    },
-    {
-      name: 'Sobres y Booster Boxes',
-      slug: 'sobres-booster-boxes',
-      description: 'Sobres sellados y cajas booster',
-    },
-    {
-      name: 'Accesorios',
-      slug: 'accesorios',
-      description: 'Protectores, carpetas y accesorios',
+      name: 'Sets Especiales',
+      slug: 'sets-especiales',
+      description: 'Sets especiales y colecciones limitadas',
     },
   ]
 
+  const createdCategories: { [key: string]: any } = {}
+
   for (const cat of categories) {
-    await prisma.category.upsert({
+    const category = await prisma.category.upsert({
       where: { slug: cat.slug },
       update: {},
       create: cat,
     })
+    createdCategories[cat.slug] = category
   }
 
   console.log('✅ Categorías creadas')
 
-  // Crear productos de ejemplo
-  const baseCategory = await prisma.category.findUnique({
-    where: { slug: 'cartas-v' },
-  })
+  // Crear productos de sobres (Booster Packs)
+  const products = [
+    // Scarlet & Violet Series
+    {
+      name: 'Scarlet & Violet Base Set - Booster Pack',
+      slug: 'sv-base-booster',
+      description: 'Sobre del set base de Scarlet & Violet. Incluye 10 cartas con posibilidad de obtener cartas ex, Full Art y Secret Rare.',
+      set: 'Scarlet & Violet Base',
+      language: 'Inglés',
+      price: 5500,
+      compareAtPrice: 6500,
+      stock: 50,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['scarlet-violet'].id,
+    },
+    {
+      name: 'Paldea Evolved - Booster Pack',
+      slug: 'paldea-evolved-booster',
+      description: 'Sobre de Paldea Evolved. Descubrí nuevos Pokémon de la región de Paldea.',
+      set: 'Paldea Evolved',
+      language: 'Inglés',
+      price: 6000,
+      compareAtPrice: 7000,
+      stock: 35,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['scarlet-violet'].id,
+    },
+    {
+      name: 'Obsidian Flames - Booster Pack',
+      slug: 'obsidian-flames-booster',
+      description: 'Sobre de Obsidian Flames con increíbles cartas ex y Tera Pokémon.',
+      set: 'Obsidian Flames',
+      language: 'Inglés',
+      price: 5800,
+      stock: 40,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['scarlet-violet'].id,
+    },
+    {
+      name: 'Paradox Rift - Booster Pack',
+      slug: 'paradox-rift-booster',
+      description: 'Sobre de Paradox Rift. Incluye Pokémon Paradoja y cartas ex exclusivas.',
+      set: 'Paradox Rift',
+      language: 'Inglés',
+      price: 6200,
+      compareAtPrice: 7200,
+      stock: 30,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['scarlet-violet'].id,
+    },
 
-  if (baseCategory) {
-    const products = [
-      {
-        name: 'Charizard V',
-        slug: 'charizard-v',
-        description: 'Carta ultra rara de Charizard V. Estado mint.',
-        cardNumber: '019/073',
-        set: 'Champion\'s Path',
-        rarity: 'Ultra Rare',
-        condition: 'NM (Near Mint)',
-        language: 'Español',
-        price: 15000,
-        compareAtPrice: 18000,
-        stock: 5,
-        featured: true,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Pikachu VMAX',
-        slug: 'pikachu-vmax',
-        description: 'Pikachu VMAX de Vivid Voltage. Edición limitada.',
-        cardNumber: '044/185',
-        set: 'Vivid Voltage',
-        rarity: 'Secret Rare',
-        condition: 'NM (Near Mint)',
-        language: 'Inglés',
-        price: 25000,
-        compareAtPrice: 30000,
-        stock: 3,
-        featured: true,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Mewtwo V',
-        slug: 'mewtwo-v',
-        description: 'Carta holográfica de Mewtwo V.',
-        cardNumber: '069/189',
-        set: 'Darkness Ablaze',
-        rarity: 'Rare Holo V',
-        condition: 'NM (Near Mint)',
-        language: 'Español',
-        price: 12000,
-        stock: 8,
-        featured: true,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Rayquaza VMAX',
-        slug: 'rayquaza-vmax',
-        description: 'Rayquaza VMAX de Evolving Skies.',
-        cardNumber: '111/203',
-        set: 'Evolving Skies',
-        rarity: 'Ultra Rare',
-        condition: 'NM (Near Mint)',
-        language: 'Inglés',
-        price: 35000,
-        stock: 2,
-        featured: true,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Umbreon VMAX',
-        slug: 'umbreon-vmax',
-        description: 'Umbreon VMAX Alternate Art. Carta premium.',
-        cardNumber: '215/203',
-        set: 'Evolving Skies',
-        rarity: 'Secret Rare',
-        condition: 'NM (Near Mint)',
-        language: 'Inglés',
-        price: 120000,
-        stock: 1,
-        featured: true,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Lucario V',
-        slug: 'lucario-v',
-        description: 'Lucario V de Astral Radiance.',
-        cardNumber: '078/189',
-        set: 'Astral Radiance',
-        rarity: 'Rare Holo V',
-        condition: 'NM (Near Mint)',
-        language: 'Español',
-        price: 8000,
-        stock: 10,
-        featured: false,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Giratina VSTAR',
-        slug: 'giratina-vstar',
-        description: 'Giratina VSTAR de Lost Origin.',
-        cardNumber: '131/196',
-        set: 'Lost Origin',
-        rarity: 'Ultra Rare',
-        condition: 'NM (Near Mint)',
-        language: 'Inglés',
-        price: 28000,
-        compareAtPrice: 32000,
-        stock: 4,
-        featured: true,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-      {
-        name: 'Arceus VSTAR',
-        slug: 'arceus-vstar',
-        description: 'Arceus VSTAR de Brilliant Stars.',
-        cardNumber: '123/172',
-        set: 'Brilliant Stars',
-        rarity: 'Ultra Rare',
-        condition: 'NM (Near Mint)',
-        language: 'Español',
-        price: 18000,
-        stock: 6,
-        featured: false,
-        isActive: true,
-        categoryId: baseCategory.id,
-      },
-    ]
+    // Sword & Shield Series
+    {
+      name: 'Evolving Skies - Booster Pack',
+      slug: 'evolving-skies-booster',
+      description: 'Sobre de Evolving Skies. Uno de los sets más populares con increíbles Alternate Arts de Eeveelutions.',
+      set: 'Evolving Skies',
+      language: 'Inglés',
+      price: 8500,
+      compareAtPrice: 10000,
+      stock: 25,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['sword-shield'].id,
+    },
+    {
+      name: 'Lost Origin - Booster Pack',
+      slug: 'lost-origin-booster',
+      description: 'Sobre de Lost Origin con mecánica Lost Zone y cartas VSTAR.',
+      set: 'Lost Origin',
+      language: 'Inglés',
+      price: 6500,
+      stock: 35,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['sword-shield'].id,
+    },
+    {
+      name: 'Brilliant Stars - Booster Pack',
+      slug: 'brilliant-stars-booster',
+      description: 'Sobre de Brilliant Stars con Arceus VSTAR y cartas de alta demanda.',
+      set: 'Brilliant Stars',
+      language: 'Inglés',
+      price: 7000,
+      stock: 28,
+      featured: false,
+      isActive: true,
+      categoryId: createdCategories['sword-shield'].id,
+    },
+    {
+      name: 'Fusion Strike - Booster Pack',
+      slug: 'fusion-strike-booster',
+      description: 'Sobre de Fusion Strike con nuevos Pokémon Fusion Strike.',
+      set: 'Fusion Strike',
+      language: 'Inglés',
+      price: 5200,
+      stock: 45,
+      featured: false,
+      isActive: true,
+      categoryId: createdCategories['sword-shield'].id,
+    },
+    {
+      name: 'Chilling Reign - Booster Pack',
+      slug: 'chilling-reign-booster',
+      description: 'Sobre de Chilling Reign con Calyrex y legendarios de Galar.',
+      set: 'Chilling Reign',
+      language: 'Inglés',
+      price: 5500,
+      stock: 32,
+      featured: false,
+      isActive: true,
+      categoryId: createdCategories['sword-shield'].id,
+    },
 
-    for (const product of products) {
-      const createdProduct = await prisma.product.create({
-        data: {
-          ...product,
-          images: {
-            create: [
-              {
-                url: '/placeholder.png',
-                alt: product.name,
-                order: 0,
-              },
-            ],
-          },
+    // Sun & Moon Series
+    {
+      name: 'Cosmic Eclipse - Booster Pack',
+      slug: 'cosmic-eclipse-booster',
+      description: 'Sobre de Cosmic Eclipse. Último set de la era Sun & Moon con cartas TAG TEAM.',
+      set: 'Cosmic Eclipse',
+      language: 'Inglés',
+      price: 9000,
+      compareAtPrice: 11000,
+      stock: 15,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['sun-moon'].id,
+    },
+    {
+      name: 'Hidden Fates - Booster Pack',
+      slug: 'hidden-fates-booster',
+      description: 'Sobre de Hidden Fates. Set especial con Shiny Vault. Muy buscado por coleccionistas.',
+      set: 'Hidden Fates',
+      language: 'Inglés',
+      price: 12000,
+      compareAtPrice: 15000,
+      stock: 8,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['sun-moon'].id,
+    },
+    {
+      name: 'Team Up - Booster Pack',
+      slug: 'team-up-booster',
+      description: 'Sobre de Team Up con cartas TAG TEAM GX.',
+      set: 'Team Up',
+      language: 'Inglés',
+      price: 7500,
+      stock: 20,
+      featured: false,
+      isActive: true,
+      categoryId: createdCategories['sun-moon'].id,
+    },
+
+    // Sets Especiales
+    {
+      name: 'Crown Zenith - Booster Pack',
+      slug: 'crown-zenith-booster',
+      description: 'Sobre de Crown Zenith. Set especial con Galarian Gallery.',
+      set: 'Crown Zenith',
+      language: 'Inglés',
+      price: 7800,
+      stock: 25,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['sets-especiales'].id,
+    },
+    {
+      name: 'Shining Fates - Booster Pack',
+      slug: 'shining-fates-booster',
+      description: 'Sobre de Shining Fates con Shiny Vault y Charizard VMAX.',
+      set: 'Shining Fates',
+      language: 'Inglés',
+      price: 10000,
+      compareAtPrice: 12000,
+      stock: 12,
+      featured: true,
+      isActive: true,
+      categoryId: createdCategories['sets-especiales'].id,
+    },
+
+    // XY Series (vintage)
+    {
+      name: 'XY Evolutions - Booster Pack',
+      slug: 'xy-evolutions-booster',
+      description: 'Sobre de XY Evolutions. Reimaginación del set Base original.',
+      set: 'XY Evolutions',
+      language: 'Inglés',
+      price: 8000,
+      stock: 18,
+      featured: false,
+      isActive: true,
+      categoryId: createdCategories['xy-series'].id,
+    },
+  ]
+
+  for (const product of products) {
+    const createdProduct = await prisma.product.create({
+      data: {
+        ...product,
+        images: {
+          create: [
+            {
+              url: '/placeholder.png',
+              alt: product.name,
+              order: 0,
+            },
+          ],
         },
-      })
-      console.log(`✅ Producto creado: ${createdProduct.name}`)
-    }
+      },
+    })
+    console.log(`✅ Producto creado: ${createdProduct.name}`)
   }
 
   console.log('🎉 Seed completado exitosamente!')

@@ -52,13 +52,13 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link href={`/productos/${product.slug}`}>
       <Card className="group hover:shadow-lg transition-shadow duration-300 h-full">
         <CardContent className="p-4">
-          {/* Image Container */}
-          <div className="relative aspect-square mb-4 overflow-hidden rounded-lg bg-gray-100">
+          {/* Image Container: portrait ratio to show full booster */}
+          <div className="relative mb-4 overflow-hidden rounded-lg bg-gray-100" style={{ aspectRatio: '3 / 4' }}>
             <Image
               src={product.images[0]?.url || '/placeholder.png'}
               alt={product.images[0]?.alt || product.name}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-contain p-2"
             />
             
             {/* Badges */}
