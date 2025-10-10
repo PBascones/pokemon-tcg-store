@@ -22,6 +22,8 @@ export interface MercadoPagoItem {
   unit_price: number
   currency_id: string
   picture_url?: string
+  description?: string
+  category_id?: string
 }
 
 export interface PreferenceData {
@@ -34,6 +36,15 @@ export interface PreferenceData {
       area_code?: string
       number?: string
     }
+    address?: {
+      zip_code?: string
+      street_name?: string
+      street_number?: string
+    }
+    identification?: {
+      type?: string
+      number?: string
+    }
   }
   back_urls: {
     success: string
@@ -44,6 +55,11 @@ export interface PreferenceData {
   external_reference: string
   notification_url?: string
   statement_descriptor?: string
+  binary_mode?: boolean
+  installments?: number
+  expires?: boolean
+  expiration_date_from?: string
+  expiration_date_to?: string
 }
 
 export async function createPreference(data: PreferenceData) {

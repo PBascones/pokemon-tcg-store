@@ -4,13 +4,30 @@ import { getPayment } from '@/lib/mercadopago'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    const url = new URL(request.url)
+    const params = url.searchParams
+    let body: any = {}
+
+    try {
+      body = await request.json()
+    } catch {
+      body = {}
+    }
     
     console.log('MercadoPago Webhook:', body)
 
-    // MercadoPago envía notificaciones con este formato
-    if (body.type === 'payment') {
-      const paymentId = body.data.id
+    // Soportar múltiples formatos de notificación: body.type/action o query params topic/id
+    const type = body.type || body.topic || params.get('topic')
+    const action = body.action
+    const idFromBody = body?.data?.id || body?.data?.resource || body?.id
+    const idFromQuery = params.get('id') || params.get('data.id')
+    const paymentId = idFromBody || idFromQuery
+
+    if (type === 'payment' || action?.startsWith('payment.')) {
+      if (!paymentId) {
+        console.error('No payment id in webhook payload')
+        return NextResponse.json({ received: true })
+      }
 
       // Obtener información del pago
       const paymentInfo = await getPayment(paymentId)

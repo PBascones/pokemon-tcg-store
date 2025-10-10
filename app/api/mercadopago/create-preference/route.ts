@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { createPreference, type PreferenceData } from '@/lib/mercadopago'
+import { createPreference, type PreferenceData, type MercadoPagoItem } from '@/lib/mercadopago'
 import { prisma } from '@/lib/prisma'
 import { generateOrderNumber } from '@/lib/utils'
 
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
     })
 
     // Preparar items para MercadoPago
-    const mpItems = products.map((product) => {
+    const mpItems: MercadoPagoItem[] = products.map((product) => {
       const cartItem = items.find((i: any) => i.id === product.id)
       return {
         id: product.id,
@@ -121,6 +121,8 @@ export async function POST(request: Request) {
         unit_price: product.price,
         currency_id: 'ARS',
         picture_url: product.images[0]?.url,
+        description: product.description || undefined,
+        category_id: 'others',
       }
     })
 
@@ -133,6 +135,8 @@ export async function POST(request: Request) {
         unit_price: shipping,
         currency_id: 'ARS',
         picture_url: '',
+        description: 'Costo de envío',
+        category_id: 'others',
       })
     }
 
@@ -145,6 +149,11 @@ export async function POST(request: Request) {
         phone: {
           number: shippingInfo.phone || '',
         },
+        address: {
+          zip_code: shippingInfo.zip || '',
+          street_name: shippingInfo.address || '',
+          street_number: '',
+        },
       },
       back_urls: {
         success: `${process.env.NEXT_PUBLIC_APP_URL}/orden/${order.id}/confirmacion`,
@@ -153,7 +162,7 @@ export async function POST(request: Request) {
       },
       auto_return: 'approved',
       external_reference: order.id,
-      // notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/mercadopago/webhook`,
+      notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/mercadopago/webhook`,
       statement_descriptor: 'POKESTORE',
     }
 
