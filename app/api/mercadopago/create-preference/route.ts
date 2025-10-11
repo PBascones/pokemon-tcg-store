@@ -64,8 +64,8 @@ export async function POST(request: Request) {
       0
     )
 
-    const shipping = subtotal > 50000 ? 0 : 5000
-    const total = subtotal + shipping
+    const shipping = 0 // Sin costo de envío - se coordina por WhatsApp
+    const total = subtotal
 
     // Crear orden en la base de datos
     const orderNumber = generateOrderNumber()
@@ -126,19 +126,8 @@ export async function POST(request: Request) {
       }
     })
 
-    // Agregar envío si corresponde
-    if (shipping > 0) {
-      mpItems.push({
-        id: 'shipping',
-        title: 'Envío',
-        quantity: 1,
-        unit_price: shipping,
-        currency_id: 'ARS',
-        picture_url: '',
-        description: 'Costo de envío',
-        category_id: 'others',
-      })
-    }
+    // No agregamos envío a MercadoPago - se coordina por WhatsApp
+    // El envío se maneja por separado después del pago
 
     // Crear preferencia de MercadoPago
     const preferenceData: PreferenceData = {

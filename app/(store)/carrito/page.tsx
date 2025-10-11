@@ -27,8 +27,7 @@ export default function CartPage() {
   }
 
   const subtotal = getTotalPrice()
-  const shipping = subtotal > 50000 ? 0 : 5000 // Envío gratis por compras mayores a $50.000
-  const total = subtotal + shipping
+  const total = subtotal // Sin costo de envío - se coordina por WhatsApp
 
   if (items.length === 0) {
     return (
@@ -87,7 +86,7 @@ export default function CartPage() {
                 <div className="flex flex-col items-end gap-4">
                   <button
                     onClick={() => handleRemoveItem(item.id, item.name)}
-                    className="text-gray-400 hover:text-red-600 transition"
+                    className="text-gray-400 hover:text-red-600 transition cursor-pointer"
                   >
                     <Trash2 className="h-5 w-5" />
                   </button>
@@ -95,7 +94,7 @@ export default function CartPage() {
                   <div className="flex items-center gap-2 border rounded-lg">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="p-2 hover:bg-gray-100 rounded-l-lg"
+                      className="p-2 hover:bg-gray-100 rounded-l-lg cursor-pointer disabled:cursor-not-allowed"
                       disabled={item.quantity <= 1}
                     >
                       <Minus className="h-4 w-4" />
@@ -103,7 +102,7 @@ export default function CartPage() {
                     <span className="px-4 font-semibold">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="p-2 hover:bg-gray-100 rounded-r-lg"
+                      className="p-2 hover:bg-gray-100 rounded-r-lg cursor-pointer disabled:cursor-not-allowed"
                       disabled={item.quantity >= item.stock}
                     >
                       <Plus className="h-4 w-4" />
@@ -137,22 +136,30 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span className="font-semibold">{formatPrice(subtotal)}</span>
               </div>
-              <div className="flex justify-between">
-                <span>Envío</span>
-                <span className="font-semibold">
-                  {shipping === 0 ? 'Gratis' : formatPrice(shipping)}
-                </span>
-              </div>
-              {subtotal < 50000 && shipping > 0 && (
-                <p className="text-sm text-gray-600">
-                  Envío gratis en compras mayores a {formatPrice(50000)}
+              
+              {/* Información de envío */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
+                <h4 className="font-semibold text-blue-800 mb-2">📦 Información de Envío</h4>
+                <p className="text-blue-700 mb-2">
+                  <strong>Correo Argentino:</strong>
                 </p>
-              )}
+                <ul className="text-blue-700 space-y-1 text-xs">
+                  <li>• Buenos Aires: $6.000 a domicilio / $4.000 a sucursal</li>
+                  <li>• Interior: $10.000 a domicilio / $6.000 a sucursal</li>
+                </ul>
+                <p className="text-blue-800 font-medium mt-2 text-xs">
+                  💬 El envío se coordina por WhatsApp después del pago. Los costos son estimativos.
+                </p>
+              </div>
+              
               <div className="border-t pt-3">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Total</span>
+                  <span>Total a Pagar</span>
                   <span className="text-primary-600">{formatPrice(total)}</span>
                 </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  * Envío no incluido
+                </p>
               </div>
             </div>
 

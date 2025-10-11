@@ -75,7 +75,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Wishlist Button */}
-            <button className="absolute top-2 right-2 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md">
+            <button className="absolute top-2 right-2 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md cursor-pointer hover:bg-gray-50">
               <Heart className="h-4 w-4 text-gray-700" />
             </button>
           </div>

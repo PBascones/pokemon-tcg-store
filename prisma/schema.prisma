@@ -220,3 +220,21 @@ enum PaymentStatus {
   FAILED        // Fallido
   REFUNDED      // Reembolsado
 }
+
+// Modelo para imágenes del carrousel hero
+model HeroImage {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  imageUrl    String
+  buttonText  String?
+  buttonLink  String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([order])
+  @@index([isActive])
+}

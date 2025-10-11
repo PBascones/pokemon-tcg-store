@@ -26,60 +26,76 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Productos</h1>
-          <p className="text-gray-600">
-            Gestioná el catálogo de sobres de la tienda
-          </p>
+      {/* Header mejorado */}
+      <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-6 mb-8 text-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="bg-white/20 p-2 rounded-lg">
+                <Package className="h-6 w-6" />
+              </div>
+              <h1 className="text-3xl font-bold">Catálogo de Sobres</h1>
+            </div>
+            <p className="text-primary-100">
+              Gestioná todos los sobres Pokémon de tu tienda
+            </p>
+          </div>
+          <Link href="/admin/productos/nuevo">
+            <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold shadow-lg">
+              <Plus className="h-5 w-5 mr-2" />
+              Agregar Sobre
+            </Button>
+          </Link>
         </div>
-        <Link href="/admin/productos/nuevo">
-          <Button size="lg">
-            <Plus className="h-5 w-5 mr-2" />
-            Agregar Producto
-          </Button>
-        </Link>
       </div>
 
       {products.length === 0 ? (
-        <Card>
+        <Card className="border-2 border-dashed border-gray-300 hover:border-primary-400 transition-colors">
           <CardContent className="p-12 text-center">
-            <Package className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-            <h3 className="text-xl font-semibold mb-2">No hay productos</h3>
-            <p className="text-gray-600 mb-6">
-              Comenzá agregando tu primer sobre a la tienda
+            <div className="bg-primary-100 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+              <Package className="h-10 w-10 text-primary-600" />
+            </div>
+            <h3 className="text-2xl font-bold mb-2 text-gray-900">🎴 No hay sobres aún</h3>
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              Comenzá agregando tu primer sobre Pokémon a la tienda. ¡Los coleccionistas te estarán esperando!
             </p>
             <Link href="/admin/productos/nuevo">
-              <Button>
+              <Button size="lg" className="shadow-lg">
                 <Plus className="h-5 w-5 mr-2" />
-                Agregar Primer Producto
+                ✨ Agregar Primer Sobre
               </Button>
             </Link>
           </CardContent>
         </Card>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="text-left py-4 px-6 font-semibold text-sm">
-                  Producto
-                </th>
-                <th className="text-left py-4 px-6 font-semibold text-sm">
-                  Categoría
-                </th>
-                <th className="text-left py-4 px-6 font-semibold text-sm">
-                  Precio
-                </th>
-                <th className="text-left py-4 px-6 font-semibold text-sm">
-                  Stock
-                </th>
-                <th className="text-left py-4 px-6 font-semibold text-sm">
-                  Estado
-                </th>
-                <th className="text-right py-4 px-6 font-semibold text-sm">
-                  Acciones
-                </th>
+        <Card className="overflow-hidden shadow-lg">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+            <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+              📋 Lista de Sobres ({products.length} productos)
+            </h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
+                    🎴 Sobre
+                  </th>
+                  <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
+                    🏷️ Categoría
+                  </th>
+                  <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
+                    💰 Precio
+                  </th>
+                  <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
+                    📦 Stock
+                  </th>
+                  <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
+                    🔄 Estado
+                  </th>
+                  <th className="text-right py-4 px-6 font-semibold text-sm text-gray-700">
+                    ⚙️ Acciones
+                  </th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -153,9 +169,10 @@ export default async function AdminProductsPage() {
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        </Card>
       )}
 
       {/* Stats */}

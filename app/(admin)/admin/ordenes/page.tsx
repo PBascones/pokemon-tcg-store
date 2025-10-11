@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatPrice } from '@/lib/utils'
-import { Eye } from 'lucide-react'
+import { Eye, ShoppingBag } from 'lucide-react'
 
 export default async function OrdersPage() {
   const orders = await prisma.order.findMany({
@@ -46,39 +46,61 @@ export default async function OrdersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Órdenes</h1>
+      {/* Header mejorado */}
+      <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 mb-8 text-white">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="bg-white/20 p-2 rounded-lg">
+            <ShoppingBag className="h-6 w-6" />
+          </div>
+          <h1 className="text-3xl font-bold">Gestión de Órdenes</h1>
+        </div>
+        <p className="text-green-100">
+          Administrá todas las ventas y pedidos de tu tienda
+        </p>
+        <div className="mt-4 flex items-center gap-4 text-sm">
+          <span className="bg-white/20 px-3 py-1 rounded-full">
+            📊 Total: {orders.length} órdenes
+          </span>
+          <span className="bg-white/20 px-3 py-1 rounded-full">
+            🟢 Pagadas: {orders.filter(o => o.paymentStatus === 'PAID').length}
+          </span>
+        </div>
       </div>
 
-      <Card>
+      <Card className="shadow-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b">
+          <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+            📋 Lista de Órdenes
+          </h2>
+        </div>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Orden
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    📝 Número
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Cliente
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    👤 Cliente
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Items
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    🎴 Sobres
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Total
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    💰 Total
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Pago
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    💳 Pago
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Estado
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    📦 Estado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Fecha
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    📅 Fecha
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Acciones
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                    ⚙️ Acciones
                   </th>
                 </tr>
               </thead>
@@ -95,7 +117,9 @@ export default async function OrdersPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {order.items.length} {order.items.length === 1 ? 'item' : 'items'}
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                        {order.items.length} {order.items.length === 1 ? 'sobre' : 'sobres'}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap font-semibold">
                       {formatPrice(order.total)}

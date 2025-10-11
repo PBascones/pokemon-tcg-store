@@ -11,6 +11,7 @@ import {
   Users,
   Settings,
   LogOut,
+  Images,
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
@@ -19,6 +20,11 @@ const menuItems = [
     label: 'Dashboard',
     href: '/admin',
     icon: LayoutDashboard,
+  },
+  {
+    label: 'Carrousel Hero',
+    href: '/admin/hero',
+    icon: Images,
   },
   {
     label: 'Productos',

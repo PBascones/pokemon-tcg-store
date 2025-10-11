@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { ProductCard } from '@/components/store/product-card'
 import { Badge } from '@/components/ui/badge'
+import { HeroCarousel } from '@/components/store/hero-carousel'
 import { prisma } from '@/lib/prisma'
 import { Sparkles, Package, Shield, Truck } from 'lucide-react'
 
@@ -32,36 +33,8 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <Badge className="mb-4 bg-white text-gray-900">
-              <Sparkles className="h-3 w-3 mr-1" />
-              Nuevos productos cada semana
-            </Badge>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
-              Los mejores Sobres Pokémon de Argentina
-            </h1>
-            <p className="text-xl mb-8 text-white font-medium drop-shadow-md">
-              Booster packs 100% originales. Envíos a todo el país. 
-              Los mejores precios del mercado.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/productos">
-                <Button size="lg" className="text-gray-900 hover:font-semibold">
-                  Ver Catálogo
-                </Button>
-              </Link>
-              <Link href="/ofertas">
-                <Button size="lg" variant="outline" className="bg-white text-primary-600 border-white hover:bg-gray-100 font-semibold">
-                  Ver Ofertas
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Carousel */}
+      <HeroCarousel />
 
       {/* Features */}
       <section className="py-12 bg-gray-50">

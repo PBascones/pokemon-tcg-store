@@ -27,8 +27,7 @@ export default function CheckoutPage() {
   })
 
   const subtotal = getTotalPrice()
-  const shipping = subtotal > 50000 ? 0 : 5000
-  const total = subtotal + shipping
+  const total = subtotal // Sin costo de envío - se coordina por WhatsApp
 
   if (status === 'loading') {
     return (
@@ -249,19 +248,45 @@ export default function CheckoutPage() {
                   ))}
                 </div>
 
-                <div className="border-t pt-4 space-y-2">
+                <div className="border-t pt-4 space-y-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Envío</span>
-                    <span>{shipping === 0 ? 'Gratis' : formatPrice(shipping)}</span>
+                  
+                  {/* Información de envío */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
+                    <h4 className="font-semibold text-blue-800 mb-2">📦 Envío por Correo Argentino</h4>
+                    <div className="text-blue-700 space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span>Buenos Aires (domicilio):</span>
+                        <span className="font-medium">$6.000</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Buenos Aires (sucursal):</span>
+                        <span className="font-medium">$4.000</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Interior (domicilio):</span>
+                        <span className="font-medium">$10.000</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Interior (sucursal):</span>
+                        <span className="font-medium">$6.000</span>
+                      </div>
+                    </div>
+                    <p className="text-blue-800 font-medium mt-2 text-xs">
+                      💬 Se coordina por WhatsApp después del pago. Los costos son estimativos.
+                    </p>
                   </div>
+                  
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
-                    <span>Total</span>
+                    <span>Total a Pagar</span>
                     <span className="text-primary-600">{formatPrice(total)}</span>
                   </div>
+                  <p className="text-xs text-gray-500">
+                    * Envío no incluido
+                  </p>
                 </div>
 
                 <Button

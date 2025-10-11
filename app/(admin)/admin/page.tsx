@@ -76,22 +76,33 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      {/* Header mejorado */}
+      <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-6 mb-8 text-white">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="bg-white/20 p-2 rounded-lg">
+            <Package className="h-6 w-6" />
+          </div>
+          <h1 className="text-3xl font-bold">Panel de Control - Poke Addiction</h1>
+        </div>
+        <p className="text-primary-100">
+          Gestioná tu tienda de sobres Pokémon desde aquí
+        </p>
+      </div>
 
-      {/* Stats Grid */}
+      {/* Stats Grid mejorado */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card key={stat.title}>
+            <Card key={stat.title} className="hover:shadow-lg transition-shadow duration-300">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">{stat.title}</p>
-                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-sm text-gray-600 mb-1 font-medium">{stat.title}</p>
+                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
                   </div>
-                  <div className={`${stat.color} p-3 rounded-lg`}>
-                    <Icon className="h-6 w-6 text-white" />
+                  <div className={`${stat.color} p-4 rounded-xl shadow-lg`}>
+                    <Icon className="h-7 w-7 text-white" />
                   </div>
                 </div>
               </CardContent>
@@ -102,9 +113,12 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Orders */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Órdenes Recientes</CardTitle>
+        <Card className="hover:shadow-lg transition-shadow duration-300">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-green-100 rounded-t-lg">
+            <CardTitle className="flex items-center gap-2 text-green-800">
+              <ShoppingBag className="h-5 w-5" />
+              Órdenes Recientes
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -138,9 +152,12 @@ export default async function AdminDashboard() {
         </Card>
 
         {/* Low Stock Products */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Productos con Poco Stock</CardTitle>
+        <Card className="hover:shadow-lg transition-shadow duration-300">
+          <CardHeader className="bg-gradient-to-r from-yellow-50 to-orange-100 rounded-t-lg">
+            <CardTitle className="flex items-center gap-2 text-orange-800">
+              <Package className="h-5 w-5" />
+              ⚠️ Productos con Poco Stock
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
