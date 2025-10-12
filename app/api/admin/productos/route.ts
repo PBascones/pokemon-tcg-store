@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { revalidatePaths } from '@/lib/server-utils'
 
 export async function POST(request: Request) {
   try {
@@ -76,6 +77,9 @@ export async function POST(request: Request) {
         category: true,
       },
     })
+
+    // Revalidar páginas que muestran productos
+    revalidatePaths('/', '/productos', '/admin/productos')
 
     return NextResponse.json(product, { status: 201 })
   } catch (error: any) {

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { revalidatePaths } from '@/lib/server-utils'
 
 export async function PUT(
   request: Request,
@@ -104,6 +105,9 @@ export async function PUT(
       }
     }
 
+    // Revalidar páginas que muestran productos
+    revalidatePaths('/', '/productos', '/admin/productos', `/productos/${product.slug}`)
+
     return NextResponse.json(product)
   } catch (error: any) {
     console.error('Error updating product:', error)
@@ -148,6 +152,9 @@ export async function DELETE(
     await prisma.product.delete({
       where: { id },
     })
+
+    // Revalidar páginas que muestran productos
+    revalidatePaths('/', '/productos', '/admin/productos')
 
     return NextResponse.json({ success: true })
   } catch (error: any) {
