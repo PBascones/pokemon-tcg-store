@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, formatPriceWithBothCurrencies } from '@/lib/utils'
 import { AddToCartButton } from '@/components/store/add-to-cart-button'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -90,11 +90,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mb-6">
             <div className="flex items-baseline gap-3 mb-2">
               <span className="text-4xl font-bold text-primary-600">
-                {formatPrice(product.price)}
+                {formatPriceWithBothCurrencies(product.price).ars}
               </span>
               {product.compareAtPrice && (
                 <span className="text-xl text-gray-400 line-through">
-                  {formatPrice(product.compareAtPrice)}
+                  {formatPriceWithBothCurrencies(product.compareAtPrice).ars}
+                </span>
+              )}
+            </div>
+            <div className="text-lg text-gray-600 mb-2">
+              {formatPriceWithBothCurrencies(product.price).usd}
+              {product.compareAtPrice && (
+                <span className="text-sm text-gray-400 line-through ml-2">
+                  {formatPriceWithBothCurrencies(product.compareAtPrice).usd}
                 </span>
               )}
             </div>

@@ -298,7 +298,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Precio (ARS) *
+                    Precio (USD) *
                   </label>
                   <Input
                     name="price"

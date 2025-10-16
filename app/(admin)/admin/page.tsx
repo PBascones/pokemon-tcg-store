@@ -168,7 +168,7 @@ export default async function AdminDashboard() {
                 >
                   <div>
                     <p className="font-semibold">{product.name}</p>
-                    <p className="text-sm text-gray-600">{formatPrice(product.price)}</p>
+                    <p className="text-sm text-gray-600">{formatPrice(product.price, 'USD')}</p>
                   </div>
                   <div className="text-right">
                     <p

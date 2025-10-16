@@ -6,7 +6,7 @@ import { ShoppingCart, Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, formatPriceWithBothCurrencies } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
 interface ProductCardProps {
@@ -90,15 +90,20 @@ export function ProductCard({ product }: ProductCardProps) {
             </h3>
             
             {/* Price */}
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-primary-600">
-                {formatPrice(product.price)}
-              </span>
-              {product.compareAtPrice && (
-                <span className="text-sm text-gray-400 line-through">
-                  {formatPrice(product.compareAtPrice)}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold text-primary-600" suppressHydrationWarning>
+                  {formatPriceWithBothCurrencies(product.price).ars}
                 </span>
-              )}
+                {product.compareAtPrice && (
+                  <span className="text-sm text-gray-400 line-through" suppressHydrationWarning>
+                    {formatPriceWithBothCurrencies(product.compareAtPrice).ars}
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-gray-500" suppressHydrationWarning>
+                {formatPriceWithBothCurrencies(product.price).usd}
+              </div>
             </div>
           </div>
         </CardContent>

@@ -126,11 +126,11 @@ export default async function AdminProductsPage() {
                   </td>
                   <td className="py-4 px-6">
                     <span className="font-semibold text-sm">
-                      {formatPrice(product.price)}
+                      {formatPrice(product.price, 'USD')}
                     </span>
                     {product.compareAtPrice && (
                       <p className="text-xs text-gray-400 line-through">
-                        {formatPrice(product.compareAtPrice)}
+                        {formatPrice(product.compareAtPrice, 'USD')}
                       </p>
                     )}
                   </td>

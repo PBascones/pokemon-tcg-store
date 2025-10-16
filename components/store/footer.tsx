@@ -10,12 +10,12 @@ export function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Poke Addiction</h3>
             <p className="text-gray-400 text-sm">
-              Tu tienda de confianza para sobres Pokémon en Argentina. 
+              Tu tienda de confianza para sobres Pokémon en Argentina.
               Productos 100% originales y auténticos.
             </p>
-            <a 
-              href="https://www.instagram.com/pokeaddictionok/" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/pokeaddictionok/"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-primary-400 hover:text-primary-300 text-sm mt-2 inline-block"
             >
@@ -64,11 +64,11 @@ export function Footer() {
                   Información de Envíos
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/devoluciones" className="text-gray-400 hover:text-white transition">
                   Devoluciones
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/faq" className="text-gray-400 hover:text-white transition">
                   Preguntas Frecuentes
@@ -90,11 +90,17 @@ export function Footer() {
                 <Instagram className="h-6 w-6" />
               </a>
             </div>
-            
+
             <div className="mt-6">
               <h4 className="font-semibold mb-2">Métodos de Pago</h4>
               <p className="text-gray-400 text-sm">
-                Aceptamos MercadoPago y transferencias bancarias
+                MercadoPago
+              </p>
+              <p className="text-gray-400 text-sm">
+                Transferencias bancarias y en USD
+              </p>
+              <p className="text-gray-400 text-sm">
+                USDT y Crypto con un 10% de recargo
               </p>
             </div>
           </div>

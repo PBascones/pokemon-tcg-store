@@ -3,7 +3,7 @@
 ## ✅ Cambios Completados
 
 ### 1. **Wordings y Textos**
-- **Navbar:** "Buscar cartas" → "Buscar sobres"
+- **Navbar:** "Buscar cartas" → "Buscar productos"
 - **Footer:** "cartas Pokémon" → "sobres Pokémon"
 - **Hero (Homepage):** "Coleccioná las mejores cartas" → "Los mejores Sobres Pokémon de Argentina"
 - **Metadata (SEO):** Actualizado title y description para "sobres" en lugar de "cartas"
