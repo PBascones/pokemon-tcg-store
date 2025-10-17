@@ -20,15 +20,25 @@ interface ProductCardProps {
     rarity?: string | null
     stock: number
     featured: boolean
+    calculatedPrices?: {
+      main: { usd: string; ars: string; arsAmount: number }
+      compare: { usd: string; ars: string; arsAmount: number } | null
+      discount: number
+    }
   }
 }
 
 export function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
   
-  const discount = product.compareAtPrice
-    ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
-    : 0
+  // Usar precios pre-calculados si están disponibles, sino calcular dinámicamente
+  const prices = product.calculatedPrices || {
+    main: formatPriceWithBothCurrencies(product.price),
+    compare: product.compareAtPrice ? formatPriceWithBothCurrencies(product.compareAtPrice) : null,
+    discount: product.compareAtPrice 
+      ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
+      : 0
+  }
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -63,8 +73,8 @@ export function ProductCard({ product }: ProductCardProps) {
             
             {/* Badges */}
             <div className="absolute top-2 left-2 flex flex-col gap-2">
-              {discount > 0 && (
-                <Badge variant="destructive">-{discount}%</Badge>
+              {prices.discount > 0 && (
+                <Badge variant="destructive">-{prices.discount}%</Badge>
               )}
               {product.featured && (
                 <Badge variant="warning">Destacado</Badge>
@@ -92,17 +102,17 @@ export function ProductCard({ product }: ProductCardProps) {
             {/* Price */}
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-primary-600" suppressHydrationWarning>
-                  {formatPriceWithBothCurrencies(product.price).ars}
+                <span className="text-lg font-bold text-primary-600">
+                  {prices.main.ars}
                 </span>
-                {product.compareAtPrice && (
-                  <span className="text-sm text-gray-400 line-through" suppressHydrationWarning>
-                    {formatPriceWithBothCurrencies(product.compareAtPrice).ars}
+                {prices.compare && (
+                  <span className="text-sm text-gray-400 line-through">
+                    {prices.compare.ars}
                   </span>
                 )}
               </div>
-              <div className="text-xs text-gray-500" suppressHydrationWarning>
-                {formatPriceWithBothCurrencies(product.price).usd}
+              <div className="text-xs text-gray-500">
+                {prices.main.usd}
               </div>
             </div>
           </div>

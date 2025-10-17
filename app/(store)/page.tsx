@@ -5,9 +5,15 @@ import { ProductCard } from '@/components/store/product-card'
 import { Badge } from '@/components/ui/badge'
 import { HeroCarousel } from '@/components/store/hero-carousel'
 import { prisma } from '@/lib/prisma'
+import { getUSDPriceForSSR } from '@/lib/currency-cache'
+import { calculateProductPrices } from '@/lib/utils'
 import { Sparkles, Package, Shield, Truck } from 'lucide-react'
 
 export default async function HomePage() {
+  // Obtener tipo de cambio de forma confiable
+  const exchangeRate = await getUSDPriceForSSR()
+  console.log('💱 Exchange rate in HomePage:', exchangeRate)
+  
   // Obtener productos (unificado) - del más nuevo al más reciente
   const products = await prisma.product.findMany({
     where: {
@@ -25,6 +31,12 @@ export default async function HomePage() {
     },
     take: 8,
   })
+
+  // Pre-calcular precios para evitar hidratación mismatch
+  const productsWithPrices = products.map(product => ({
+    ...product,
+    calculatedPrices: calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
+  }))
 
   // Obtener categorías
   const categories = await prisma.category.findMany({
@@ -98,7 +110,7 @@ export default async function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
+              {productsWithPrices.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

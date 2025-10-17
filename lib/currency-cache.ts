@@ -98,10 +98,42 @@ export function convertARSToUSD(arsAmount: number): number {
   return Math.round((arsAmount / usdPrice) * 100) / 100 // Redondear a 2 decimales
 }
 
-// Inicializar cache al importar el módulo
-if (typeof window === 'undefined') {
-  // Solo en servidor
+// Función para obtener precio USD de forma confiable en servidor
+export async function getUSDPriceForSSR(): Promise<number> {
+  try {
+    const response = await fetch('https://criptoya.com/api/dolar', {
+      cache: 'force-cache',
+      next: { revalidate: 1800 } // 30 minutos
+    })
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const data = await response.json()
+    const price = data.oficial?.price || data.oficial || 1000
+    
+    // Actualizar cache también
+    currencyCache = {
+      usdPrice: price,
+      lastUpdated: Date.now(),
+      isUpdating: false
+    }
+    
+    console.log(`💱 Precio USD obtenido para SSR: $${price}`)
+    return price
+    
+  } catch (error) {
+    console.error('❌ Error obteniendo precio USD para SSR:', error)
+    // Fallback: usar valor por defecto conservador
+    return 1200 // Valor más realista que 1000
+  }
+}
+
+// Inicializar cache al importar el módulo (solo para cliente)
+if (typeof window !== 'undefined') {
+  // Solo en cliente, actualizar en background
   updateUSDPrice().catch(() => {
-    console.warn('⚠️ No se pudo inicializar el precio USD, usando fallback')
+    console.warn('⚠️ No se pudo inicializar el precio USD en cliente')
   })
 }

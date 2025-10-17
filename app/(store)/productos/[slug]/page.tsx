@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
-import { formatPrice, formatPriceWithBothCurrencies } from '@/lib/utils'
+import { formatPrice, formatPriceWithBothCurrencies, calculateProductPrices } from '@/lib/utils'
+import { getUSDPriceForSSR } from '@/lib/currency-cache'
 import { AddToCartButton } from '@/components/store/add-to-cart-button'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -14,25 +15,28 @@ interface ProductPageProps {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
 
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: {
-      images: {
-        orderBy: {
-          order: 'asc',
+  // Obtener tipo de cambio y producto en paralelo
+  const [exchangeRate, product] = await Promise.all([
+    getUSDPriceForSSR(),
+    prisma.product.findUnique({
+      where: { slug },
+      include: {
+        images: {
+          orderBy: {
+            order: 'asc',
+          },
         },
+        category: true,
       },
-      category: true,
-    },
-  })
+    })
+  ])
 
   if (!product || !product.isActive) {
     notFound()
   }
 
-  const discount = product.compareAtPrice
-    ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
-    : 0
+  // Pre-calcular precios
+  const prices = calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -47,9 +51,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               className="object-contain p-2"
               priority
             />
-            {discount > 0 && (
+            {prices.discount > 0 && (
               <Badge variant="destructive" className="absolute top-4 left-4 text-lg">
-                -{discount}%
+                -{prices.discount}%
               </Badge>
             )}
           </div>
@@ -90,19 +94,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mb-6">
             <div className="flex items-baseline gap-3 mb-2">
               <span className="text-4xl font-bold text-primary-600">
-                {formatPriceWithBothCurrencies(product.price).ars}
+                {prices.main.ars}
               </span>
-              {product.compareAtPrice && (
+              {prices.compare && (
                 <span className="text-xl text-gray-400 line-through">
-                  {formatPriceWithBothCurrencies(product.compareAtPrice).ars}
+                  {prices.compare.ars}
                 </span>
               )}
             </div>
             <div className="text-lg text-gray-600 mb-2">
-              {formatPriceWithBothCurrencies(product.price).usd}
-              {product.compareAtPrice && (
+              {prices.main.usd}
+              {prices.compare && (
                 <span className="text-sm text-gray-400 line-through ml-2">
-                  {formatPriceWithBothCurrencies(product.compareAtPrice).usd}
+                  {prices.compare.usd}
                 </span>
               )}
             </div>

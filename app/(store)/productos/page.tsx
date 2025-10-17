@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import { prisma } from '@/lib/prisma'
 import { ProductCard } from '@/components/store/product-card'
 import { Card } from '@/components/ui/card'
+import { getUSDPriceForSSR } from '@/lib/currency-cache'
+import { calculateProductPrices } from '@/lib/utils'
 
 interface SearchParams {
   category?: string
@@ -18,6 +20,9 @@ export default async function ProductsPage({
   const page = Number(params.page) || 1
   const limit = 12
   const skip = (page - 1) * limit
+
+  // Obtener tipo de cambio
+  const exchangeRate = await getUSDPriceForSSR()
 
   // Build where clause
   const where: any = {
@@ -59,6 +64,12 @@ export default async function ProductsPage({
     prisma.product.count({ where }),
     prisma.category.findMany(),
   ])
+
+  // Pre-calcular precios
+  const productsWithPrices = products.map(product => ({
+    ...product,
+    calculatedPrices: calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
+  }))
 
   const totalPages = Math.ceil(total / limit)
 
@@ -121,7 +132,7 @@ export default async function ProductsPage({
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
+                {productsWithPrices.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
