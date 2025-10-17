@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { title, subtitle, imageUrl, buttonText, buttonLink, order, isActive } = body
+    const { title, subtitle, imageUrl, mobileImageUrl, buttonText, buttonLink, order, isActive } = body
 
     if (!title || !imageUrl) {
       return NextResponse.json(
@@ -46,6 +46,7 @@ export async function POST(request: Request) {
         title,
         subtitle,
         imageUrl,
+        mobileImageUrl,
         buttonText,
         buttonLink,
         order: order || 0,

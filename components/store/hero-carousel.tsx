@@ -11,6 +11,7 @@ interface HeroImage {
   title: string
   subtitle?: string
   imageUrl: string
+  mobileImageUrl: string
   buttonText?: string
   buttonLink?: string
   order: number
@@ -111,7 +112,7 @@ export function HeroCarousel() {
             }`}
           >
             {/* Imagen de fondo */}
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full hidden md:block">
               <Image
                 src={image.imageUrl}
                 alt={image.title}
@@ -121,6 +122,17 @@ export function HeroCarousel() {
               />
               {/* Overlay para mejorar legibilidad del texto */}
               <div className="absolute inset-0 bg-black/40"></div>
+            </div>
+
+            {/* Imagen para móvil */}
+            <div className="relative w-full h-full md:hidden">
+              <Image
+                src={image.mobileImageUrl}
+                alt={image.title}
+                fill
+                className="object-cover"
+                priority={index === 0}
+              />
             </div>
 
             {/* Contenido del slide */}

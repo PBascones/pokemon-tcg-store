@@ -13,7 +13,8 @@ interface HeroImage {
   id: string
   title: string
   subtitle?: string
-  imageUrl: string
+  imageUrl: string,
+  mobileImageUrl: string,
   buttonText?: string
   buttonLink?: string
   order: number
@@ -28,11 +29,12 @@ export default function HeroAdminPage() {
   const [showForm, setShowForm] = useState(false)
   const [editingImage, setEditingImage] = useState<HeroImage | null>(null)
   const [uploading, setUploading] = useState(false)
-  
+
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
     imageUrl: '',
+    mobileImageUrl: '',
     buttonText: '',
     buttonLink: '',
     order: 0,
@@ -55,7 +57,7 @@ export default function HeroAdminPage() {
     }
   }
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isMobile: boolean) => {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -71,8 +73,13 @@ export default function HeroAdminPage() {
 
       const data = await response.json()
       if (response.ok) {
-        setFormData(prev => ({ ...prev, imageUrl: data.url }))
-        toast.success('Imagen subida correctamente')
+        if (isMobile) {
+          setFormData(prev => ({ ...prev, mobileImageUrl: data.url }))
+          toast.success('Imagen para celular subida correctamente')
+        } else {
+          setFormData(prev => ({ ...prev, imageUrl: data.url }))
+          toast.success('Imagen para desktop subida correctamente')
+        }
       } else {
         toast.error(data.error || 'Error al subir imagen')
       }
@@ -85,19 +92,19 @@ export default function HeroAdminPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!formData.title || !formData.imageUrl) {
       toast.error('Título e imagen son requeridos')
       return
     }
 
     try {
-      const url = editingImage 
+      const url = editingImage
         ? `/api/admin/hero-images/${editingImage.id}`
         : '/api/admin/hero-images'
-      
+
       const method = editingImage ? 'PUT' : 'POST'
-      
+
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -123,6 +130,7 @@ export default function HeroAdminPage() {
       title: image.title,
       subtitle: image.subtitle || '',
       imageUrl: image.imageUrl,
+      mobileImageUrl: image.mobileImageUrl,
       buttonText: image.buttonText || '',
       buttonLink: image.buttonLink || '',
       order: image.order,
@@ -174,6 +182,7 @@ export default function HeroAdminPage() {
       title: '',
       subtitle: '',
       imageUrl: '',
+      mobileImageUrl: '',
       buttonText: '',
       buttonLink: '',
       order: 0,
@@ -207,7 +216,7 @@ export default function HeroAdminPage() {
               Gestioná las imágenes principales de tu tienda
             </p>
           </div>
-          <Button 
+          <Button
             onClick={() => setShowForm(true)}
             className="bg-white text-purple-600 hover:bg-gray-100 font-semibold shadow-lg"
           >
@@ -318,7 +327,7 @@ export default function HeroAdminPage() {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={handleImageUpload}
+                      onChange={(e) => handleImageUpload(e, false)}
                       className="hidden"
                       id="imageUpload"
                     />
@@ -335,6 +344,42 @@ export default function HeroAdminPage() {
                     <div className="relative w-full max-w-md">
                       <Image
                         src={formData.imageUrl}
+                        alt="Preview"
+                        width={400}
+                        height={200}
+                        className="rounded-lg object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Upload de imagen para móvil */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Imagen para móvil *
+                </label>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, true)}
+                      className="hidden"
+                      id="mobileImageUpload"
+                    />
+                    <label
+                      htmlFor="mobileImageUpload"
+                      className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      {uploading ? 'Subiendo...' : 'Subir Imagen para Celular'}
+                    </label>
+                  </div>
+                  {formData.mobileImageUrl && (
+                    <div className="relative w-full max-w-md">
+                      <Image
+                        src={formData.mobileImageUrl}
                         alt="Preview"
                         width={400}
                         height={200}

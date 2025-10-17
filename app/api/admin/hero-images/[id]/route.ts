@@ -17,7 +17,7 @@ export async function PUT(
 
     const { id } = await params
     const body = await request.json()
-    const { title, subtitle, imageUrl, buttonText, buttonLink, order, isActive } = body
+    const { title, subtitle, imageUrl, mobileImageUrl, buttonText, buttonLink, order, isActive } = body
 
     const heroImage = await prisma.heroImage.update({
       where: { id },
@@ -25,6 +25,7 @@ export async function PUT(
         title,
         subtitle,
         imageUrl,
+        mobileImageUrl,
         buttonText,
         buttonLink,
         order,
