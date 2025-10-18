@@ -22,7 +22,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     }),
     prisma.category.findMany({
       orderBy: {
-        name: 'asc',
+        createdAt: 'desc',
       },
     }),
   ])

@@ -121,7 +121,7 @@ export function HeroCarousel() {
                 priority={index === 0}
               />
               {/* Overlay para mejorar legibilidad del texto */}
-              <div className="absolute inset-0 bg-black/40"></div>
+              {/* <div className="absolute inset-0 bg-black/40"></div> */}
             </div>
 
             {/* Imagen para móvil */}
@@ -136,9 +136,11 @@ export function HeroCarousel() {
             </div>
 
             {/* Contenido del slide */}
-            <div className="absolute inset-0 flex items-center">
-              <div className="container mx-auto px-4">
-                <div className="max-w-3xl text-white">
+            <div className="absolute inset-0">
+              <div className="container mx-auto px-4 h-full">
+                {/* Layout para Desktop - centrado verticalmente */}
+                <div className="hidden md:flex md:items-center md:h-full">
+                  <div className="max-w-lg text-white">
                   <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">
                     {image.title}
                   </h1>
@@ -157,6 +159,39 @@ export function HeroCarousel() {
                       </Button>
                     </Link>
                   )}
+                  </div>
+                </div>
+
+                {/* Layout para Mobile - distribuido verticalmente */}
+                <div className="md:hidden px-4 flex flex-col justify-between h-full py-8 text-white">
+                  {/* Texto arriba */}
+                  <div className="flex-shrink-0 pr-6">
+                    <h1 className="text-3xl font-bold mb-2 drop-shadow-lg">
+                      {image.title}
+                    </h1>
+                    {image.subtitle && (
+                      <p className="text-lg mb-2 drop-shadow-md font-medium">
+                        {image.subtitle}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Espacio para la imagen (centro) - se maneja con la imagen de fondo */}
+                  <div className="flex-grow"></div>
+
+                  {/* Botón abajo */}
+                  <div className="flex-shrink-0 text-center">
+                    {image.buttonText && image.buttonLink && (
+                      <Link href={image.buttonLink}>
+                        <Button 
+                          size="lg" 
+                          className="bg-primary-500 hover:bg-primary-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                        >
+                          {image.buttonText}
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { prisma } from '@/lib/prisma'
 import { ProductCard } from '@/components/store/product-card'
 import { Card } from '@/components/ui/card'
