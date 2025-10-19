@@ -83,6 +83,7 @@ export function Navbar() {
                     size="sm"
                     onClick={() => signOut({ callbackUrl: '/' })}
                     title="Cerrar sesión"
+                    className="text-white"
                   >
                     <LogOut className="h-4 w-4" />
                     <span className="ml-2 hidden sm:inline">Salir</span>
