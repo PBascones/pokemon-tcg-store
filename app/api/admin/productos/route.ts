@@ -75,6 +75,7 @@ export async function POST(request: Request) {
       include: {
         images: true,
         expansion: true,
+        set: true,
       },
     })
 

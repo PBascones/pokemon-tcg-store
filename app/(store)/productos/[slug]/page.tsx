@@ -27,6 +27,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           },
         },
         expansion: true,
+        set: true,
       },
     })
   ])
@@ -86,7 +87,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </Badge>
             <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
             {product.set && (
-              <p className="text-gray-600">Set: {product.set}</p>
+              <p className="text-gray-600">Set: {product.set.name}</p>
             )}
           </div>
 
@@ -132,8 +133,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <dl className="space-y-2 text-sm">
               {product.set && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Set/Expansión:</dt>
-                  <dd className="font-semibold">{product.set}</dd>
+                  <dt className="text-gray-600">Set:</dt>
+                  <dd className="font-semibold">{product.set.name}</dd>
                 </div>
               )}
               <div className="flex justify-between">

@@ -38,7 +38,7 @@ export default async function ProductsPage({
     where.OR = [
       { name: { contains: params.search, mode: 'insensitive' } },
       { description: { contains: params.search, mode: 'insensitive' } },
-      { set: { contains: params.search, mode: 'insensitive' } },
+      { set: { name: { contains: params.search, mode: 'insensitive' } } },
     ]
   }
 
@@ -53,6 +53,7 @@ export default async function ProductsPage({
           },
         },
         expansion: true,
+        set: true,
       },
       orderBy: {
         createdAt: 'desc',

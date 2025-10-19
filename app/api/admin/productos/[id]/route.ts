@@ -80,6 +80,7 @@ export async function PUT(
       include: {
         images: true,
         expansion: true,
+        set: true,
       },
     })
 

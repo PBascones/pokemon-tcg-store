@@ -12,6 +12,7 @@ export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
     include: {
       expansion: true,
+      set: true,
       images: {
         orderBy: {
           order: 'asc',
@@ -116,7 +117,7 @@ export default async function AdminProductsPage() {
                           {product.name}
                         </p>
                         {product.set && (
-                          <p className="text-xs text-gray-500">{product.set}</p>
+                          <p className="text-xs text-gray-500">{product.set.name}</p>
                         )}
                       </div>
                     </div>

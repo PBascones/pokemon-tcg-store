@@ -34,7 +34,7 @@ export async function GET(request: Request) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
-        { set: { contains: search, mode: 'insensitive' } },
+        { set: { name: { contains: search, mode: 'insensitive' } } },
       ]
     }
 
@@ -49,6 +49,7 @@ export async function GET(request: Request) {
             },
           },
           expansion: true,
+          set: true,
         },
         orderBy: {
           [sortBy]: order,
