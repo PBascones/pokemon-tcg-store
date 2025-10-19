@@ -256,7 +256,7 @@ const products = await prisma.product.findMany({
   },
   include: {
     images: true,
-    category: true
+    expansion: true
   },
   orderBy: { createdAt: 'desc' }
 })

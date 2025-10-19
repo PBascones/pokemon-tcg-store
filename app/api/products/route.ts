@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '12')
-    const category = searchParams.get('category')
+    const expansion = searchParams.get('expansion')
     const featured = searchParams.get('featured') === 'true'
     const search = searchParams.get('search')
     const sortBy = searchParams.get('sortBy') || 'createdAt'
@@ -20,9 +20,9 @@ export async function GET(request: Request) {
       isActive: true,
     }
 
-    if (category) {
-      where.category = {
-        slug: category,
+    if (expansion) {
+      where.expansion = {
+        slug: expansion,
       }
     }
 
@@ -48,7 +48,7 @@ export async function GET(request: Request) {
               order: 'asc',
             },
           },
-          category: true,
+          expansion: true,
         },
         orderBy: {
           [sortBy]: order,

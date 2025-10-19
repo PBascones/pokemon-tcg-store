@@ -5,7 +5,7 @@ import { getUSDPriceForSSR } from '@/lib/currency-cache'
 import { calculateProductPrices } from '@/lib/utils'
 
 interface SearchParams {
-  category?: string
+  expansion?: string
   search?: string
   page?: string
 }
@@ -28,9 +28,9 @@ export default async function ProductsPage({
     isActive: true,
   }
 
-  if (params.category) {
-    where.category = {
-      slug: params.category,
+  if (params.expansion) {
+    where.expansion = {
+      slug: params.expansion,
     }
   }
 
@@ -43,7 +43,7 @@ export default async function ProductsPage({
   }
 
   // Get products and count
-  const [products, total, categories] = await Promise.all([
+  const [products, total, expansions] = await Promise.all([
     prisma.product.findMany({
       where,
       include: {
@@ -52,7 +52,7 @@ export default async function ProductsPage({
             order: 'asc',
           },
         },
-        category: true,
+        expansion: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -61,7 +61,7 @@ export default async function ProductsPage({
       take: limit,
     }),
     prisma.product.count({ where }),
-    prisma.category.findMany(),
+    prisma.expansion.findMany(),
   ])
 
   // Pre-calcular precios
@@ -82,23 +82,23 @@ export default async function ProductsPage({
 
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold mb-2">Categorías</h3>
+                <h3 className="font-semibold mb-2">Expansiones</h3>
                 <div className="space-y-2">
                   <a
                     href="/productos"
-                    className={`block text-sm py-1 hover:text-primary-600 transition ${!params.category ? 'text-primary-600 font-semibold' : ''
+                    className={`block text-sm py-1 hover:text-primary-600 transition ${!params.expansion ? 'text-primary-600 font-semibold' : ''
                       }`}
                   >
                     Todas
                   </a>
-                  {categories.map((category) => (
+                  {expansions.map((expansion) => (
                     <a
-                      key={category.id}
-                      href={`/productos?category=${category.slug}`}
-                      className={`block text-sm py-1 hover:text-primary-600 transition ${params.category === category.slug ? 'text-primary-600 font-semibold' : ''
+                      key={expansion.id}
+                      href={`/productos?expansion=${expansion.slug}`}
+                      className={`block text-sm py-1 hover:text-primary-600 transition ${params.expansion === expansion.slug ? 'text-primary-600 font-semibold' : ''
                         }`}
                     >
-                      {category.name}
+                      {expansion.name}
                     </a>
                   ))}
                 </div>
@@ -112,8 +112,8 @@ export default async function ProductsPage({
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">
-                {params.category
-                  ? categories.find((c) => c.slug === params.category)?.name || 'Productos'
+                {params.expansion
+                  ? expansions.find((e) => e.slug === params.expansion)?.name || 'Productos'
                   : 'Todos los Productos'}
               </h1>
               <p className="text-gray-600">

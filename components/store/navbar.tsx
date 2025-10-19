@@ -39,8 +39,8 @@ export function Navbar() {
               <Link href="/productos" className="text-gray-700 hover:text-primary-600 transition font-medium">
                 Productos
               </Link>
-              <Link href="/categorias" className="text-gray-700 hover:text-primary-600 transition font-medium">
-                Categorías
+              <Link href="/expansiones" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Expansiones
               </Link>
               <Link href="/ofertas" className="text-gray-700 hover:text-primary-600 transition font-medium">
                 Ofertas
@@ -134,8 +134,8 @@ export function Navbar() {
               <Link href="/productos" className="text-gray-700 hover:text-primary-600 font-medium">
                 Productos
               </Link>
-              <Link href="/categorias" className="text-gray-700 hover:text-primary-600 font-medium">
-                Categorías
+              <Link href="/expansiones" className="text-gray-700 hover:text-primary-600 font-medium">
+                Expansiones
               </Link>
               <Link href="/ofertas" className="text-gray-700 hover:text-primary-600 font-medium">
                 Ofertas

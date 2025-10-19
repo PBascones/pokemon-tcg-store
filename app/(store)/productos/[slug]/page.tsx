@@ -26,7 +26,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             order: 'asc',
           },
         },
-        category: true,
+        expansion: true,
       },
     })
   ])
@@ -82,7 +82,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div>
           <div className="mb-4">
             <Badge variant="default" className="mb-2">
-              {product.category.name}
+              {product.expansion.name}
             </Badge>
             <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
             {product.set && (

@@ -25,7 +25,7 @@ export async function PUT(
       price,
       compareAtPrice,
       stock,
-      categoryId,
+      expansionId,
       set,
       language,
       featured,
@@ -71,7 +71,7 @@ export async function PUT(
         price: parseFloat(price),
         compareAtPrice: compareAtPrice ? parseFloat(compareAtPrice) : null,
         stock: parseInt(stock),
-        categoryId,
+        expansionId,
         set: set || null,
         language: language || null,
         featured: featured || false,
@@ -79,7 +79,7 @@ export async function PUT(
       },
       include: {
         images: true,
-        category: true,
+        expansion: true,
       },
     })
 

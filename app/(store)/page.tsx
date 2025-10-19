@@ -38,8 +38,8 @@ export default async function HomePage() {
     calculatedPrices: calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
   }))
 
-  // Obtener categorías
-  const categories = await prisma.category.findMany({
+  // Obtener expansiones
+  const expansions = await prisma.expansion.findMany({
     take: 6,
   })
 
@@ -118,34 +118,34 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Categories */}
-      {categories.length > 0 && (
+      {/* Expansions */}
+      {expansions.length > 0 && (
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900">Explora por Categoría</h2>
+              <h2 className="text-3xl font-bold mb-2 text-gray-900">Explora por Expansión</h2>
               <p className="text-gray-600">Encuentra exactamente lo que buscás</p>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {categories.map((category) => (
+              {expansions.map((expansion) => (
                 <Link
-                  key={category.id}
-                  href={`/categorias/${category.slug}`}
+                  key={expansion.id}
+                  href={`/expansiones/${expansion.slug}`}
                   className="bg-white p-6 rounded-lg text-center hover:shadow-lg transition group"
                 >
-                  {category.image && (
+                  {expansion.image && (
                     <div className="relative w-16 h-16 mx-auto mb-3">
                       <Image
-                        src={category.image}
-                        alt={category.name}
+                        src={expansion.image}
+                        alt={expansion.name}
                         fill
                         className="object-contain"
                       />
                     </div>
                   )}
                   <h3 className="font-bold text-gray-900 group-hover:text-primary-600 transition">
-                    {category.name}
+                    {expansion.name}
                   </h3>
                 </Link>
               ))}

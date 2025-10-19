@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Loader2, X } from 'lucide-react'
 import { toast } from 'sonner'
 
-interface Category {
+interface Expansion {
   id: string
   name: string
   slug: string
@@ -30,7 +30,7 @@ interface Product {
   price: number
   compareAtPrice: number | null
   stock: number
-  categoryId: string
+  expansionId: string
   set: string | null
   language: string | null
   featured: boolean
@@ -40,10 +40,10 @@ interface Product {
 
 interface ProductFormProps {
   product?: Product
-  categories: Category[]
+  expansions: Expansion[]
 }
 
-export function ProductForm({ product, categories }: ProductFormProps) {
+export function ProductForm({ product, expansions }: ProductFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -58,7 +58,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     price: product?.price || 0,
     compareAtPrice: product?.compareAtPrice || 0,
     stock: product?.stock || 0,
-    categoryId: product?.categoryId || categories[0]?.id || '',
+    expansionId: product?.expansionId || expansions[0]?.id || '',
     set: product?.set || '',
     language: product?.language || 'Inglés',
     featured: product?.featured || false,
@@ -409,19 +409,19 @@ export function ProductForm({ product, categories }: ProductFormProps) {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Categoría</CardTitle>
+              <CardTitle>Expansión</CardTitle>
             </CardHeader>
             <CardContent>
               <select
-                name="categoryId"
-                value={formData.categoryId}
+                name="expansionId"
+                value={formData.expansionId}
                 onChange={handleChange}
                 required
                 className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
+                {expansions.map((expansion) => (
+                  <option key={expansion.id} value={expansion.id}>
+                    {expansion.name}
                   </option>
                 ))}
               </select>

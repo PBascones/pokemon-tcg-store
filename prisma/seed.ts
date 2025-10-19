@@ -36,8 +36,8 @@ async function main() {
 
   console.log('✅ Usuario de prueba creado:', testUser.email)
 
-  // Crear categorías (Sets/Expansiones de Pokémon)
-  const categories = [
+  // Crear expansiones (Sets/Expansiones de Pokémon)
+  const expansions = [
     {
       name: 'Scarlet & Violet',
       slug: 'scarlet-violet',
@@ -70,18 +70,18 @@ async function main() {
     },
   ]
 
-  const createdCategories: { [key: string]: any } = {}
+  const createdExpansions: { [key: string]: any } = {}
 
-  for (const cat of categories) {
-    const category = await prisma.category.upsert({
-      where: { slug: cat.slug },
+  for (const exp of expansions) {
+    const expansion = await prisma.expansion.upsert({
+      where: { slug: exp.slug },
       update: {},
-      create: cat,
+      create: exp,
     })
-    createdCategories[cat.slug] = category
+    createdExpansions[exp.slug] = expansion
   }
 
-  console.log('✅ Categorías creadas')
+  console.log('✅ Expansiones creadas')
 
   // Crear productos de sobres (Booster Packs)
   const products = [
@@ -97,7 +97,7 @@ async function main() {
       stock: 50,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['scarlet-violet'].id,
+      expansionId: createdExpansions['scarlet-violet'].id,
     },
     {
       name: 'Paldea Evolved - Booster Pack',
@@ -110,7 +110,7 @@ async function main() {
       stock: 35,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['scarlet-violet'].id,
+      expansionId: createdExpansions['scarlet-violet'].id,
     },
     {
       name: 'Obsidian Flames - Booster Pack',
@@ -122,7 +122,7 @@ async function main() {
       stock: 40,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['scarlet-violet'].id,
+      expansionId: createdExpansions['scarlet-violet'].id,
     },
     {
       name: 'Paradox Rift - Booster Pack',
@@ -135,7 +135,7 @@ async function main() {
       stock: 30,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['scarlet-violet'].id,
+      expansionId: createdExpansions['scarlet-violet'].id,
     },
 
     // Sword & Shield Series
@@ -150,7 +150,7 @@ async function main() {
       stock: 25,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['sword-shield'].id,
+      expansionId: createdExpansions['sword-shield'].id,
     },
     {
       name: 'Lost Origin - Booster Pack',
@@ -162,7 +162,7 @@ async function main() {
       stock: 35,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['sword-shield'].id,
+      expansionId: createdExpansions['sword-shield'].id,
     },
     {
       name: 'Brilliant Stars - Booster Pack',
@@ -174,7 +174,7 @@ async function main() {
       stock: 28,
       featured: false,
       isActive: true,
-      categoryId: createdCategories['sword-shield'].id,
+      expansionId: createdExpansions['sword-shield'].id,
     },
     {
       name: 'Fusion Strike - Booster Pack',
@@ -186,7 +186,7 @@ async function main() {
       stock: 45,
       featured: false,
       isActive: true,
-      categoryId: createdCategories['sword-shield'].id,
+      expansionId: createdExpansions['sword-shield'].id,
     },
     {
       name: 'Chilling Reign - Booster Pack',
@@ -198,7 +198,7 @@ async function main() {
       stock: 32,
       featured: false,
       isActive: true,
-      categoryId: createdCategories['sword-shield'].id,
+      expansionId: createdExpansions['sword-shield'].id,
     },
 
     // Sun & Moon Series
@@ -213,7 +213,7 @@ async function main() {
       stock: 15,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['sun-moon'].id,
+      expansionId: createdExpansions['sun-moon'].id,
     },
     {
       name: 'Hidden Fates - Booster Pack',
@@ -226,7 +226,7 @@ async function main() {
       stock: 8,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['sun-moon'].id,
+      expansionId: createdExpansions['sun-moon'].id,
     },
     {
       name: 'Team Up - Booster Pack',
@@ -238,7 +238,7 @@ async function main() {
       stock: 20,
       featured: false,
       isActive: true,
-      categoryId: createdCategories['sun-moon'].id,
+      expansionId: createdExpansions['sun-moon'].id,
     },
 
     // Sets Especiales
@@ -252,7 +252,7 @@ async function main() {
       stock: 25,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['sets-especiales'].id,
+      expansionId: createdExpansions['sets-especiales'].id,
     },
     {
       name: 'Shining Fates - Booster Pack',
@@ -265,7 +265,7 @@ async function main() {
       stock: 12,
       featured: true,
       isActive: true,
-      categoryId: createdCategories['sets-especiales'].id,
+      expansionId: createdExpansions['sets-especiales'].id,
     },
 
     // XY Series (vintage)
@@ -279,7 +279,7 @@ async function main() {
       stock: 18,
       featured: false,
       isActive: true,
-      categoryId: createdCategories['xy-series'].id,
+      expansionId: createdExpansions['xy-series'].id,
     },
   ]
 

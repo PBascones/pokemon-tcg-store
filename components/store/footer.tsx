@@ -33,8 +33,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/categorias" className="text-gray-400 hover:text-white transition">
-                  Categorías
+                <Link href="/expansiones" className="text-gray-400 hover:text-white transition">
+                  Expansiones
                 </Link>
               </li>
               <li>

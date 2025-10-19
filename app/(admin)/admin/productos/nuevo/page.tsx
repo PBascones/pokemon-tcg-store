@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { ProductForm } from '@/components/admin/product-form'
 
 export default async function NewProductPage() {
-  const categories = await prisma.category.findMany({
+  const expansions = await prisma.expansion.findMany({
     orderBy: {
       createdAt: 'desc',
     },
@@ -17,7 +17,7 @@ export default async function NewProductPage() {
         </p>
       </div>
 
-      <ProductForm categories={categories} />
+      <ProductForm expansions={expansions} />
     </div>
   )
 }

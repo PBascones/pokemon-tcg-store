@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       price,
       compareAtPrice,
       stock,
-      categoryId,
+      expansionId,
       set,
       language,
       featured,
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     } = body
 
     // Validar campos requeridos
-    if (!name || !slug || !categoryId || price === undefined || stock === undefined) {
+    if (!name || !slug || !expansionId || price === undefined || stock === undefined) {
       return NextResponse.json(
         { error: 'Faltan campos requeridos' },
         { status: 400 }
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
         price: parseFloat(price),
         compareAtPrice: compareAtPrice ? parseFloat(compareAtPrice) : null,
         stock: parseInt(stock),
-        categoryId,
+        expansionId,
         set: set || null,
         language: language || null,
         featured: featured || false,
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
       },
       include: {
         images: true,
-        category: true,
+        expansion: true,
       },
     })
 

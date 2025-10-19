@@ -37,8 +37,8 @@ const menuItems = [
     icon: ShoppingBag,
   },
   {
-    label: 'Categorías',
-    href: '/admin/categorias',
+    label: 'Expansiones',
+    href: '/admin/expansiones',
     icon: FolderOpen,
   },
   {

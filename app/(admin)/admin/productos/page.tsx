@@ -11,7 +11,7 @@ import { DeleteProductButton } from '@/components/admin/delete-product-button'
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
     include: {
-      category: true,
+      expansion: true,
       images: {
         orderBy: {
           order: 'asc',
@@ -82,7 +82,7 @@ export default async function AdminProductsPage() {
                     🎴 Sobre
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
-                    🏷️ Categoría
+                    🏷️ Expansión
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-sm text-gray-700">
                     💰 Precio
@@ -122,7 +122,7 @@ export default async function AdminProductsPage() {
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="text-sm">{product.category.name}</span>
+                    <span className="text-sm">{product.expansion.name}</span>
                   </td>
                   <td className="py-4 px-6">
                     <span className="font-semibold text-sm">
