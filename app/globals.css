@@ -43,13 +43,13 @@
   --color-secondary-800: #1F2937;
   --color-secondary-900: #111827;
 }
-
+/* 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--background);
