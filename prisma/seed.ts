@@ -83,6 +83,122 @@ async function main() {
 
   console.log('✅ Expansiones creadas')
 
+  // Crear Sets (Subcategorías de Expansiones)
+  const sets = [
+    // Scarlet & Violet Sets
+    {
+      name: 'Scarlet & Violet Base',
+      slug: 'sv-base',
+      description: 'Set base de la serie Scarlet & Violet',
+      expansionId: createdExpansions['scarlet-violet'].id,
+    },
+    {
+      name: 'Paldea Evolved',
+      slug: 'paldea-evolved',
+      description: 'Segunda expansión de Scarlet & Violet',
+      expansionId: createdExpansions['scarlet-violet'].id,
+    },
+    {
+      name: 'Obsidian Flames',
+      slug: 'obsidian-flames',
+      description: 'Tercera expansión de Scarlet & Violet',
+      expansionId: createdExpansions['scarlet-violet'].id,
+    },
+    {
+      name: 'Paradox Rift',
+      slug: 'paradox-rift',
+      description: 'Cuarta expansión de Scarlet & Violet',
+      expansionId: createdExpansions['scarlet-violet'].id,
+    },
+
+    // Sword & Shield Sets
+    {
+      name: 'Evolving Skies',
+      slug: 'evolving-skies',
+      description: 'Set popular de Sword & Shield con Eeveelutions',
+      expansionId: createdExpansions['sword-shield'].id,
+    },
+    {
+      name: 'Lost Origin',
+      slug: 'lost-origin',
+      description: 'Set con mecánica Lost Box',
+      expansionId: createdExpansions['sword-shield'].id,
+    },
+    {
+      name: 'Brilliant Stars',
+      slug: 'brilliant-stars',
+      description: 'Set con cartas VSTAR',
+      expansionId: createdExpansions['sword-shield'].id,
+    },
+    {
+      name: 'Fusion Strike',
+      slug: 'fusion-strike',
+      description: 'Set con mecánica Fusion Strike',
+      expansionId: createdExpansions['sword-shield'].id,
+    },
+    {
+      name: 'Chilling Reign',
+      slug: 'chilling-reign',
+      description: 'Set con Ice Rider y Shadow Rider Calyrex',
+      expansionId: createdExpansions['sword-shield'].id,
+    },
+
+    // Sun & Moon Sets
+    {
+      name: 'Cosmic Eclipse',
+      slug: 'cosmic-eclipse',
+      description: 'Último set principal de Sun & Moon',
+      expansionId: createdExpansions['sun-moon'].id,
+    },
+    {
+      name: 'Team Up',
+      slug: 'team-up',
+      description: 'Set con cartas TAG TEAM',
+      expansionId: createdExpansions['sun-moon'].id,
+    },
+
+    // Sets Especiales
+    {
+      name: 'Hidden Fates',
+      slug: 'hidden-fates',
+      description: 'Set especial con Shiny Vault',
+      expansionId: createdExpansions['sets-especiales'].id,
+    },
+    {
+      name: 'Crown Zenith',
+      slug: 'crown-zenith',
+      description: 'Set especial de cierre de Sword & Shield',
+      expansionId: createdExpansions['sets-especiales'].id,
+    },
+    {
+      name: 'Shining Fates',
+      slug: 'shining-fates',
+      description: 'Set especial con cartas Shiny',
+      expansionId: createdExpansions['sets-especiales'].id,
+    },
+
+    // XY Series
+    {
+      name: 'XY Evolutions',
+      slug: 'xy-evolutions',
+      description: 'Homenaje al set Base original',
+      expansionId: createdExpansions['xy-series'].id,
+    },
+  ]
+
+  const createdSets: { [key: string]: any } = {}
+
+  for (const setData of sets) {
+    const set = await prisma.set.upsert({
+      where: { slug: setData.slug },
+      update: {},
+      create: setData,
+    })
+    createdSets[setData.slug] = set
+  }
+
+  console.log('✅ Sets creados')
+
   // Crear productos de sobres (Booster Packs)
   const products = [
     // Scarlet & Violet Series
@@ -90,7 +206,6 @@ async function main() {
       name: 'Scarlet & Violet Base Set - Booster Pack',
       slug: 'sv-base-booster',
       description: 'Sobre del set base de Scarlet & Violet. Incluye 10 cartas con posibilidad de obtener cartas ex, Full Art y Secret Rare.',
-      set: 'Scarlet & Violet Base',
       language: 'Inglés',
       price: 5500,
       compareAtPrice: 6500,
@@ -98,12 +213,12 @@ async function main() {
       featured: true,
       isActive: true,
       expansionId: createdExpansions['scarlet-violet'].id,
+      setId: createdSets['sv-base'].id,
     },
     {
       name: 'Paldea Evolved - Booster Pack',
       slug: 'paldea-evolved-booster',
       description: 'Sobre de Paldea Evolved. Descubrí nuevos Pokémon de la región de Paldea.',
-      set: 'Paldea Evolved',
       language: 'Inglés',
       price: 6000,
       compareAtPrice: 7000,
@@ -111,24 +226,24 @@ async function main() {
       featured: true,
       isActive: true,
       expansionId: createdExpansions['scarlet-violet'].id,
+      setId: createdSets['paldea-evolved'].id,
     },
     {
       name: 'Obsidian Flames - Booster Pack',
       slug: 'obsidian-flames-booster',
       description: 'Sobre de Obsidian Flames con increíbles cartas ex y Tera Pokémon.',
-      set: 'Obsidian Flames',
       language: 'Inglés',
       price: 5800,
       stock: 40,
       featured: true,
       isActive: true,
       expansionId: createdExpansions['scarlet-violet'].id,
+      setId: createdSets['obsidian-flames'].id,
     },
     {
       name: 'Paradox Rift - Booster Pack',
       slug: 'paradox-rift-booster',
       description: 'Sobre de Paradox Rift. Incluye Pokémon Paradoja y cartas ex exclusivas.',
-      set: 'Paradox Rift',
       language: 'Inglés',
       price: 6200,
       compareAtPrice: 7200,
@@ -136,6 +251,7 @@ async function main() {
       featured: true,
       isActive: true,
       expansionId: createdExpansions['scarlet-violet'].id,
+      setId: createdSets['paradox-rift'].id,
     },
 
     // Sword & Shield Series
@@ -143,7 +259,6 @@ async function main() {
       name: 'Evolving Skies - Booster Pack',
       slug: 'evolving-skies-booster',
       description: 'Sobre de Evolving Skies. Uno de los sets más populares con increíbles Alternate Arts de Eeveelutions.',
-      set: 'Evolving Skies',
       language: 'Inglés',
       price: 8500,
       compareAtPrice: 10000,
@@ -151,54 +266,55 @@ async function main() {
       featured: true,
       isActive: true,
       expansionId: createdExpansions['sword-shield'].id,
+      setId: createdSets['evolving-skies'].id,
     },
     {
       name: 'Lost Origin - Booster Pack',
       slug: 'lost-origin-booster',
       description: 'Sobre de Lost Origin con mecánica Lost Zone y cartas VSTAR.',
-      set: 'Lost Origin',
       language: 'Inglés',
       price: 6500,
       stock: 35,
       featured: true,
       isActive: true,
       expansionId: createdExpansions['sword-shield'].id,
+      setId: createdSets['lost-origin'].id,
     },
     {
       name: 'Brilliant Stars - Booster Pack',
       slug: 'brilliant-stars-booster',
       description: 'Sobre de Brilliant Stars con Arceus VSTAR y cartas de alta demanda.',
-      set: 'Brilliant Stars',
       language: 'Inglés',
       price: 7000,
       stock: 28,
       featured: false,
       isActive: true,
       expansionId: createdExpansions['sword-shield'].id,
+      setId: createdSets['brilliant-stars'].id,
     },
     {
       name: 'Fusion Strike - Booster Pack',
       slug: 'fusion-strike-booster',
       description: 'Sobre de Fusion Strike con nuevos Pokémon Fusion Strike.',
-      set: 'Fusion Strike',
       language: 'Inglés',
       price: 5200,
       stock: 45,
       featured: false,
       isActive: true,
       expansionId: createdExpansions['sword-shield'].id,
+      setId: createdSets['fusion-strike'].id,
     },
     {
       name: 'Chilling Reign - Booster Pack',
       slug: 'chilling-reign-booster',
       description: 'Sobre de Chilling Reign con Calyrex y legendarios de Galar.',
-      set: 'Chilling Reign',
       language: 'Inglés',
       price: 5500,
       stock: 32,
       featured: false,
       isActive: true,
       expansionId: createdExpansions['sword-shield'].id,
+      setId: createdSets['chilling-reign'].id,
     },
 
     // Sun & Moon Series
@@ -206,7 +322,6 @@ async function main() {
       name: 'Cosmic Eclipse - Booster Pack',
       slug: 'cosmic-eclipse-booster',
       description: 'Sobre de Cosmic Eclipse. Último set de la era Sun & Moon con cartas TAG TEAM.',
-      set: 'Cosmic Eclipse',
       language: 'Inglés',
       price: 9000,
       compareAtPrice: 11000,
@@ -214,31 +329,32 @@ async function main() {
       featured: true,
       isActive: true,
       expansionId: createdExpansions['sun-moon'].id,
+      setId: createdSets['cosmic-eclipse'].id,
     },
     {
       name: 'Hidden Fates - Booster Pack',
       slug: 'hidden-fates-booster',
       description: 'Sobre de Hidden Fates. Set especial con Shiny Vault. Muy buscado por coleccionistas.',
-      set: 'Hidden Fates',
       language: 'Inglés',
       price: 12000,
       compareAtPrice: 15000,
       stock: 8,
       featured: true,
       isActive: true,
-      expansionId: createdExpansions['sun-moon'].id,
+      expansionId: createdExpansions['sets-especiales'].id,
+      setId: createdSets['hidden-fates'].id,
     },
     {
       name: 'Team Up - Booster Pack',
       slug: 'team-up-booster',
       description: 'Sobre de Team Up con cartas TAG TEAM GX.',
-      set: 'Team Up',
       language: 'Inglés',
       price: 7500,
       stock: 20,
       featured: false,
       isActive: true,
       expansionId: createdExpansions['sun-moon'].id,
+      setId: createdSets['team-up'].id,
     },
 
     // Sets Especiales
@@ -246,19 +362,18 @@ async function main() {
       name: 'Crown Zenith - Booster Pack',
       slug: 'crown-zenith-booster',
       description: 'Sobre de Crown Zenith. Set especial con Galarian Gallery.',
-      set: 'Crown Zenith',
       language: 'Inglés',
       price: 7800,
       stock: 25,
       featured: true,
       isActive: true,
       expansionId: createdExpansions['sets-especiales'].id,
+      setId: createdSets['crown-zenith'].id,
     },
     {
       name: 'Shining Fates - Booster Pack',
       slug: 'shining-fates-booster',
       description: 'Sobre de Shining Fates con Shiny Vault y Charizard VMAX.',
-      set: 'Shining Fates',
       language: 'Inglés',
       price: 10000,
       compareAtPrice: 12000,
@@ -266,6 +381,7 @@ async function main() {
       featured: true,
       isActive: true,
       expansionId: createdExpansions['sets-especiales'].id,
+      setId: createdSets['shining-fates'].id,
     },
 
     // XY Series (vintage)
@@ -273,13 +389,13 @@ async function main() {
       name: 'XY Evolutions - Booster Pack',
       slug: 'xy-evolutions-booster',
       description: 'Sobre de XY Evolutions. Reimaginación del set Base original.',
-      set: 'XY Evolutions',
       language: 'Inglés',
       price: 8000,
       stock: 18,
       featured: false,
       isActive: true,
       expansionId: createdExpansions['xy-series'].id,
+      setId: createdSets['xy-evolutions'].id,
     },
   ]
 

@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut,
   Images,
+  Layers,
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
@@ -40,6 +41,11 @@ const menuItems = [
     label: 'Expansiones',
     href: '/admin/expansiones',
     icon: FolderOpen,
+  },
+  {
+    label: 'Sets',
+    href: '/admin/sets',
+    icon: Layers,
   },
   {
     label: 'Usuarios',

@@ -15,6 +15,13 @@ interface Expansion {
   slug: string
 }
 
+interface Set {
+  id: string
+  name: string
+  slug: string
+  expansionId: string
+}
+
 interface ProductImage {
   id?: string
   url: string
@@ -31,7 +38,7 @@ interface Product {
   compareAtPrice: number | null
   stock: number
   expansionId: string
-  set: string | null
+  setId: string | null
   language: string | null
   featured: boolean
   isActive: boolean
@@ -41,9 +48,10 @@ interface Product {
 interface ProductFormProps {
   product?: Product
   expansions: Expansion[]
+  sets: Set[]
 }
 
-export function ProductForm({ product, expansions }: ProductFormProps) {
+export function ProductForm({ product, expansions, sets }: ProductFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -59,13 +67,16 @@ export function ProductForm({ product, expansions }: ProductFormProps) {
     compareAtPrice: product?.compareAtPrice || 0,
     stock: product?.stock || 0,
     expansionId: product?.expansionId || expansions[0]?.id || '',
-    set: product?.set || '',
+    setId: product?.setId || '',
     language: product?.language || 'Inglés',
     featured: product?.featured || false,
     isActive: product?.isActive ?? true,
     imageUrl: product?.images[0]?.url || '',
     imageAlt: product?.images[0]?.alt || '',
   })
+  
+  // Filtrar sets por expansión seleccionada
+  const availableSets = sets.filter(set => set.expansionId === formData.expansionId)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -92,6 +103,11 @@ export function ProductForm({ product, expansions }: ProductFormProps) {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '')
       setFormData((prev) => ({ ...prev, slug }))
+    }
+    
+    // Reset setId when expansion changes
+    if (name === 'expansionId') {
+      setFormData((prev) => ({ ...prev, setId: '' }))
     }
   }
 
@@ -259,15 +275,26 @@ export function ProductForm({ product, expansions }: ProductFormProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Set/Expansión *
+                    Set
                   </label>
-                  <Input
-                    name="set"
-                    value={formData.set}
+                  <select
+                    name="setId"
+                    value={formData.setId}
                     onChange={handleChange}
-                    required
-                    placeholder="Ej: Scarlet & Violet Base"
-                  />
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  >
+                    <option value="">Sin set específico</option>
+                    {availableSets.map((set) => (
+                      <option key={set.id} value={set.id}>
+                        {set.name}
+                      </option>
+                    ))}
+                  </select>
+                  {availableSets.length === 0 && formData.expansionId && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      No hay sets disponibles para esta expansión.
+                    </p>
+                  )}
                 </div>
 
                 <div>

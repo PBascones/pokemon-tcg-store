@@ -9,7 +9,7 @@ interface EditProductPageProps {
 export default async function EditProductPage({ params }: EditProductPageProps) {
   const { id } = await params
 
-  const [product, expansions] = await Promise.all([
+  const [product, expansions, sets] = await Promise.all([
     prisma.product.findUnique({
       where: { id },
       include: {
@@ -21,6 +21,11 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
       },
     }),
     prisma.expansion.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+    prisma.set.findMany({
       orderBy: {
         createdAt: 'desc',
       },
@@ -40,7 +45,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
         </p>
       </div>
 
-      <ProductForm product={product} expansions={expansions} />
+      <ProductForm product={product} expansions={expansions} sets={sets} />
     </div>
   )
 }

@@ -77,9 +77,31 @@ model Expansion {
   description String?
   image       String?
   products    Product[]
+  sets        Set[]
   
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+// Modelo de Set (Subcategoría de Expansión)
+model Set {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  
+  // Relación con Expansión
+  expansionId String
+  expansion   Expansion @relation(fields: [expansionId], references: [id])
+  
+  // Relación con Productos
+  products    Product[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([expansionId])
 }
 
 // Modelo de Producto (Cartas Pokémon)
@@ -91,7 +113,6 @@ model Product {
   
   // Información específica de la carta
   cardNumber  String?
-  set         String?  // Ej: "Base Set", "Jungle", "Evolutions"
   rarity      String?  // Ej: "Common", "Rare", "Ultra Rare"
   condition   String?  // Ej: "NM", "LP", "MP"
   language    String   @default("Español") // "Español", "Inglés", "Japonés"
@@ -109,6 +130,10 @@ model Product {
   // Relaciones
   expansionId  String
   expansion    Expansion @relation(fields: [expansionId], references: [id])
+  
+  setId       String?
+  set         Set?      @relation(fields: [setId], references: [id])
+  
   orderItems  OrderItem[]
   
   // SEO y visibilidad
@@ -119,6 +144,7 @@ model Product {
   updatedAt   DateTime @updatedAt
   
   @@index([expansionId])
+  @@index([setId])
   @@index([slug])
   @@index([featured])
 }

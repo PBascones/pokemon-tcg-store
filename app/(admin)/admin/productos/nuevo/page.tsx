@@ -2,11 +2,18 @@ import { prisma } from '@/lib/prisma'
 import { ProductForm } from '@/components/admin/product-form'
 
 export default async function NewProductPage() {
-  const expansions = await prisma.expansion.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-  })
+  const [expansions, sets] = await Promise.all([
+    prisma.expansion.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+    prisma.set.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+  ])
 
   return (
     <div>
@@ -17,7 +24,7 @@ export default async function NewProductPage() {
         </p>
       </div>
 
-      <ProductForm expansions={expansions} />
+      <ProductForm expansions={expansions} sets={sets} />
     </div>
   )
 }
