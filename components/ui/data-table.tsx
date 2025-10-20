@@ -1,7 +1,8 @@
 'use client'
 
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState, useMemo } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
+import { Pagination } from '@/components/ui/pagination'
 import { cn } from '@/lib/utils'
 
 export interface ColumnDef<T> {
@@ -21,6 +22,7 @@ export interface DataTableProps<T> {
     description: string
     action?: ReactNode
   }
+  itemsPerPage?: number // Paginación client-side
   className?: string
 }
 
@@ -29,8 +31,29 @@ export function DataTable<T>({
   data,
   getRowKey,
   emptyState,
+  itemsPerPage,
   className
 }: DataTableProps<T>) {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  // Client-side pagination
+  const { paginatedData, totalPages } = useMemo(() => {
+    if (!itemsPerPage) {
+      return { paginatedData: data, totalPages: 1 }
+    }
+
+    const total = Math.ceil(data.length / itemsPerPage)
+    const start = (currentPage - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    const paginated = data.slice(start, end)
+
+    return { paginatedData: paginated, totalPages: total }
+  }, [data, currentPage, itemsPerPage])
+
+  // Reset a página 1 cuando cambian los datos
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [data.length])
   
   if (data.length === 0 && emptyState) {
     return (
@@ -52,46 +75,57 @@ export function DataTable<T>({
   }
 
   return (
-    <Card className={cn("overflow-hidden shadow-sm", className)}>
-      <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                {columns.map((column) => (
-                  <th
-                    key={column.key}
-                    className={cn(
-                      "text-left py-4 px-6 font-semibold text-sm text-gray-700",
-                      column.className
-                    )}
-                  >
-                    {column.header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((item) => (
-                <tr
-                  key={getRowKey(item)}
-                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                >
+    <>
+      <Card className={cn("overflow-hidden shadow-sm", className)}>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200 bg-gray-50">
                   {columns.map((column) => (
-                    <td
+                    <th
                       key={column.key}
-                      className={cn("py-4 px-6", column.className)}
+                      className={cn(
+                        "text-left py-4 px-6 font-semibold text-sm text-gray-700",
+                        column.className
+                      )}
                     >
-                      {column.cell(item)}
-                    </td>
+                      {column.header}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </CardContent>
-    </Card>
+              </thead>
+              <tbody>
+                {paginatedData.map((item) => (
+                  <tr
+                    key={getRowKey(item)}
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
+                    {columns.map((column) => (
+                      <td
+                        key={column.key}
+                        className={cn("py-4 px-6", column.className)}
+                      >
+                        {column.cell(item)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Paginación */}
+      {itemsPerPage && totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
+    </>
   )
 }
 

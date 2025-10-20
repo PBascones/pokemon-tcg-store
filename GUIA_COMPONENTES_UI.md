@@ -16,10 +16,12 @@ Componente genérico para mostrar tablas de datos con TypeScript generics, lo qu
 
 #### Características:
 - TypeScript generics para seguridad de tipos
+- **Paginación client-side integrada** (prop `itemsPerPage`)
 - Estado vacío personalizable
 - Estilos consistentes
 - Hover effects y transiciones
 - Responsive design
+- Auto-reset a página 1 cuando cambian los datos
 
 #### Uso:
 
@@ -42,6 +44,7 @@ const columns: ColumnDef<TuTipo>[] = [
   columns={columns}
   data={tusDatos}
   getRowKey={(item) => item.id}       // Función para obtener key única
+  itemsPerPage={20}                    // (Opcional) Activa paginación client-side
   emptyState={{                        // (Opcional) Estado vacío
     icon: <Icon className="..." />,
     title: 'No hay datos',
@@ -333,11 +336,14 @@ export function ProductStatsCard({ products }: Props) {
 ## 📚 Referencias
 
 - **DataTable:** `components/ui/data-table.tsx`
+- **Pagination:** `components/ui/pagination.tsx`
 - **StatsCard:** `components/ui/stats-card.tsx`
 - **DataFilters:** `components/ui/data-filters.tsx`
 - **Ejemplo Sets:** `app/(admin)/admin/sets/page.tsx`
 - **Ejemplo Productos:** `components/admin/products-table.tsx`
 - **Ejemplo Órdenes:** `components/admin/orders-table.tsx`
+- **Guía Paginación:** `EJEMPLO_PAGINACION.md`
+- **Decisión Arquitectónica:** `DECISION_PAGINACION.md`
 
 ## ✅ Checklist para Nuevas Páginas Admin
 

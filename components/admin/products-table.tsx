@@ -35,9 +35,10 @@ interface Product {
 
 interface ProductsTableProps {
   products: Product[]
+  itemsPerPage?: number
 }
 
-export function ProductsTable({ products }: ProductsTableProps) {
+export function ProductsTable({ products, itemsPerPage = 10 }: ProductsTableProps) {
   const columns: ColumnDef<Product>[] = [
     {
       key: 'product',
@@ -139,6 +140,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
       columns={columns}
       data={products}
       getRowKey={(product) => product.id}
+      itemsPerPage={itemsPerPage}
       emptyState={{
         icon: (
           <div className="bg-primary-100 p-4 rounded-full w-20 h-20 mx-auto flex items-center justify-center">

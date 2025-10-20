@@ -69,21 +69,6 @@ export default function AdminSetsPage() {
       filtered = filtered.filter(set => set.expansion.id === filterValues.expansion)
     }
 
-    // // Aplicar ordenamiento
-    // filtered.sort((a, b) => {
-    //   switch (sortValue) {
-    //     case 'name':
-    //       return a.name.localeCompare(b.name)
-    //     case 'expansion':
-    //       return a.expansion.name.localeCompare(b.expansion.name)
-    //     case 'products':
-    //       return b._count.products - a._count.products
-    //     case 'createdAt':
-    //     default:
-    //       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    //   }
-    // })
-
     setFilteredSets(filtered)
   }
 
@@ -187,18 +172,6 @@ export default function AdminSetsPage() {
     }
   ]
 
-  // // Configuración de ordenamiento
-  // const sortConfig: SortConfig = {
-  //   key: 'sort',
-  //   label: 'Ordenar por',
-  //   options: [
-  //     { value: 'createdAt', label: 'Fecha de creación' },
-  //     { value: 'name', label: 'Nombre' },
-  //     { value: 'expansion', label: 'Expansión' },
-  //     { value: 'products', label: 'Cantidad de productos' }
-  //   ]
-  // }
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -271,6 +244,7 @@ export default function AdminSetsPage() {
         columns={columns}
         data={filteredSets}
         getRowKey={(set) => set.id}
+        itemsPerPage={10}
         emptyState={
           sets.length === 0
             ? {

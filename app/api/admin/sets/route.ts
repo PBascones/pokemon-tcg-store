@@ -10,7 +10,7 @@ export async function GET() {
         name: true,
       },
       orderBy: {
-        name: 'asc',
+        createdAt: 'desc',
       },
     })
 
@@ -30,7 +30,7 @@ export async function GET() {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        name: 'asc',
       },
     })
 

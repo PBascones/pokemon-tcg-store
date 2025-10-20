@@ -52,13 +52,12 @@ export function DataFilters({
   return (
     <Card className={`mb-8 shadow-sm border-gray-100 ${className}`}>
       <CardContent className="p-6">
-        <div className="flex items-center gap-6 flex-wrap">
+        <div className="flex items-center gap-4 flex-wrap">
           {/* Icono y título */}
           <div className="flex items-center gap-3">
             <div className="bg-gradient-to-br from-primary-100 to-primary-200 p-2.5 rounded-full shadow-sm">
               <Filter className="h-5 w-5 text-primary-600" />
             </div>
-            <span className="font-semibold text-gray-800 text-base">Filtros:</span>
           </div>
 
           {/* Filtros */}

@@ -26,6 +26,7 @@ interface Order {
 
 interface OrdersTableProps {
   orders: Order[]
+  itemsPerPage?: number
 }
 
 const getStatusColor = (status: string) => {
@@ -56,7 +57,7 @@ const getOrderStatusColor = (status: string) => {
   }
 }
 
-export function OrdersTable({ orders }: OrdersTableProps) {
+export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
   const columns: ColumnDef<Order>[] = [
     {
       key: 'orderNumber',
@@ -138,6 +139,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
       columns={columns}
       data={orders}
       getRowKey={(order) => order.id}
+      itemsPerPage={itemsPerPage}
     />
   )
 }
