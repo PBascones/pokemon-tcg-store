@@ -14,8 +14,6 @@ export async function POST(request: Request) {
       body = {}
     }
     
-    console.log('MercadoPago Webhook:', body)
-
     // Soportar múltiples formatos de notificación: body.type/action o query params topic/id
     const type = body.type || body.topic || params.get('topic')
     const action = body.action
@@ -112,8 +110,6 @@ export async function POST(request: Request) {
           paymentMethod: 'MercadoPago',
         },
       })
-
-      console.log(`Order ${order.orderNumber} updated: ${paymentStatus}`)
     }
 
     return NextResponse.json({ received: true })

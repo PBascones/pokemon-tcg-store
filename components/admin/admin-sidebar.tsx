@@ -39,7 +39,7 @@ const menuItems = [
   },
   {
     label: 'Expansiones',
-    href: '/admin/expansiones',
+    href: '',
     icon: FolderOpen,
   },
   {

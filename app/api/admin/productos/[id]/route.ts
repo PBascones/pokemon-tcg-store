@@ -10,7 +10,6 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions)
-    console.log('revalidatePaths3ddddsssfsdfsdffds');
     if (!session || (session.user as any).role !== 'ADMIN') {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
@@ -105,7 +104,7 @@ export async function PUT(
         })
       }
     }
-    console.log('revalidatePaths')
+
     // Revalidar páginas que muestran productos
     revalidatePaths('/', '/productos', '/admin/productos', `/productos/${product.slug}`)
 

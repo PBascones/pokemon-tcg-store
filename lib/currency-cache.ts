@@ -42,10 +42,7 @@ async function updateUSDPrice(): Promise<number> {
       lastUpdated: Date.now(),
       isUpdating: false
     }
-    
-    console.log(`💱 Precio USD actualizado: $${newPrice}`)
     return newPrice
-    
   } catch (error) {
     console.error('❌ Error actualizando precio USD:', error)
     currencyCache.isUpdating = false
@@ -120,9 +117,7 @@ export async function getUSDPriceForSSR(): Promise<number> {
       isUpdating: false
     }
     
-    console.log(`💱 Precio USD obtenido para SSR: $${price}`)
     return price
-    
   } catch (error) {
     console.error('❌ Error obteniendo precio USD para SSR:', error)
     // Fallback: usar valor por defecto conservador

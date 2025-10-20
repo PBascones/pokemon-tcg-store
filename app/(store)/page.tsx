@@ -12,7 +12,6 @@ import { Sparkles, Package, Shield, Truck } from 'lucide-react'
 export default async function HomePage() {
   // Obtener tipo de cambio de forma confiable
   const exchangeRate = await getUSDPriceForSSR()
-  console.log('💱 Exchange rate in HomePage:', exchangeRate)
   
   // Obtener productos (unificado) - del más nuevo al más reciente
   const products = await prisma.product.findMany({

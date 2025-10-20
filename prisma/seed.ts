@@ -184,6 +184,14 @@ async function main() {
       description: 'Homenaje al set Base original',
       expansionId: createdExpansions['xy-series'].id,
     },
+
+    // Mega Evolutions
+    {
+      name: 'Mega Evolution',
+      slug: 'mega-evolution',
+      description: 'Serie de las Mega evoluciones',
+      expansionId: createdExpansions['mega-evolutions'].id,
+    },
   ]
 
   const createdSets: { [key: string]: any } = {}
