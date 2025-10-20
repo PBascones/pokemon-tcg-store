@@ -270,10 +270,7 @@ export function SetForm({ set, expansions }: SetFormProps) {
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle>Acciones</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="p-6 space-y-3">
               <Button
                 type="submit"
                 className="w-full"
