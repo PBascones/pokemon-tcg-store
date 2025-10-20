@@ -70,7 +70,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {/* Decorative gradient border on focus */}
         <div 
           className={cn(
-            "absolute inset-0 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 opacity-0 transition-opacity duration-200 pointer-events-none -z-10",
+            "absolute inset-0 rounded-lg bg-gradient-to-r opacity-0 transition-opacity duration-200 pointer-events-none -z-10",
             isFocused && "opacity-10"
           )}
         />

@@ -25,11 +25,11 @@ export interface SortConfig {
 
 export interface DataFiltersProps {
   filters: FilterConfig[]
-  sortConfig: SortConfig
+  sortConfig?: SortConfig | null
   onFilterChange: (filterKey: string, value: string) => void
-  onSortChange: (value: string) => void
+  onSortChange?: (value: string) => void | null
   filterValues: Record<string, string>
-  sortValue: string
+  sortValue?: string | null
   totalItems: number
   filteredItems: number
   className?: string
@@ -46,6 +46,9 @@ export function DataFilters({
   filteredItems,
   className = ''
 }: DataFiltersProps) {
+
+  const hasSorting = sortConfig && onSortChange && sortValue;
+
   return (
     <Card className={`mb-8 shadow-sm border-gray-100 ${className}`}>
       <CardContent className="p-6">
@@ -57,7 +60,7 @@ export function DataFilters({
             </div>
             <span className="font-semibold text-gray-800 text-base">Filtros:</span>
           </div>
-          
+
           {/* Filtros */}
           {filters.map((filter) => (
             <div key={filter.key} className="flex items-center gap-3">
@@ -85,25 +88,27 @@ export function DataFilters({
           ))}
 
           {/* Ordenamiento */}
-          <div className="flex items-center gap-3">
-            <label htmlFor="sort-by" className="text-sm font-semibold text-gray-700 whitespace-nowrap">
-              {sortConfig.label}:
-            </label>
-            <Select
-              id="sort-by"
-              value={sortValue}
-              onChange={(e) => onSortChange(e.target.value)}
-              size="sm"
-              variant="ghost"
-              className="min-w-[190px]"
-            >
-              {sortConfig.options.map((option) => (
-                <SelectOption key={option.value} value={option.value}>
-                  {option.label}
-                </SelectOption>
-              ))}
-            </Select>
-          </div>
+          {hasSorting && (
+            <div className="flex items-center gap-3">
+              <label htmlFor="sort-by" className="text-sm font-semibold text-gray-700 whitespace-nowrap">
+                {sortConfig.label}:
+              </label>
+              <Select
+                id="sort-by"
+                value={sortValue}
+                onChange={(e) => onSortChange(e.target.value)}
+                size="sm"
+                variant="ghost"
+                className="min-w-[190px]"
+              >
+                {sortConfig.options.map((option) => (
+                  <SelectOption key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectOption>
+                ))}
+              </Select>
+            </div>
+          )}
 
           {/* Contador de resultados */}
           <div className="ml-auto">

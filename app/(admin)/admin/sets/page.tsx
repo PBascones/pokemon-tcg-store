@@ -68,20 +68,20 @@ export default function AdminSetsPage() {
       filtered = filtered.filter(set => set.expansion.id === filterValues.expansion)
     }
 
-    // Aplicar ordenamiento
-    filtered.sort((a, b) => {
-      switch (sortValue) {
-        case 'name':
-          return a.name.localeCompare(b.name)
-        case 'expansion':
-          return a.expansion.name.localeCompare(b.expansion.name)
-        case 'products':
-          return b._count.products - a._count.products
-        case 'createdAt':
-        default:
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      }
-    })
+    // // Aplicar ordenamiento
+    // filtered.sort((a, b) => {
+    //   switch (sortValue) {
+    //     case 'name':
+    //       return a.name.localeCompare(b.name)
+    //     case 'expansion':
+    //       return a.expansion.name.localeCompare(b.expansion.name)
+    //     case 'products':
+    //       return b._count.products - a._count.products
+    //     case 'createdAt':
+    //     default:
+    //       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    //   }
+    // })
 
     setFilteredSets(filtered)
   }
@@ -93,9 +93,9 @@ export default function AdminSetsPage() {
     }))
   }
 
-  const handleSortChange = (value: string) => {
-    setSortValue(value)
-  }
+  // const handleSortChange = (value: string) => {
+  //   setSortValue(value)
+  // }
 
   // Configuración de filtros
   const filters: FilterConfig[] = [
@@ -110,17 +110,17 @@ export default function AdminSetsPage() {
     }
   ]
 
-  // Configuración de ordenamiento
-  const sortConfig: SortConfig = {
-    key: 'sort',
-    label: 'Ordenar por',
-    options: [
-      { value: 'createdAt', label: 'Fecha de creación' },
-      { value: 'name', label: 'Nombre' },
-      { value: 'expansion', label: 'Expansión' },
-      { value: 'products', label: 'Cantidad de productos' }
-    ]
-  }
+  // // Configuración de ordenamiento
+  // const sortConfig: SortConfig = {
+  //   key: 'sort',
+  //   label: 'Ordenar por',
+  //   options: [
+  //     { value: 'createdAt', label: 'Fecha de creación' },
+  //     { value: 'name', label: 'Nombre' },
+  //     { value: 'expansion', label: 'Expansión' },
+  //     { value: 'products', label: 'Cantidad de productos' }
+  //   ]
+  // }
 
   if (loading) {
     return (
@@ -157,18 +157,6 @@ export default function AdminSetsPage() {
           </Link>
         </div>
       </div>
-
-      {/* Filtros */}
-      <DataFilters
-        filters={filters}
-        sortConfig={sortConfig}
-        onFilterChange={handleFilterChange}
-        onSortChange={handleSortChange}
-        filterValues={filterValues}
-        sortValue={sortValue}
-        totalItems={sets.length}
-        filteredItems={filteredSets.length}
-      />
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -219,7 +207,14 @@ export default function AdminSetsPage() {
         </Card>
       </div>
 
-      
+      {/* Filtros */}
+      <DataFilters
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        filterValues={filterValues}
+        totalItems={sets.length}
+        filteredItems={filteredSets.length}
+      />
 
       {/* Sets Table */}
       <Card>
@@ -292,8 +287,8 @@ export default function AdminSetsPage() {
                             <Pencil className="h-4 w-4" />
                           </Button>
                         </Link>
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
                           className="text-red-600 hover:text-red-700 hover:bg-red-50"
                           disabled={set._count.products > 0}
