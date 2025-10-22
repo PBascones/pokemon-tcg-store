@@ -108,7 +108,7 @@ export async function getUSDPriceForSSR(): Promise<number> {
     }
     
     const data = await response.json()
-    const price = data.oficial?.price || data.oficial || 1000
+    const price = data.blue?.price || data.oficial?.price || 1500
     
     // Actualizar cache también
     currencyCache = {
