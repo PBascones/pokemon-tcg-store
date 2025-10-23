@@ -7,7 +7,7 @@ export interface StatsCardProps {
   title: string
   value: string | number
   icon: LucideIcon
-  iconColor?: 'blue' | 'green' | 'purple' | 'yellow' | 'red' | 'orange'
+  iconColor?: 'blue' | 'green' | 'purple' | 'yellow' | 'red' | 'orange' | string
   description?: string
   trend?: {
     value: string
@@ -38,7 +38,7 @@ export function StatsCard({
     <Card className={cn("overflow-hidden shadow-sm hover:shadow-md transition-shadow", className)}>
       <CardContent className="p-6">
         <div className="flex items-center">
-          <div className={cn("p-3 rounded-full", iconColorClasses[iconColor])}>
+          <div className={cn("p-3 rounded-full", iconColorClasses[iconColor as keyof typeof iconColorClasses])}>
             <Icon className="h-6 w-6" />
           </div>
           <div className="ml-4 flex-1">

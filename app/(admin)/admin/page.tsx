@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatPrice } from '@/lib/utils'
 import { Package, ShoppingBag, DollarSign, Users } from 'lucide-react'
+import { StatsCard, StatsCardGrid } from '@/components/ui/stats-card'
 
 export default async function AdminDashboard() {
   // Obtener estadísticas
@@ -52,25 +53,25 @@ export default async function AdminDashboard() {
       title: 'Total Productos',
       value: totalProducts,
       icon: Package,
-      color: 'bg-primary-500',
+      color: 'orange',
     },
     {
       title: 'Total Órdenes',
       value: totalOrders,
       icon: ShoppingBag,
-      color: 'bg-green-500',
+      color: 'green',
     },
     {
       title: 'Ingresos Totales',
       value: formatPrice(totalRevenue._sum.total || 0),
       icon: DollarSign,
-      color: 'bg-purple-500',
+      color: 'purple',
     },
     {
       title: 'Total Usuarios',
       value: totalUsers,
       icon: Users,
-      color: 'bg-orange-500',
+      color: 'blue',
     },
   ]
 
@@ -90,26 +91,19 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stats Grid mejorado */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <StatsCardGrid className="md:grid-cols-2 lg:grid-cols-4 mb-8">
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card key={stat.title} className="hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600 mb-1 font-medium">{stat.title}</p>
-                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                  </div>
-                  <div className={`${stat.color} p-4 rounded-xl shadow-lg`}>
-                    <Icon className="h-7 w-7 text-white" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <StatsCard 
+            key={stat.title} 
+            title={stat.title} 
+            value={stat.value} 
+            icon={stat.icon} 
+            iconColor={stat.color} />
           )
         })}
-      </div>
+      </StatsCardGrid>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Orders */}
@@ -135,11 +129,10 @@ export default async function AdminDashboard() {
                     <p className="font-semibold">{formatPrice(order.total)}</p>
                     <p className="text-sm">
                       <span
-                        className={`inline-block px-2 py-1 rounded text-xs ${
-                          order.paymentStatus === 'PAID'
+                        className={`inline-block px-2 py-1 rounded text-xs ${order.paymentStatus === 'PAID'
                             ? 'bg-green-100 text-green-700'
                             : 'bg-yellow-100 text-yellow-700'
-                        }`}
+                          }`}
                       >
                         {order.paymentStatus}
                       </span>
@@ -172,9 +165,8 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="text-right">
                     <p
-                      className={`font-semibold ${
-                        product.stock === 0 ? 'text-red-600' : 'text-yellow-600'
-                      }`}
+                      className={`font-semibold ${product.stock === 0 ? 'text-red-600' : 'text-yellow-600'
+                        }`}
                     >
                       {product.stock} unidades
                     </p>
