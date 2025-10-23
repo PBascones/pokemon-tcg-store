@@ -14,7 +14,7 @@ export default function CheckoutPage() {
   const router = useRouter()
   const { data: session, status } = useSession()
   const { items, getTotalPrice, clearCart } = useCartStore()
-  
+
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -89,6 +89,60 @@ export default function CheckoutPage() {
     } catch (error) {
       console.error('Error:', error)
       alert('Error al procesar el pago. Por favor intenta nuevamente.')
+      setLoading(false)
+    }
+  }
+
+  const handleWhatsAppPayment = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      const request = JSON.stringify({
+        items: items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        shippingInfo: formData,
+      });
+
+      // Ir a reducir el stock de los productos
+      const response = await fetch('/api/products/reduce-stock', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: request,
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al reducir el stock de los productos')
+      }
+      // Ir a crear la orden
+      const orderResponse = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+      const orderData = await orderResponse.json();
+      if (!orderResponse.ok) {
+        throw new Error(orderData.error || 'Error al crear la orden')
+      }
+
+      // Limpiar carrito
+      clearCart()
+
+      // Ir a redirigir a la página de pago por WhatsApp
+      window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}/orden/${orderData.id}/confirmacion?offlinePayment=true`
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error al procesar el pago. Por favor intenta nuevamente.')
+    } finally {
       setLoading(false)
     }
   }
@@ -213,7 +267,7 @@ export default function CheckoutPage() {
                 <div className="flex items-center gap-4 p-4 border rounded-lg">
                   <div className="bg-primary-100 p-3 rounded">
                     <svg className="h-8 w-8 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
                     </svg>
                   </div>
                   <div>
@@ -253,7 +307,7 @@ export default function CheckoutPage() {
                     <span>Subtotal</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
-                  
+
                   {/* Información de envío */}
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
                     <h4 className="font-semibold text-blue-800 mb-2">📦 Envío por Correo Argentino</h4>
@@ -279,7 +333,7 @@ export default function CheckoutPage() {
                       💬 Se coordina por WhatsApp después del pago. Los costos son estimativos.
                     </p>
                   </div>
-                  
+
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Total a Pagar</span>
                     <span className="text-primary-600">{formatPrice(total)}</span>
@@ -302,6 +356,24 @@ export default function CheckoutPage() {
                     </>
                   ) : (
                     'Pagar con MercadoPago'
+                  )}
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={handleWhatsAppPayment}
+                  className="w-full"
+                  size="lg"
+                  variant="outline"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Procesando...
+                    </>
+                  ) : (
+                    'Coordinar pago por WhatsApp'
                   )}
                 </Button>
 
