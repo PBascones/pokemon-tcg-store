@@ -1,86 +1,36 @@
 import Link from 'next/link'
-import { Instagram } from 'lucide-react'
+import { Instagram, Twitch, Youtube, Phone } from 'lucide-react'
+import Image from 'next/image'
 
 export function Footer() {
+  const message = '¡Hola! Me gustaría hacer una consulta sobre los productos de Poke Addiction.'
+
   return (
     <footer className="bg-gray-900 text-white mt-20">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 pt-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Sobre Nosotros */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">Poke Addiction</h3>
-            <p className="text-gray-400 text-sm">
-              Tu tienda de confianza para sobres Pokémon en Argentina.
-              Productos 100% originales y auténticos.
-            </p>
-            <a
-              href="https://www.instagram.com/pokeaddictionok/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-400 hover:text-primary-300 text-sm mt-2 inline-block"
-            >
-              @pokeaddictionok
-            </a>
-          </div>
+            <Image
+              src="/images/white-logo.png"
+              alt="Poke Addiction"
+              width={1000}
+              height={1000}
+              className="object-contain rounded-md"
+              priority
+            />
 
-          {/* Links Rápidos */}
+          {/* Encontranos */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/productos" className="text-gray-400 hover:text-white transition">
-                  Productos
-                </Link>
-              </li>
-              <li>
-                <Link href="/expansiones" className="text-gray-400 hover:text-white transition">
-                  Expansiones
-                </Link>
-              </li>
-              <li>
-                <Link href="/ofertas" className="text-gray-400 hover:text-white transition">
-                  Ofertas
-                </Link>
-              </li>
-              <li>
-                <Link href="/nosotros" className="text-gray-400 hover:text-white transition">
-                  Nosotros
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Atención al Cliente */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Atención al Cliente</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/contacto" className="text-gray-400 hover:text-white transition">
-                  Contacto
-                </Link>
-              </li>
-              <li>
-                <Link href="/envios" className="text-gray-400 hover:text-white transition">
-                  Información de Envíos
-                </Link>
-              </li>
-              {/* <li>
-                <Link href="/devoluciones" className="text-gray-400 hover:text-white transition">
-                  Devoluciones
-                </Link>
-              </li> */}
-              <li>
-                <Link href="/faq" className="text-gray-400 hover:text-white transition">
-                  Preguntas Frecuentes
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Redes Sociales */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Síguenos</h3>
+            <h3 className="text-lg font-semibold mb-4 mt-8">Encontranos</h3>
             <div className="flex space-x-4">
+            <a
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WSP_PHONE_NUMBER}?text=${encodeURIComponent(message)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Phone className="h-6 w-6" />
+              </a>
               <a
                 href="https://www.instagram.com/pokeaddictionok/"
                 target="_blank"
@@ -89,21 +39,53 @@ export function Footer() {
               >
                 <Instagram className="h-6 w-6" />
               </a>
-            </div>
-
-            <div className="mt-6">
-              <h4 className="font-semibold mb-2">Métodos de Pago</h4>
-              <p className="text-gray-400 text-sm">
-                MercadoPago
-              </p>
-              <p className="text-gray-400 text-sm">
-                Transferencias bancarias y en USD
-              </p>
-              <p className="text-gray-400 text-sm">
-                USDT y Crypto con un 10% de recargo
-              </p>
+              <a
+                href="https://www.twitch.tv/pokeadicction"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Twitch className="h-6 w-6" />
+              </a>
+              <a
+                href="https://www.youtube.com/@pokeaddiction-b8i"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition"
+              >
+                <Youtube className="h-6 w-6" />
+              </a>
             </div>
           </div>
+
+          {/* Información útil */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 mt-8">Información útil</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/contacto" className="text-gray-400 hover:text-white transition">
+                  Envíos
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="text-gray-400 hover:text-white transition">
+                  Preguntas Frecuentes
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Medios de Pago */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 mt-8">Medios de Pago</h3>
+              <p className="text-gray-400 text-xs">
+                Transferencias bancarias y en USD,
+              </p>
+              <p className="text-gray-400 text-xs">
+                USDT y/o Crypto con un 10% de recargo.
+              </p>
+          </div>
+        
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
