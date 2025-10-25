@@ -68,6 +68,7 @@ export async function PUT(
       name,
       slug,
       description,
+      releaseDate,
       expansionId,
       imageUrl,
     } = body
@@ -119,6 +120,7 @@ export async function PUT(
         name,
         slug,
         description: description || null,
+        releaseDate: releaseDate ? new Date(releaseDate) : null,
         expansionId,
         image: imageUrl || null,
       },

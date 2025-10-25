@@ -76,6 +76,7 @@ model Expansion {
   slug        String    @unique
   description String?
   image       String?
+  releaseDate DateTime?
   products    Product[]
   sets        Set[]
   
@@ -90,6 +91,7 @@ model Set {
   slug        String    @unique
   description String?
   image       String?
+  releaseDate DateTime?
   
   // Relación con Expansión
   expansionId String

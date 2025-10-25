@@ -12,7 +12,7 @@ import { Sparkles, Package, Shield, Truck } from 'lucide-react'
 export default async function HomePage() {
   // Obtener tipo de cambio de forma confiable
   const exchangeRate = await getUSDPriceForSSR()
-  
+
   // Obtener productos (unificado) - del más nuevo al más reciente
   const products = await prisma.product.findMany({
     where: {
@@ -25,9 +25,10 @@ export default async function HomePage() {
         },
       },
     },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: [
+      { featured: 'desc' },
+      { createdAt: 'desc' },
+    ],
     take: 8,
   })
 
@@ -37,9 +38,15 @@ export default async function HomePage() {
     calculatedPrices: calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
   }))
 
-  // Obtener expansiones
-  const expansions = await prisma.expansion.findMany({
-    take: 6,
+  // Obtener sets
+  const sets = await prisma.set.findMany({
+    take: 12,
+    include: {
+      expansion: true,
+    },
+    orderBy: {
+      releaseDate: 'desc',
+    },
   })
 
   return (
@@ -60,7 +67,7 @@ export default async function HomePage() {
                 <p className="text-sm text-gray-700">Productos auténticos</p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="bg-primary-600 p-3 rounded-lg">
                 <Truck className="h-6 w-6 text-white" />
@@ -70,7 +77,7 @@ export default async function HomePage() {
                 <p className="text-sm text-gray-700">A todo el país</p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="bg-primary-600 p-3 rounded-lg">
                 <Package className="h-6 w-6 text-white" />
@@ -80,7 +87,7 @@ export default async function HomePage() {
                 <p className="text-sm text-gray-700">Protección garantizada</p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="bg-primary-600 p-3 rounded-lg">
                 <Sparkles className="h-6 w-6 text-white" />
@@ -107,7 +114,7 @@ export default async function HomePage() {
                 <Button variant="default">Ver Todos</Button>
               </Link>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {productsWithPrices.map((product) => (
                 <ProductCard key={product.id} product={product} />
@@ -118,33 +125,33 @@ export default async function HomePage() {
       )}
 
       {/* Expansions */}
-      {expansions.length > 0 && (
+      {sets.length > 0 && (
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900">Explora por Expansión</h2>
+              <h2 className="text-3xl font-bold mb-2 text-gray-900">Explora por Set</h2>
               <p className="text-gray-600">Encuentra exactamente lo que buscás</p>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {expansions.map((expansion) => (
+              {sets.map((set) => (
                 <Link
-                  key={expansion.id}
-                  href={`/expansiones/${expansion.slug}`}
+                  key={set.id}
+                  href={`/productos?expansion=${set.expansion.slug}`}
                   className="bg-white p-6 rounded-lg text-center hover:shadow-lg transition group"
                 >
-                  {expansion.image && (
+                  {set.image && (
                     <div className="relative w-16 h-16 mx-auto mb-3">
                       <Image
-                        src={expansion.image}
-                        alt={expansion.name}
+                        src={set.image}
+                        alt={set.name}
                         fill
                         className="object-contain"
                       />
                     </div>
                   )}
                   <h3 className="font-bold text-gray-900 group-hover:text-primary-600 transition">
-                    {expansion.name}
+                    {set.name}
                   </h3>
                 </Link>
               ))}

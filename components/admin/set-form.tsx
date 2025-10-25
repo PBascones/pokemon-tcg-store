@@ -20,6 +20,7 @@ interface Set {
   slug: string
   description: string | null
   image: string | null
+  releaseDate: Date | null
   expansionId: string
 }
 
@@ -37,6 +38,7 @@ export function SetForm({ set, expansions }: SetFormProps) {
     name: set?.name || '',
     slug: set?.slug || '',
     description: set?.description || '',
+    releaseDate: set?.releaseDate ? new Date(set.releaseDate).toISOString().split('T')[0] : '',
     expansionId: set?.expansionId || expansions[0]?.id || '',
     imageUrl: set?.image || '',
   })
@@ -183,6 +185,23 @@ export function SetForm({ set, expansions }: SetFormProps) {
                   className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   placeholder="Descripción del set..."
                 />
+              </div>
+
+              <div>
+                <label htmlFor="releaseDate" className="block text-sm font-medium mb-1">
+                  Fecha de Lanzamiento
+                </label>
+                <Input
+                  id="releaseDate"
+                  name="releaseDate"
+                  type="date"
+                  value={formData.releaseDate}
+                  onChange={handleChange}
+                  placeholder="YYYY-MM-DD"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Fecha de lanzamiento oficial del set
+                </p>
               </div>
             </CardContent>
           </Card>

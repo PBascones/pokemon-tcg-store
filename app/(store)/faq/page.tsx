@@ -20,9 +20,9 @@ export default function FAQPage() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <HelpCircle className="h-8 w-8 text-primary-600" />
-            <h1 className="text-4xl font-bold text-white">Preguntas Frecuentes</h1>
+            <h1 className="text-4xl font-bold">Preguntas Frecuentes</h1>
           </div>
-          <p className="text-xl text-gray-400">
+          <p className="text-xl text-gray-600">
             Todo lo que necesitás saber sobre nuestros productos y servicios
           </p>
         </div>
@@ -244,23 +244,26 @@ export default function FAQPage() {
               ¿Tenés más preguntas?
             </h2>
             <p className="text-gray-700 mb-6">
-              No dudes en contactarnos a través de nuestras redes sociales o WhatsApp
+              No dudes en contactarnos a través de WhatsApp o nuestras redes sociales
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://www.instagram.com/pokeaddictionok/"
+            <a
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WSP_PHONE_NUMBER}?text=${encodeURIComponent('¡Hola! Tengo una consulta para hacerles.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-semibold"
               >
-                Seguinos en Instagram
+                Contactar por WhatsApp
               </a>
               <a
-                href="/contacto"
+                href="https://www.instagram.com/pokeaddictionok/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 border border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition font-semibold"
               >
-                Contactanos
+                Seguinos en Instagram
               </a>
+              
             </div>
           </Card>
         </section>

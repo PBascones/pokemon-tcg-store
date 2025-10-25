@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Instagram, Twitch, Youtube, Phone } from 'lucide-react'
+import { Bell } from 'lucide-react'
 import Image from 'next/image'
 
 export function Footer() {
@@ -9,7 +9,8 @@ export function Footer() {
     <footer className="bg-gray-900 text-white mt-20">
       <div className="container mx-auto px-4 py-12 pt-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Sobre Nosotros */}
+          {/* Logo */}
+          <div>
             <Image
               src="/images/white-logo.png"
               alt="Poke Addiction"
@@ -18,52 +19,73 @@ export function Footer() {
               className="object-contain rounded-md"
               priority
             />
+          </div>
 
           {/* Encontranos */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 mt-8">Encontranos</h3>
-            <div className="flex space-x-4">
-            <a
+            <h2 className="text-xl font-semibold mb-2 mt-8">Encontranos</h2>
+            <div className="flex space-x-2">
+              <a
                 href={`https://wa.me/${process.env.NEXT_PUBLIC_WSP_PHONE_NUMBER}?text=${encodeURIComponent(message)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="transition rounded-md"
               >
-                <Phone className="h-6 w-6" />
+                <Image
+                  src="/images/icon-whatsapp_1.svg"
+                  alt="WhatsApp"
+                  width={36}
+                  height={36}
+                />
               </a>
               <a
                 href="https://www.instagram.com/pokeaddictionok/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="transition rounded-md"
               >
-                <Instagram className="h-6 w-6" />
+                <Image
+                  src="/images/icon-instagram.svg"
+                  alt="Instagram"
+                  width={36}
+                  height={36}
+                />
               </a>
               <a
                 href="https://www.twitch.tv/pokeadicction"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="transition rounded-md"
               >
-                <Twitch className="h-6 w-6" />
+                <Image
+                  src="/images/icon-twitch.svg"
+                  alt="Twitch"
+                  width={36}
+                  height={36}
+                />
               </a>
               <a
                 href="https://www.youtube.com/@pokeaddiction-b8i"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
+                className="transition rounded-md"
               >
-                <Youtube className="h-6 w-6" />
+                <Image
+                  src="/images/icon-youtube.svg"
+                  alt="YouTube"
+                  width={36}
+                  height={36}
+                />
               </a>
             </div>
           </div>
 
           {/* Información útil */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 mt-8">Información útil</h3>
+            <h2 className="text-xl font-semibold mb-2 mt-8">Información útil</h2>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/contacto" className="text-gray-400 hover:text-white transition">
+                <Link href="/envios" className="text-gray-400 hover:text-white transition">
                   Envíos
                 </Link>
               </li>
@@ -77,15 +99,68 @@ export function Footer() {
 
           {/* Medios de Pago */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 mt-8">Medios de Pago</h3>
-              <p className="text-gray-400 text-xs">
-                Transferencias bancarias y en USD,
-              </p>
-              <p className="text-gray-400 text-xs">
-                USDT y/o Crypto con un 10% de recargo.
-              </p>
+            <h2 className="text-2xl font-semibold mb-2 mt-8">Medios de pago</h2>
+            <div className="flex flex-wrap mb-3">
+              <Image
+                src="/images/logo-mp.svg"
+                alt="Mercado Pago"
+                width={80}
+                height={32}
+                className="bg-transparent rounded pr-1"
+              />
+              <Image
+                src="/images/logo-visa.svg"
+                alt="Visa"
+                width={50}
+                height={32}
+                className="bg-transparent rounded px-1"
+              />
+              <Image
+                src="/images/logo-master.svg"
+                alt="Mastercard"
+                width={50}
+                height={32}
+                className="bg-transparent rounded px-2"
+              />
+              <Image
+                src="/images/logo-amex.svg"
+                alt="American Express"
+                width={25}
+                height={25}
+                className="bg-transparent rounded"
+              />
+            </div>
+            <p className="text-gray-400 text-xs">
+              Transferencias bancarias
+            </p>
+            <p className="text-gray-400 text-xs">
+              y en USD, USDT y/o Crypto con
+            </p>
+            <p className="text-gray-400 text-xs">
+              un 10% de recargo.
+            </p>
           </div>
-        
+        </div>
+
+        {/* CTA Section */}
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Bell className="h-6 w-6" />
+              <h3 className="text-xl font-semibold">
+                ¡Unite a la comunidad y enterate de todas las novedades!
+              </h3>
+              <Bell className="h-6 w-6" />
+            </div>
+            <a
+              href="https://chat.whatsapp.com/E0Ao3dksRz19cQBt4Ib0xN"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-[#D32F2F] hover:bg-[#B71C1C] text-white font-semibold px-8 py-3 rounded-md transition"
+            >
+              Quiero ser parte
+            </a>
+          </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">

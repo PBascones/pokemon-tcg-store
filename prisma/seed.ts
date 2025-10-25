@@ -42,31 +42,37 @@ async function main() {
       name: 'Scarlet & Violet',
       slug: 'scarlet-violet',
       description: 'Serie más reciente de Pokémon TCG (2023-2024)',
+      releaseDate: new Date('2023-03-31'), // Lanzamiento global aproximado
     },
     {
       name: 'Sword & Shield',
       slug: 'sword-shield',
       description: 'Serie Sword & Shield (2020-2023)',
+      releaseDate: new Date('2020-02-07'),
     },
     {
       name: 'Sun & Moon',
       slug: 'sun-moon',
       description: 'Serie Sun & Moon (2017-2020)',
+      releaseDate: new Date('2017-02-03'),
     },
     {
       name: 'XY Series',
       slug: 'xy-series',
       description: 'Serie XY (2014-2017)',
+      releaseDate: new Date('2014-02-05'),
     },
     {
       name: 'Black & White',
       slug: 'black-white',
       description: 'Serie Black & White (2011-2014)',
+      releaseDate: new Date('2011-04-25'),
     },
     {
       name: 'Sets Especiales',
       slug: 'sets-especiales',
       description: 'Sets especiales y colecciones limitadas',
+      releaseDate: null, // Conjunto agrupador; no tiene fecha única
     },
   ]
 
@@ -75,7 +81,10 @@ async function main() {
   for (const exp of expansions) {
     const expansion = await prisma.expansion.upsert({
       where: { slug: exp.slug },
-      update: {},
+      update: {
+        description: exp.description,
+        releaseDate: exp.releaseDate ?? null,
+      },
       create: exp,
     })
     createdExpansions[exp.slug] = expansion

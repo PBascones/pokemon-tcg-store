@@ -50,7 +50,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, slug, description, expansionId, imageUrl } = body
+    const { name, slug, description, releaseDate, expansionId, imageUrl } = body
 
     // Validar campos requeridos
     if (!name || !slug || !expansionId) {
@@ -91,6 +91,7 @@ export async function POST(request: Request) {
         slug,
         description: description || null,
         image: imageUrl || null,
+        releaseDate: releaseDate ? new Date(releaseDate) : null,
         expansionId,
       },
       include: {
