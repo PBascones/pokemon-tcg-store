@@ -41,7 +41,7 @@ export default async function AdminProductsPage() {
           <Link href="/admin/productos/nuevo">
             <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold shadow-lg">
               <Plus className="h-5 w-5 mr-2" />
-              Agregar Sobre
+              Agregar Producto
             </Button>
           </Link>
         </div>
