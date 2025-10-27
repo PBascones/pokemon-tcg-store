@@ -63,8 +63,21 @@ export function Navbar() {
             </div>
           </div>
 
+          
+
           {/* Icons */}
           <div className="flex items-center space-x-4">
+
+          <Link href="/carrito" className="relative">
+            <Button variant="ghost" size="icon" className="text-white hover:text-primary-500">
+              <ShoppingCart className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Button>
+          </Link>
             {session ? (
               <>
                 <div className="flex items-center gap-2">
@@ -100,17 +113,6 @@ export function Navbar() {
               </Link>
             )}
 
-            <Link href="/carrito" className="relative">
-              <Button variant="ghost" size="icon" className="text-white hover:text-primary-500">
-                <ShoppingCart className="h-5 w-5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-              </Button>
-            </Link>
-
             {/* Mobile Menu Button */}
             <Button
               variant="ghost"
@@ -145,29 +147,29 @@ export function Navbar() {
                 Nosotros
               </Link>
               <div className="border-t pt-4">
-                  {session ? (
-                    <>
-                      <p className="text-sm text-gray-600 mb-2">
-                        Hola, {session.user?.name}
-                      </p>
-                      {(session.user as any).role === 'ADMIN' && (
-                        <Link href="/admin" className="block py-2 text-gray-700 hover:text-primary-600 font-medium">
-                          Panel Admin
-                        </Link>
-                      )}
-                      <button
-                        onClick={() => signOut({ callbackUrl: '/' })}
-                        className="text-red-600 hover:text-red-700 py-2 font-medium"
-                      >
-                        Cerrar Sesión
-                      </button>
-                    </>
-                  ) : (
-                    <Link href="/auth/login" className="font-medium hover:font-bold">
-                      Iniciar Sesión
-                    </Link>
-                  )}
-                </div>
+                {session ? (
+                  <>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Hola, {session.user?.name}
+                    </p>
+                    {(session.user as any).role === 'ADMIN' && (
+                      <Link href="/admin" className="block py-2 text-gray-700 hover:text-primary-600 font-medium">
+                        Panel Admin
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="text-red-600 hover:text-red-700 py-2 font-medium"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </>
+                ) : (
+                  <Link href="/auth/login" className="font-medium hover:font-bold">
+                    Iniciar Sesión
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         )}

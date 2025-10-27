@@ -55,8 +55,8 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [imagePreview, setImagePreview] = useState<string | null>(
-    product?.images[0]?.url || null
+  const [images, setImages] = useState<ProductImage[]>(
+    product?.images || []
   )
   
   const [formData, setFormData] = useState({
@@ -71,8 +71,6 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
     language: product?.language || 'Inglés',
     featured: product?.featured || false,
     isActive: product?.isActive ?? true,
-    imageUrl: product?.images[0]?.url || '',
-    imageAlt: product?.images[0]?.alt || '',
   })
   
   // Filtrar sets por expansión seleccionada
@@ -112,71 +110,107 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    // Validar tipo
-    if (!file.type.startsWith('image/')) {
-      toast.error('Error', {
-        description: 'El archivo debe ser una imagen',
-      })
-      return
-    }
-
-    // Validar tamaño (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Error', {
-        description: 'La imagen debe ser menor a 5MB',
-      })
-      return
-    }
+    const files = e.target.files
+    if (!files || files.length === 0) return
 
     setUploading(true)
 
     try {
-      // Preview local
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string)
+      const uploadedImages: ProductImage[] = []
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+
+        // Validar tipo
+        if (!file.type.startsWith('image/')) {
+          toast.error('Error', {
+            description: `${file.name} no es una imagen válida`,
+          })
+          continue
+        }
+
+        // Validar tamaño (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error('Error', {
+            description: `${file.name} supera el tamaño máximo de 5MB`,
+          })
+          continue
+        }
+
+        // Upload a Vercel Blob
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const response = await fetch('/api/admin/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Error al subir imagen')
+        }
+
+        uploadedImages.push({
+          url: data.url,
+          alt: formData.name || file.name,
+          order: images.length + uploadedImages.length,
+        })
       }
-      reader.readAsDataURL(file)
 
-      // Upload a Vercel Blob
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Error al subir imagen')
+      if (uploadedImages.length > 0) {
+        setImages((prev) => [...prev, ...uploadedImages])
+        toast.success(`${uploadedImages.length} imagen${uploadedImages.length > 1 ? 'es' : ''} subida${uploadedImages.length > 1 ? 's' : ''}`, {
+          description: 'Las imágenes se cargaron correctamente',
+        })
       }
-
-      setFormData((prev) => ({
-        ...prev,
-        imageUrl: data.url,
-        imageAlt: prev.imageAlt || prev.name,
-      }))
-
-      toast.success('Imagen subida', {
-        description: 'La imagen se cargó correctamente',
-      })
     } catch (error: any) {
       toast.error('Error', {
         description: error.message,
       })
-      setImagePreview(null)
     } finally {
       setUploading(false)
+      // Limpiar el input para permitir subir el mismo archivo nuevamente
+      e.target.value = ''
     }
+  }
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => {
+      const newImages = prev.filter((_, i) => i !== index)
+      // Reordenar los índices
+      return newImages.map((img, i) => ({ ...img, order: i }))
+    })
+    toast.success('Imagen eliminada')
+  }
+
+  const handleMoveImage = (index: number, direction: 'up' | 'down') => {
+    setImages((prev) => {
+      const newImages = [...prev]
+      const targetIndex = direction === 'up' ? index - 1 : index + 1
+      
+      if (targetIndex < 0 || targetIndex >= newImages.length) return prev
+      
+      // Intercambiar posiciones
+      ;[newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]]
+      
+      // Actualizar orden
+      return newImages.map((img, i) => ({ ...img, order: i }))
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validar que haya al menos una imagen
+    if (images.length === 0) {
+      toast.error('Error', {
+        description: 'Debes subir al menos una imagen del producto',
+      })
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -191,7 +225,10 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          images: images,
+        }),
       })
 
       const data = await response.json()
@@ -377,17 +414,18 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Imagen del Producto</CardTitle>
+              <CardTitle>Imágenes del Producto</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Subir Imagen
+                  Subir Imágenes {images.length > 0 && `(${images.length})`}
                 </label>
                 <div className="flex items-center gap-4">
                   <Input
                     type="file"
                     accept="image/*"
+                    multiple
                     onChange={handleFileChange}
                     disabled={uploading}
                     className="cursor-pointer"
@@ -397,37 +435,79 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  JPG, PNG, WEBP. Máximo 5MB.
+                  JPG, PNG, WEBP. Máximo 5MB por imagen. Podés subir múltiples imágenes.
                 </p>
               </div>
 
-              {(imagePreview || formData.imageUrl) && (
+              {images.length > 0 && (
                 <div>
-                  <p className="text-sm font-medium mb-2">Preview:</p>
-                  <div className="relative w-48 h-48">
-                    <img
-                      src={imagePreview || formData.imageUrl}
-                      alt="Preview"
-                      className="w-full h-full object-cover rounded-lg border"
-                      onError={(e) => {
-                        e.currentTarget.src = '/placeholder.png'
-                      }}
-                    />
+                  <p className="text-sm font-medium mb-3">
+                    Imágenes ({images.length}):
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {images.map((image, index) => (
+                      <div
+                        key={index}
+                        className="relative group border-2 border-gray-200 rounded-lg overflow-hidden"
+                      >
+                        <div className="relative aspect-square">
+                          <img
+                            src={image.url}
+                            alt={image.alt || `Imagen ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = '/placeholder.png'
+                            }}
+                          />
+                          {index === 0 && (
+                            <Badge
+                              variant="default"
+                              className="absolute top-2 left-2"
+                            >
+                              Principal
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        {/* Controles */}
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => handleMoveImage(index, 'up')}
+                              className="bg-white text-gray-900 p-2 rounded-full hover:bg-gray-100"
+                              title="Mover adelante"
+                            >
+                              ←
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700"
+                            title="Eliminar"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                          {index < images.length - 1 && (
+                            <button
+                              type="button"
+                              onClick={() => handleMoveImage(index, 'down')}
+                              className="bg-white text-gray-900 p-2 rounded-full hover:bg-gray-100"
+                              title="Mover atrás"
+                            >
+                              →
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    💡 La primera imagen es la principal. Usá las flechas para reordenar.
+                  </p>
                 </div>
               )}
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Texto Alternativo (Alt)
-                </label>
-                <Input
-                  name="imageAlt"
-                  value={formData.imageAlt}
-                  onChange={handleChange}
-                  placeholder="Sobre de Scarlet & Violet Base Set"
-                />
-              </div>
             </CardContent>
           </Card>
         </div>

@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
-import { formatPrice, formatPriceWithBothCurrencies, calculateProductPrices } from '@/lib/utils'
+import { calculateProductPrices } from '@/lib/utils'
 import { getUSDPriceForSSR } from '@/lib/currency-cache'
 import { AddToCartButton } from '@/components/store/add-to-cart-button'
+import { ProductImageGallery } from '@/components/store/product-image-gallery'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Package, Shield, Truck } from 'lucide-react'
@@ -42,42 +42,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Images */}
-        <div className="flex flex-col items-center lg:items-start">
-          <div className="relative w-full max-w-[520px] mb-4 rounded-lg overflow-hidden bg-gray-100" style={{ aspectRatio: '3 / 4', maxHeight: '70vh' }}>
-            <Image
-              src={product.images[0]?.url || '/placeholder.png'}
-              alt={product.images[0]?.alt || product.name}
-              fill
-              className="object-contain p-2"
-              priority
-            />
-            {prices.discount > 0 && (
-              <Badge variant="destructive" className="absolute top-4 left-4 text-lg">
-                -{prices.discount}%
-              </Badge>
-            )}
-          </div>
-          
-          {product.images.length > 1 && (
-            <div className="grid grid-cols-4 gap-4 w-full max-w-[520px]">
-              {product.images.slice(1).map((image, index) => (
-                <div
-                  key={image.id}
-                  className="relative rounded-lg overflow-hidden bg-gray-100 cursor-pointer hover:opacity-75 transition"
-                  style={{ aspectRatio: '3 / 4' }}
-                >
-                  <Image
-                    src={image.url}
-                    alt={image.alt || `${product.name} - ${index + 2}`}
-                    fill
-                    className="object-contain p-1"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Image Gallery with Carousel */}
+        <ProductImageGallery 
+          images={product.images}
+          productName={product.name}
+          discount={prices.discount}
+        />
 
         {/* Product Info */}
         <div>

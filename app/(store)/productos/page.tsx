@@ -55,9 +55,10 @@ export default async function ProductsPage({
         expansion: true,
         set: true,
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [
+        { featured: 'desc' },
+        { createdAt: 'desc' },
+      ],
       skip,
       take: limit,
     }),

@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { ShoppingCart, Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { ProductImageGallery } from '@/components/store/product-image-gallery'
 import { formatPrice, formatPriceWithBothCurrencies } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
@@ -62,30 +62,30 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link href={`/productos/${product.slug}`}>
       <Card className="group hover:shadow-lg transition-shadow duration-300 h-full">
         <CardContent className="p-4">
-          {/* Image Container: portrait ratio to show full booster */}
-          <div className="relative mb-4 overflow-hidden rounded-lg bg-gray-100" style={{ aspectRatio: '3 / 4' }}>
-            <Image
-              src={product.images[0]?.url || '/placeholder.png'}
-              alt={product.images[0]?.alt || product.name}
-              fill
-              className="object-contain p-2"
+          {/* Image Gallery - Reutilizando el componente unificado */}
+          <div className="relative">
+            <ProductImageGallery
+              images={product.images as Array<{ url: string; alt?: string | null; id?: string }>}
+              productName={product.name}
+              discount={prices.discount}
+              variant="card"
+              showThumbnails={false}
+              additionalBadges={
+                <>
+                  {product.featured && (
+                    <Badge variant="warning">Destacado</Badge>
+                  )}
+                  {product.stock === 0 && (
+                    <Badge variant="secondary">Sin Stock</Badge>
+                  )}
+                </>
+              }
             />
-            
-            {/* Badges */}
-            <div className="absolute top-2 left-2 flex flex-col gap-2">
-              {prices.discount > 0 && (
-                <Badge variant="destructive">-{prices.discount}%</Badge>
-              )}
-              {product.featured && (
-                <Badge variant="warning">Destacado</Badge>
-              )}
-              {product.stock === 0 && (
-                <Badge variant="secondary">Sin Stock</Badge>
-              )}
-            </div>
 
             {/* Wishlist Button */}
-            <button className="absolute top-2 right-2 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md cursor-pointer hover:bg-gray-50">
+            <button 
+              onClick={(e) => e.preventDefault()}
+              className="absolute top-2 right-2 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md cursor-pointer hover:bg-gray-50 z-20">
               <Heart className="h-4 w-4 text-gray-700" />
             </button>
           </div>

@@ -29,8 +29,7 @@ export async function PUT(
       language,
       featured,
       isActive,
-      imageUrl,
-      imageAlt,
+      images,
     } = body
 
     // Verificar que el producto existe
@@ -83,26 +82,22 @@ export async function PUT(
       },
     })
 
-    // Actualizar o crear imagen
-    if (imageUrl) {
-      if (existingProduct.images.length > 0) {
-        await prisma.productImage.update({
-          where: { id: existingProduct.images[0].id },
-          data: {
-            url: imageUrl,
-            alt: imageAlt || name,
-          },
-        })
-      } else {
-        await prisma.productImage.create({
-          data: {
-            productId: id,
-            url: imageUrl,
-            alt: imageAlt || name,
-            order: 0,
-          },
-        })
-      }
+    // Actualizar imágenes si se proporcionaron
+    if (images && Array.isArray(images)) {
+      // Eliminar todas las imágenes existentes
+      await prisma.productImage.deleteMany({
+        where: { productId: id },
+      })
+
+      // Crear las nuevas imágenes
+      await prisma.productImage.createMany({
+        data: images.map((img: any, index: number) => ({
+          productId: id,
+          url: img.url,
+          alt: img.alt || name,
+          order: img.order !== undefined ? img.order : index,
+        })),
+      })
     }
 
     // Revalidar páginas que muestran productos

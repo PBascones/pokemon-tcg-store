@@ -26,14 +26,21 @@ export async function POST(request: Request) {
       language,
       featured,
       isActive,
-      imageUrl,
-      imageAlt,
+      images,
     } = body
 
     // Validar campos requeridos
     if (!name || !slug || !expansionId || price === undefined || stock === undefined) {
       return NextResponse.json(
         { error: 'Faltan campos requeridos' },
+        { status: 400 }
+      )
+    }
+
+    // Validar que haya al menos una imagen
+    if (!images || !Array.isArray(images) || images.length === 0) {
+      return NextResponse.json(
+        { error: 'Debe proporcionar al menos una imagen' },
         { status: 400 }
       )
     }
@@ -50,7 +57,7 @@ export async function POST(request: Request) {
       )
     }
 
-    // Crear producto
+    // Crear producto con múltiples imágenes
     const product = await prisma.product.create({
       data: {
         name,
@@ -65,11 +72,11 @@ export async function POST(request: Request) {
         featured: featured || false,
         isActive: isActive !== undefined ? isActive : true,
         images: {
-          create: {
-            url: imageUrl || '/placeholder.png',
-            alt: imageAlt || name,
-            order: 0,
-          },
+          create: images.map((img: any, index: number) => ({
+            url: img.url,
+            alt: img.alt || name,
+            order: img.order !== undefined ? img.order : index,
+          })),
         },
       },
       include: {
