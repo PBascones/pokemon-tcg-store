@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getPayment } from '@/lib/mercadopago'
+import { updateOrderStatus, mapMercadoPagoStatus } from '@/lib/order-service'
 
 export async function POST(request: Request) {
   try {
@@ -49,66 +50,23 @@ export async function POST(request: Request) {
         return NextResponse.json({ received: true })
       }
 
-      // Actualizar orden según el estado del pago
-      let orderStatus = order.status
-      let paymentStatus = order.paymentStatus
-
-      switch (paymentInfo.status) {
-        case 'approved':
-          paymentStatus = 'PAID'
-          orderStatus = 'PROCESSING'
-          
-          // Reducir stock de productos
-          for (const item of order.items) {
-            await prisma.product.update({
-              where: { id: item.productId },
-              data: {
-                stock: {
-                  decrement: item.quantity,
-                },
-              },
-            })
-          }
-          break
-        
-        case 'pending':
-        case 'in_process':
-          paymentStatus = 'PENDING'
-          break
-        
-        case 'rejected':
-        case 'cancelled':
-          paymentStatus = 'FAILED'
-          orderStatus = 'CANCELLED'
-          break
-        
-        case 'refunded':
-          paymentStatus = 'REFUNDED'
-          orderStatus = 'CANCELLED'
-          
-          // Restaurar stock
-          for (const item of order.items) {
-            await prisma.product.update({
-              where: { id: item.productId },
-              data: {
-                stock: {
-                  increment: item.quantity,
-                },
-              },
-            })
-          }
-          break
+      // Verificar que tengamos un status válido
+      const mpStatus = paymentInfo.status
+      if (!mpStatus) {
+        console.error('No payment status found in payment info')
+        return NextResponse.json({ received: true })
       }
 
-      // Actualizar orden
-      await prisma.order.update({
-        where: { id: order.id },
-        data: {
-          status: orderStatus,
-          paymentStatus,
-          mercadoPagoStatus: paymentInfo.status,
-          paymentMethod: 'MercadoPago',
-        },
+      // Mapear estado de MercadoPago a estados internos
+      const { paymentStatus, orderStatus } = mapMercadoPagoStatus(mpStatus)
+
+      // Actualizar orden usando el servicio (maneja stock automáticamente)
+      await updateOrderStatus({
+        orderId: order.id,
+        paymentStatus,
+        orderStatus,
+        mercadoPagoStatus: mpStatus,
+        paymentMethod: 'MercadoPago',
       })
     }
 

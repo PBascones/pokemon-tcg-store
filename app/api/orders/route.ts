@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { items, shippingInfo } = body
+    const { items, shippingInfo, paymentMethod } = body
 
     if (!items || items.length === 0) {
       return NextResponse.json(
@@ -35,6 +35,12 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
+
+    // Determinar si es pago offline (requiere reducción de stock inmediata)
+    const isOfflinePayment = paymentMethod === 'WhatsApp' || paymentMethod === 'Transferencia'
+    
+    // Guardar email para usar en la transacción
+    const userEmail = session.user.email!
 
     // Verificar stock y obtener información de productos
     const productIds = items.map((item: any) => item.id)
@@ -80,37 +86,58 @@ export async function POST(request: Request) {
     // Crear orden en la base de datos
     const orderNumber = generateOrderNumber()
 
-    const order = await prisma.order.create({
-      data: {
-        orderNumber,
-        userId: user.id,
-        email: session.user.email,
-        phone: shippingInfo.phone || '',
-        shippingName: shippingInfo.name,
-        shippingAddress: shippingInfo.address,
-        shippingCity: shippingInfo.city,
-        shippingState: shippingInfo.state,
-        shippingZip: shippingInfo.zip,
-        subtotal,
-        shipping,
-        total,
-        status: 'PENDING',
-        paymentStatus: 'PENDING',
-        items: {
-          create: items.map((item: any) => {
-            const product = products.find(p => p.id === item.id)
-            return {
-              productId: item.id,
-              name: product?.name || item.name,
-              price: product?.price || item.price,
-              quantity: item.quantity,
-            }
-          }),
+    // Para pagos offline, crear orden y reducir stock en una transacción
+    const order = await prisma.$transaction(async (tx) => {
+      // Crear orden
+      const newOrder = await tx.order.create({
+        data: {
+          orderNumber,
+          userId: user.id,
+          email: userEmail,
+          phone: shippingInfo.phone || '',
+          shippingName: shippingInfo.name,
+          shippingAddress: shippingInfo.address,
+          shippingCity: shippingInfo.city,
+          shippingState: shippingInfo.state,
+          shippingZip: shippingInfo.zip,
+          subtotal,
+          shipping,
+          total,
+          status: 'PENDING',
+          paymentStatus: 'PENDING',
+          paymentMethod: paymentMethod || null,
+          items: {
+            create: items.map((item: any) => {
+              const product = products.find(p => p.id === item.id)
+              return {
+                productId: item.id,
+                name: product?.name || item.name,
+                price: product?.price || item.price,
+                quantity: item.quantity,
+              }
+            }),
+          },
         },
-      },
-      include: {
-        items: true,
-      },
+        include: {
+          items: true,
+        },
+      })
+
+      // Si es pago offline, reducir stock inmediatamente (reserva)
+      if (isOfflinePayment) {
+        for (const item of items) {
+          await tx.product.update({
+            where: { id: item.id },
+            data: {
+              stock: {
+                decrement: item.quantity,
+              },
+            },
+          })
+        }
+      }
+
+      return newOrder
     })
 
     return NextResponse.json({ order: order }, { status: 200 })

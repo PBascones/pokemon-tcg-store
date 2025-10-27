@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { DataTable, ColumnDef } from '@/components/ui/data-table'
 import { formatPrice } from '@/lib/utils'
 import { Eye } from 'lucide-react'
+import { MarkOrderAsPaidButton } from '@/components/admin/mark-order-paid-button'
 
 interface OrderItem {
   id: string
@@ -20,6 +21,7 @@ interface Order {
   total: number
   paymentStatus: string
   status: string
+  paymentMethod: string | null
   createdAt: Date
   items: OrderItem[]
 }
@@ -78,10 +80,10 @@ export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
     },
     {
       key: 'items',
-      header: '🎴 Sobres',
+      header: '🎴 Unidades',
       cell: (order) => (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-          {order.items.length} {order.items.length === 1 ? 'sobre' : 'sobres'}
+          {order.items.length} {order.items.length === 1 ? 'ítem' : 'ítems'}
         </span>
       )
     },
@@ -90,15 +92,6 @@ export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
       header: '💰 Total',
       cell: (order) => (
         <span className="font-semibold">{formatPrice(order.total)}</span>
-      )
-    },
-    {
-      key: 'paymentStatus',
-      header: '💳 Pago',
-      cell: (order) => (
-        <Badge variant={getStatusColor(order.paymentStatus) as any}>
-          {order.paymentStatus}
-        </Badge>
       )
     },
     {
@@ -123,13 +116,21 @@ export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
       key: 'actions',
       header: '⚙️ Acciones',
       cell: (order) => (
-        <Link
-          href={`/admin/ordenes/${order.id}`}
-          className="text-primary-600 hover:text-primary-900 inline-flex items-center gap-1"
-        >
-          <Eye className="h-4 w-4" />
-          Ver
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/admin/ordenes/${order.id}`}
+            className="text-primary-600 hover:text-primary-900 inline-flex items-center gap-1"
+          >
+            <Eye className="h-4 w-4" />
+            Ver
+          </Link>
+          <MarkOrderAsPaidButton
+            orderId={order.id}
+            orderNumber={order.orderNumber}
+            paymentStatus={order.paymentStatus}
+            paymentMethod={order.paymentMethod}
+          />
+        </div>
       )
     }
   ]

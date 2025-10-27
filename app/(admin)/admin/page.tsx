@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/prisma'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatPrice } from '@/lib/utils'
-import { Package, ShoppingBag, DollarSign, Users } from 'lucide-react'
+import { Package, DollarSign, Users, ShoppingBag } from 'lucide-react'
 import { StatsCard, StatsCardGrid } from '@/components/ui/stats-card'
+import { RecentOrdersCard } from '@/components/admin/recent-orders-card'
 
 export default async function AdminDashboard() {
   // Obtener estadísticas
@@ -32,6 +33,7 @@ export default async function AdminDashboard() {
       },
       include: {
         user: true,
+        items: true,
       },
     }),
     prisma.product.findMany({
@@ -107,42 +109,7 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Orders */}
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-green-100 rounded-t-lg">
-            <CardTitle className="flex items-center gap-2 text-green-800">
-              <ShoppingBag className="h-5 w-5" />
-              Órdenes Recientes
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentOrders.map((order) => (
-                <div
-                  key={order.id}
-                  className="flex items-center justify-between p-4 border rounded-lg"
-                >
-                  <div>
-                    <p className="font-semibold">#{order.orderNumber}</p>
-                    <p className="text-sm text-gray-600">{order.user.email}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold">{formatPrice(order.total)}</p>
-                    <p className="text-sm">
-                      <span
-                        className={`inline-block px-2 py-1 rounded text-xs ${order.paymentStatus === 'PAID'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-yellow-100 text-yellow-700'
-                          }`}
-                      >
-                        {order.paymentStatus}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <RecentOrdersCard orders={recentOrders} />
 
         {/* Low Stock Products */}
         <Card className="hover:shadow-lg transition-shadow duration-300">

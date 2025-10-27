@@ -94,48 +94,34 @@ export default function CheckoutPage() {
     setWhatsappLoading(true)
 
     try {
-      const request = JSON.stringify({
-        items: items.map(item => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-        })),
-        shippingInfo: formData,
-      });
-
-      // Ir a crear la orden
+      // Crear la orden con paymentMethod WhatsApp (esto reduce stock automáticamente)
       const orderResponse = await fetch('/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: request,
+        body: JSON.stringify({
+          items: items.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          shippingInfo: formData,
+          paymentMethod: 'WhatsApp', // Indica que es pago offline
+        }),
       });
+
       const orderData = await orderResponse.json();
       if (!orderResponse.ok) {
         throw new Error(orderData.error || 'Error al crear la orden')
       }
 
-      // Ir a reducir el stock de los productos
-      const response = await fetch('/api/products/reduce-stock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: request,
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Error al reducir el stock de los productos')
-      }
-
       // Limpiar carrito
       clearCart()
-      debugger;
-      // Ir a redirigir a la página de pago por WhatsApp
-      router.push(`${process.env.NEXT_PUBLIC_APP_URL}/orden/${orderData.order.id}/confirmacion?offlinePayment=true`)
+
+      // Redirigir a la página de confirmación
+      router.push(`/orden/${orderData.order.id}/confirmacion?offlinePayment=true`)
     } catch (error) {
       console.error('Error:', error)
       alert('Error al procesar el pago. Por favor intenta nuevamente.')
