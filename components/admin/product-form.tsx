@@ -138,12 +138,12 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
         }
 
         // Upload a Vercel Blob
-        const formData = new FormData()
-        formData.append('file', file)
+        const uploadFormData = new FormData()
+        uploadFormData.append('file', file)
 
         const response = await fetch('/api/admin/upload', {
           method: 'POST',
-          body: formData,
+          body: uploadFormData,
         })
 
         const data = await response.json()
@@ -154,7 +154,7 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
 
         uploadedImages.push({
           url: data.url,
-          alt: formData.name || file.name,
+          alt: formData.name || file.name || '',
           order: images.length + uploadedImages.length,
         })
       }
