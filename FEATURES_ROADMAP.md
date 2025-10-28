@@ -75,7 +75,7 @@
   - Cantidad de resultados por página
   - **Complejidad:** Baja (1 día)
 
-- [ ] **Galería de Imágenes Mejorada**
+- [X] **Galería de Imágenes Mejorada**
   - Zoom en producto
   - Vista 360° (si aplica)
   - Múltiples imágenes por producto

@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Poke Addiction - Tienda de Sobres Pokémon en Argentina",
+  title: "Poke Addiction - Tu tienda favorita de cartas coleccionables",
   description: "La mejor tienda online de sobres Pokémon en Argentina. Booster packs 100% originales y auténticos. @pokeaddictionok",
 };
 
