@@ -171,7 +171,7 @@ export default async function HomePage() {
           <p className="text-xl mb-8 text-white font-medium drop-shadow-md">
             Contactanos y te conseguimos los sobres que necesitás
           </p>
-          <Link href="/contacto">
+          <Link href="">
             <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100 font-semibold">
               Solicitar Sobres
             </Button>

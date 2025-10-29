@@ -39,13 +39,13 @@ export function Navbar() {
               <Link href="/productos" className="transition hover:text-gray-300">
                 Productos
               </Link>
-              <Link href="/expansiones" className="transition hover:text-gray-300">
+              <Link href="" className="transition hover:text-gray-300">
                 Expansiones
               </Link>
-              <Link href="/ofertas" className="transition hover:text-gray-300">
+              <Link href="" className="transition hover:text-gray-300">
                 Ofertas
               </Link>
-              <Link href="/nosotros" className="transition hover:text-gray-300">
+              <Link href="" className="transition hover:text-gray-300">
                 Nosotros
               </Link>
             </div>
@@ -53,17 +53,15 @@ export function Navbar() {
 
           {/* Search Bar */}
           <div className="hidden md:flex items-center flex-1 max-w-lg mx-6">
-            <div className="relative w-full">
+            {/* <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Buscar productos..."
                 className="w-full px-4 py-2 rounded-lg border-2 border-white focus:outline-none focus:ring-2"
               />
               <Search className="absolute right-3 top-2.5 h-5 w-5 text-white" />
-            </div>
+            </div> */}
           </div>
-
-          
 
           {/* Icons */}
           <div className="flex items-center space-x-4">
@@ -129,15 +127,15 @@ export function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="flex flex-col space-y-4">
-              <input
+              {/* <input
                 type="text"
                 placeholder="Buscar productos..."
                 className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 text-white placeholder:text-white"
-              />
+              /> */}
               <Link href="/productos" className="font-medium hover:font-bold">
                 Productos
               </Link>
-              <Link href="/expansiones" className="font-medium hover:font-bold">
+              <Link href="" className="font-medium hover:font-bold">
                 Expansiones
               </Link>
               <Link href="/ofertas" className="font-medium hover:font-bold">
