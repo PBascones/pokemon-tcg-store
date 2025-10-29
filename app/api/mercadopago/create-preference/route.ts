@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createPreference, type PreferenceData, type MercadoPagoItem } from '@/lib/mercadopago'
 import { prisma } from '@/lib/prisma'
+import { getUSDPriceForSSR } from '@/lib/currency-cache'
+import { convertToARS } from '@/lib/utils'
 
 export async function POST(request: Request) {
   try {
+    // Obtener tipo de cambio para convertir precios USD a ARS
+    const exchangeRate = await getUSDPriceForSSR()
+
     // Ir a crear la orden
     const body = await request.json()
 
@@ -24,13 +29,15 @@ export async function POST(request: Request) {
 
     const order = orderData.order;
 
-    // Preparar items para MercadoPago
+    // Preparar items para MercadoPago - CONVERTIR USD A ARS
     const mpItems: MercadoPagoItem[] = order.items.map((item: any) => {
+      const priceInARS = convertToARS(item.price, exchangeRate) // item.price está en USD
+      
       return {
         id: item.productId,
         title: item.name,
         quantity: item.quantity,
-        unit_price: item.price,
+        unit_price: priceInARS, // Ahora en ARS
         currency_id: 'ARS',
         picture_url: item.images[0]?.url,
         description: item.description || undefined,

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useCartStore } from '@/stores/cart-store'
-import { formatPrice } from '@/lib/utils'
+import { PriceDisplay } from '@/components/ui/price-display'
 import { Loader2 } from 'lucide-react'
 
 export default function CheckoutPage() {
@@ -244,19 +244,35 @@ export default function CheckoutPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Método de Pago</CardTitle>
+                <CardTitle>Métodos de Pago</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
+                {/* MercadoPago */}
                 <div className="flex items-center gap-4 p-4 border rounded-lg">
                   <div className="bg-primary-100 p-3 rounded">
-                    <svg className="h-8 w-8 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+                    <svg className="h-8 w-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div>
                     <p className="font-semibold">MercadoPago</p>
                     <p className="text-sm text-gray-600">
-                      Pago seguro con tarjeta, efectivo o transferencia
+                      Tarjeta, efectivo o transferencia
+                    </p>
+                  </div>
+                </div>
+
+                {/* Pago Offline */}
+                <div className="flex items-center gap-4 p-4 border rounded-lg">
+                  <div className="bg-primary-100 p-3 rounded">
+                    <svg className="h-8 w-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Pago Offline</p>
+                    <p className="text-sm text-gray-600">
+                      Transferencia, USD, USDT o Crypto (+10%)
                     </p>
                   </div>
                 </div>
@@ -274,21 +290,24 @@ export default function CheckoutPage() {
                 {/* Items */}
                 <div className="space-y-3 max-h-60 overflow-y-auto">
                   {items.map((item) => (
-                    <div key={item.id} className="flex justify-between text-sm">
-                      <span>
+                    <div key={item.id} className="flex justify-between items-start text-sm gap-2">
+                      <span className="flex-1">
                         {item.name} <span className="text-gray-500">x{item.quantity}</span>
                       </span>
-                      <span className="font-semibold">
-                        {formatPrice(item.price * item.quantity)}
-                      </span>
+                      <PriceDisplay 
+                        usdPrice={item.price * item.quantity} 
+                        size="sm" 
+                        layout="stacked"
+                        className="text-right"
+                      />
                     </div>
                   ))}
                 </div>
 
                 <div className="border-t pt-4 space-y-4">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span>Subtotal</span>
-                    <span>{formatPrice(subtotal)}</span>
+                    <PriceDisplay usdPrice={subtotal} size="sm" />
                   </div>
 
                   {/* Información de envío */}
@@ -317,9 +336,9 @@ export default function CheckoutPage() {
                     </p>
                   </div>
 
-                  <div className="flex justify-between text-lg font-bold border-t pt-2">
-                    <span>Total a Pagar</span>
-                    <span className="text-primary-600">{formatPrice(total)}</span>
+                  <div className="flex justify-between items-center border-t pt-2">
+                    <span className="text-lg font-bold">Total a Pagar</span>
+                    <PriceDisplay usdPrice={total} size="md" layout="stacked" className="text-right" />
                   </div>
                   <p className="text-xs text-gray-500">
                     * Envío no incluido

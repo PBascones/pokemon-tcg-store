@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
     if (!session?.user?.email) {
       return NextResponse.json(
-        { error: 'aaaaa' },
+        { error: 'No autenticado' },
         { status: 401 }
       )
     }
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 
     // Crear orden en la base de datos
     const orderNumber = generateOrderNumber()
-    console.log('items', items)
+
     // Para pagos offline, crear orden y reducir stock en una transacción
     const order = await prisma.$transaction(async (tx) => {
       // Crear orden

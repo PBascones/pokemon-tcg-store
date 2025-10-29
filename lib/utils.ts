@@ -80,3 +80,12 @@ export function calculateProductPrices(usdPrice: number, compareAtPrice: number 
     discount: compareAtPrice ? Math.round(((compareAtPrice - usdPrice) / compareAtPrice) * 100) : 0
   }
 }
+
+// Función para formatear precio con ARS principal y USD secundario (para carrito/checkout)
+export function formatPriceARSWithUSD(usdPrice: number, exchangeRate?: number): string {
+  const arsAmount = convertToARS(usdPrice, exchangeRate)
+  const arsFormatted = formatPrice(arsAmount).replace(/\s/g, '') // Eliminar espacios: $1.500,00 -> $1.500,00
+  const usdFormatted = usdPrice.toFixed(0) // Sin decimales para USD
+  
+  return `${arsFormatted} ${usdFormatted} USD`
+}

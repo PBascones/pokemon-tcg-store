@@ -1,13 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { ShoppingCart, Heart } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Heart } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { ProductImageGallery } from '@/components/store/product-image-gallery'
-import { formatPrice, formatPriceWithBothCurrencies } from '@/lib/utils'
-import { useCartStore } from '@/stores/cart-store'
+import { formatPriceWithBothCurrencies } from '@/lib/utils'
+import { AddToCartButton } from '@/components/store/add-to-cart-button'
 
 interface ProductCardProps {
   product: {
@@ -29,8 +28,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const addItem = useCartStore((state) => state.addItem)
-  
   // Usar precios pre-calculados si están disponibles, sino calcular dinámicamente
   const prices = product.calculatedPrices || {
     main: formatPriceWithBothCurrencies(product.price),
@@ -38,24 +35,6 @@ export function ProductCard({ product }: ProductCardProps) {
     discount: product.compareAtPrice 
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
       : 0
-  }
-
-  const handleAddToCart = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0]?.url || '/placeholder.png',
-      slug: product.slug,
-      stock: product.stock,
-    })
-    
-    const { toast } = await import('sonner')
-    toast.success('Producto agregado', {
-      description: `${product.name} se agregó al carrito`,
-      duration: 2000,
-    })
   }
 
   return (
@@ -119,14 +98,17 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardContent>
 
         <CardFooter className="p-4 pt-0">
-          <Button
-            className="w-full"
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-          >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            {product.stock === 0 ? 'Sin Stock' : 'Agregar al Carrito'}
-          </Button>
+          <AddToCartButton 
+            product={{
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.images[0]?.url || '/placeholder.png',
+              slug: product.slug,
+              stock: product.stock,
+            }}
+            size="default"
+          />
         </CardFooter>
       </Card>
     </Link>

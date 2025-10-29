@@ -6,7 +6,7 @@ import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useCartStore } from '@/stores/cart-store'
-import { formatPrice } from '@/lib/utils'
+import { PriceDisplay } from '@/components/ui/price-display'
 import { toast } from 'sonner'
 
 export default function CartPage() {
@@ -74,9 +74,9 @@ export default function CartPage() {
                   >
                     {item.name}
                   </Link>
-                  <p className="text-lg font-bold text-primary-600 mt-1">
-                    {formatPrice(item.price)}
-                  </p>
+                  <div className="mt-1">
+                    <PriceDisplay usdPrice={item.price} size="sm" layout="stacked" />
+                  </div>
                   <p className="text-sm text-gray-500">
                     Stock disponible: {item.stock}
                   </p>
@@ -109,9 +109,12 @@ export default function CartPage() {
                     </button>
                   </div>
 
-                  <p className="font-semibold">
-                    {formatPrice(item.price * item.quantity)}
-                  </p>
+                  <PriceDisplay 
+                    usdPrice={item.price * item.quantity} 
+                    size="sm" 
+                    layout="stacked"
+                    className="text-right"
+                  />
                 </div>
               </div>
             </Card>
@@ -132,9 +135,9 @@ export default function CartPage() {
             <h2 className="text-xl font-bold mb-4">Resumen del Pedido</h2>
 
             <div className="space-y-3 mb-6">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span>Subtotal</span>
-                <span className="font-semibold">{formatPrice(subtotal)}</span>
+                <PriceDisplay layout="stacked" usdPrice={subtotal} size="sm" className="text-right" />
               </div>
               
               {/* Información de envío */}
@@ -153,9 +156,9 @@ export default function CartPage() {
               </div>
               
               <div className="border-t pt-3">
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Total a Pagar</span>
-                  <span className="text-primary-600">{formatPrice(total)}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold">Total a Pagar</span>
+                  <PriceDisplay usdPrice={total} size="md" layout="stacked" className="text-right" />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
                   * Envío no incluido
