@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
     if (!session?.user?.email) {
       return NextResponse.json(
-        { error: 'No autenticado' },
+        { error: 'aaaaa' },
         { status: 401 }
       )
     }
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
     // Determinar si es pago offline (requiere reducción de stock inmediata)
     const isOfflinePayment = paymentMethod === 'WhatsApp' || paymentMethod === 'Transferencia'
-    
+
     // Guardar email para usar en la transacción
     const userEmail = session.user.email!
 
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 
     // Crear orden en la base de datos
     const orderNumber = generateOrderNumber()
-
+    console.log('items', items)
     // Para pagos offline, crear orden y reducir stock en una transacción
     const order = await prisma.$transaction(async (tx) => {
       // Crear orden
@@ -140,7 +140,19 @@ export async function POST(request: Request) {
       return newOrder
     })
 
-    return NextResponse.json({ order: order }, { status: 200 })
+    const orderWithImages = {
+      ...order,
+      items: order.items.map((item: any) => {
+        const product = products.find(p => p.id === item.productId)
+        return {
+          ...item,
+          images: product?.images || [],
+          description: product?.description || null,
+        }
+      })
+    }
+
+    return NextResponse.json({ order: orderWithImages }, { status: 200 })
   } catch (error) {
     console.error('Error creating order:', error)
     return NextResponse.json(

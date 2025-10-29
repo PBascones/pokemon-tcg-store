@@ -85,9 +85,17 @@ function LoginForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Contraseña
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium">
+                  Contraseña
+                </label>
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-xs text-primary-600 hover:underline font-medium"
+                >
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
               <Input
                 type="password"
                 placeholder="••••••••"
@@ -128,15 +136,6 @@ function LoginForm() {
             <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
               ← Volver a la tienda
             </Link>
-          </div>
-
-          {/* Credenciales de prueba */}
-          <div className="mt-6 p-4 bg-primary-50 rounded-lg">
-            <p className="text-xs font-semibold text-blue-900 mb-2">Credenciales de prueba:</p>
-            <div className="text-xs text-blue-700 space-y-1">
-              <p><strong>Admin:</strong> admin@pokestore.com / admin123</p>
-              <p><strong>Cliente:</strong> cliente@test.com / test123</p>
-            </div>
           </div>
         </CardContent>
       </Card>

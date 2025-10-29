@@ -7,12 +7,15 @@ export async function POST(request: Request) {
     // Ir a crear la orden
     const body = await request.json()
 
-    const orderResponse = await fetch('/api/orders', {
+    const origin = new URL(request.url).origin
+    const orderResponse = await fetch(`${origin}/api/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        cookie: request.headers.get('cookie') || '',
       },
-      body: body,
+      body: JSON.stringify(body),
+      cache: 'no-store',
     })
     const orderData = await orderResponse.json();
     if (!orderResponse.ok) {
