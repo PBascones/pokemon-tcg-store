@@ -1,10 +1,11 @@
 'use client'
 
 import { formatPrice, convertToARS } from '@/lib/utils'
+import { useExchangeRate } from '@/contexts/exchange-rate-context'
 
 interface PriceDisplayProps {
   usdPrice: number
-  exchangeRate?: number
+  exchangeRate?: number // Opcional, si no se pasa usa el del Context
   size?: 'sm' | 'md' | 'lg'
   className?: string
   layout?: 'inline' | 'stacked'
@@ -12,11 +13,15 @@ interface PriceDisplayProps {
 
 export function PriceDisplay({ 
   usdPrice, 
-  exchangeRate, 
+  exchangeRate: exchangeRateProp, 
   size = 'md',
   className = '',
   layout = 'inline'
 }: PriceDisplayProps) {
+  // Usar exchangeRate del Context si no se pasa como prop
+  const exchangeRateFromContext = useExchangeRate()
+  const exchangeRate = exchangeRateProp ?? exchangeRateFromContext
+  
   const arsAmount = convertToARS(usdPrice, exchangeRate)
   const arsFormatted = formatPrice(arsAmount)
   const usdFormatted = `${usdPrice.toFixed(0)} USD`

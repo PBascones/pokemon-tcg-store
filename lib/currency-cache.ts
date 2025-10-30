@@ -97,10 +97,18 @@ export function convertARSToUSD(arsAmount: number): number {
 
 // Función para obtener precio USD de forma confiable en servidor
 export async function getUSDPriceForSSR(): Promise<number> {
+  // 1. OPTIMIZACIÓN: Chequear cache en memoria primero (si está inicializada y fresca)
+  if (!isCacheExpired() && currencyCache.usdPrice > 1000) {
+    console.log('✅ [SSR] Usando precio USD desde cache en memoria:', currencyCache.usdPrice)
+    return currencyCache.usdPrice
+  }
+  
+  // 2. GARANTÍA: Fetchear de la API si cache expiró o no está inicializada
   try {
+    console.log('🔄 [SSR] Fetching precio USD desde API externa...')
     const response = await fetch('https://criptoya.com/api/dolar', {
       cache: 'force-cache',
-      next: { revalidate: 1800 } // 30 minutos
+      next: { revalidate: 1800 } // 30 minutos - Next.js cache
     })
     
     if (!response.ok) {
@@ -110,25 +118,36 @@ export async function getUSDPriceForSSR(): Promise<number> {
     const data = await response.json()
     const price = data.blue?.ask || data.oficial?.price || 1500
     
-    // Actualizar cache también
+    // Actualizar cache en memoria para próximos requests
     currencyCache = {
       usdPrice: price,
       lastUpdated: Date.now(),
       isUpdating: false
     }
     
+    console.log('✅ [SSR] Precio USD actualizado:', price)
     return price
   } catch (error) {
     console.error('❌ Error obteniendo precio USD para SSR:', error)
-    // Fallback: usar valor por defecto conservador
+    
+    // Fallback: usar cache si está disponible, sino valor conservador
+    if (currencyCache.usdPrice > 1000) {
+      console.log('⚠️ [SSR] Usando último valor conocido del cache:', currencyCache.usdPrice)
+      return currencyCache.usdPrice
+    }
+    
+    console.log('⚠️ [SSR] Usando valor fallback: 1200')
     return 1200 // Valor más realista que 1000
   }
 }
+// NOTA: Ya no inicializamos la cache en el cliente porque:
+// 1. El servidor obtiene el exchangeRate con getUSDPriceForSSR()
+// 2. Se pasa a través de ExchangeRateProvider (Context API)
+// 3. Todos los componentes usan el valor del servidor (consistente y sin fetches innecesarios)
 
-// Inicializar cache al importar el módulo (solo para cliente)
-if (typeof window !== 'undefined') {
-  // Solo en cliente, actualizar en background
-  updateUSDPrice().catch(() => {
-    console.warn('⚠️ No se pudo inicializar el precio USD en cliente')
-  })
-}
+// Si en el futuro necesitas usar getUSDPriceSync() sin Context, puedes descomentar esto:
+// if (typeof window !== 'undefined') {
+//   updateUSDPrice().catch(() => {
+//     console.warn('⚠️ No se pudo inicializar el precio USD en cliente')
+//   })
+// }
