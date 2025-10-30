@@ -19,7 +19,6 @@ export async function markOrderAsPaid(orderId: string) {
     }
 
     // Verificar que sea admin (ajusta según tu lógica de roles)
-    console.log('session.user', session.user)
     const isAdmin = (session.user as any).role === 'ADMIN'
     
     if (!isAdmin) {
