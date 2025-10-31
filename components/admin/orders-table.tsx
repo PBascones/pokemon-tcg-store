@@ -1,16 +1,33 @@
 'use client'
 
-import Link from 'next/link'
+import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { DataTable, ColumnDef } from '@/components/ui/data-table'
 import { formatPrice } from '@/lib/utils'
 import { Eye } from 'lucide-react'
 import { MarkOrderAsPaidButton } from '@/components/admin/mark-order-paid-button'
+import { OrderDetailsModal } from '@/components/admin/order-details-modal'
+
+interface ProductImage {
+  id: string
+  url: string
+  alt: string | null
+  order: number
+}
+
+interface Product {
+  id: string
+  name: string
+  slug: string
+  images: ProductImage[]
+}
 
 interface OrderItem {
   id: string
+  name: string
   quantity: number
   price: number
+  product: Product
 }
 
 interface Order {
@@ -19,6 +36,9 @@ interface Order {
   shippingName: string
   email: string
   total: number
+  subtotal: number
+  shipping: number
+  tax: number
   paymentStatus: string
   status: string
   paymentMethod: string | null
@@ -60,6 +80,8 @@ const getOrderStatusColor = (status: string) => {
 }
 
 export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+
   const columns: ColumnDef<Order>[] = [
     {
       key: 'orderNumber',
@@ -117,13 +139,13 @@ export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
       header: '⚙️ Acciones',
       cell: (order) => (
         <div className="flex items-center gap-2">
-          <Link
-            href={`/admin/ordenes/${order.id}`}
-            className="text-primary-600 hover:text-primary-900 inline-flex items-center gap-1"
+          <button
+            onClick={() => setSelectedOrder(order)}
+            className="text-primary-600 hover:text-primary-900 inline-flex items-center gap-1 hover:underline cursor-pointer"
           >
             <Eye className="h-4 w-4" />
             Ver
-          </Link>
+          </button>
           <MarkOrderAsPaidButton
             orderId={order.id}
             orderNumber={order.orderNumber}
@@ -136,12 +158,22 @@ export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
   ]
 
   return (
-    <DataTable
-      columns={columns}
-      data={orders}
-      getRowKey={(order) => order.id}
-      itemsPerPage={itemsPerPage}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={orders}
+        getRowKey={(order) => order.id}
+        itemsPerPage={itemsPerPage}
+      />
+      
+      {selectedOrder && (
+        <OrderDetailsModal
+          order={selectedOrder}
+          isOpen={!!selectedOrder}
+          onClose={() => setSelectedOrder(null)}
+        />
+      )}
+    </>
   )
 }
 
