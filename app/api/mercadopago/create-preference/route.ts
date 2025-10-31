@@ -70,7 +70,6 @@ export async function POST(request: Request) {
       },
       auto_return: 'approved',
       external_reference: order.id,
-      notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/mercadopago/webhook`,
       statement_descriptor: 'POKESTORE',
     }
 
