@@ -70,14 +70,52 @@ export function formatPriceWithBothCurrencies(usdPrice: number, exchangeRate?: n
 }
 
 // Función para pre-calcular precios en server components
-export function calculateProductPrices(usdPrice: number, compareAtPrice: number | null, exchangeRate: number) {
-  const prices = formatPriceWithBothCurrencies(usdPrice, exchangeRate)
-  const comparePrices = compareAtPrice ? formatPriceWithBothCurrencies(compareAtPrice, exchangeRate) : null
+export function calculateProductPrices(
+  price: number,
+  compareAtPrice: number | null,
+  openingPrice: number | null, 
+  exchangeRate: number,
+  isOpening: boolean = false
+) {
+  let displayPrice: ReturnType<typeof formatPriceWithBothCurrencies>
+  let strikePrice: ReturnType<typeof formatPriceWithBothCurrencies> | null = null
+  let discount = 0
+
+  // Lógica de precios según las reglas:
+  // 1. Si compareAtPrice es null, y openingPrice es null → mostrar Price
+  if (!compareAtPrice && !openingPrice) {
+    displayPrice = formatPriceWithBothCurrencies(price, exchangeRate)
+  }
+  // 2. Si compareAtPrice tiene valor, y openingPrice es null → mostrar compareAtPrice tachado, y Price
+  else if (compareAtPrice && !openingPrice) {
+    displayPrice = formatPriceWithBothCurrencies(price, exchangeRate)
+    strikePrice = formatPriceWithBothCurrencies(compareAtPrice, exchangeRate)
+    discount = Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+  }
+  // 3. Si openingPrice tiene valor, e isOpening es true → mostrar openingPrice y tachar Price
+  // 4. Si openingPrice tiene valor e isOpening es true, y compareAtPrice tiene valor → mostrar openingPrice y tachar compareAtPrice
+  else if (openingPrice && isOpening) {
+    displayPrice = formatPriceWithBothCurrencies(openingPrice, exchangeRate)
+    // Si hay compareAtPrice, tachar compareAtPrice, sino tachar price
+    const priceToStrike = compareAtPrice || price
+    strikePrice = formatPriceWithBothCurrencies(priceToStrike, exchangeRate)
+    discount = Math.round(((priceToStrike - openingPrice) / priceToStrike) * 100)
+  }
+  // Si openingPrice existe pero isOpening es false, ignorar openingPrice
+  else {
+    if (compareAtPrice) {
+      displayPrice = formatPriceWithBothCurrencies(price, exchangeRate)
+      strikePrice = formatPriceWithBothCurrencies(compareAtPrice, exchangeRate)
+      discount = Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+    } else {
+      displayPrice = formatPriceWithBothCurrencies(price, exchangeRate)
+    }
+  }
   
   return {
-    main: prices,
-    compare: comparePrices,
-    discount: compareAtPrice ? Math.round(((compareAtPrice - usdPrice) / compareAtPrice) * 100) : 0
+    displayPrice,
+    strikePrice,
+    discount
   }
 }
 

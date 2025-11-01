@@ -35,7 +35,13 @@ export default async function HomePage() {
   // Pre-calcular precios para evitar hidratación mismatch
   const productsWithPrices = products.map(product => ({
     ...product,
-    calculatedPrices: calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
+    calculatedPrices: calculateProductPrices(
+      product.price, 
+      product.compareAtPrice, 
+      product.openingPrice, 
+      exchangeRate,
+      product.isOpening
+    )
   }))
 
   // Obtener sets

@@ -6,7 +6,7 @@ import { AddToCartButton } from '@/components/store/add-to-cart-button'
 import { ProductImageGallery } from '@/components/store/product-image-gallery'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
-import { Package, Shield, Truck } from 'lucide-react'
+import { Package, Shield, Truck, Video } from 'lucide-react'
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
@@ -37,13 +37,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   // Pre-calcular precios
-  const prices = calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
+  const prices = calculateProductPrices(
+    product.price, 
+    product.compareAtPrice, 
+    product.openingPrice, 
+    exchangeRate,
+    product.isOpening
+  )
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Image Gallery with Carousel */}
-        <ProductImageGallery 
+        <ProductImageGallery
           images={product.images}
           productName={product.name}
           discount={prices.discount}
@@ -65,23 +71,33 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mb-6">
             <div className="flex items-baseline gap-3 mb-2">
               <span className="text-4xl font-bold text-primary-600">
-                {prices.main.ars}
+                {prices.displayPrice.ars}
               </span>
-              {prices.compare && (
+              {prices.strikePrice && (
                 <span className="text-xl text-gray-400 line-through">
-                  {prices.compare.ars}
+                  {prices.strikePrice.ars}
                 </span>
               )}
             </div>
             <div className="text-lg text-gray-600 mb-2">
-              {prices.main.usd}
-              {prices.compare && (
+              {prices.displayPrice.usd}
+              {prices.strikePrice && (
                 <span className="text-sm text-gray-400 line-through ml-2">
-                  {prices.compare.usd}
+                  {prices.strikePrice.usd}
                 </span>
               )}
             </div>
-            
+
+            {/*  Leyenda de Aperturas */}
+            {product.isOpening && (
+              <div className="mb-3 inline-flex items-center gap-2 bg-purple-50 border border-purple-200 rounded-lg px-3 py-2">
+                <Video className="h-4 w-4 text-purple-600" />
+                <span className="text-md font-medium text-purple-700">
+                  Precio exclusivo de aperturas en vivo
+                </span>
+              </div>
+            )} 
+
             {/* Stock */}
             <div className="flex items-center gap-2">
               {product.stock > 0 ? (

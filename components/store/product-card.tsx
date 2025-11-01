@@ -15,13 +15,15 @@ interface ProductCardProps {
     slug: string
     price: number
     compareAtPrice?: number | null
+    openingPrice?: number | null
     images: { url: string; alt?: string | null }[]
     rarity?: string | null
     stock: number
     featured: boolean
+    isOpening: boolean
     calculatedPrices?: {
-      main: { usd: string; ars: string; arsAmount: number }
-      compare: { usd: string; ars: string; arsAmount: number } | null
+      displayPrice: { usd: string; ars: string; arsAmount: number }
+      strikePrice: { usd: string; ars: string; arsAmount: number } | null
       discount: number
     }
   }
@@ -30,8 +32,8 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   // Usar precios pre-calculados si están disponibles, sino calcular dinámicamente
   const prices = product.calculatedPrices || {
-    main: formatPriceWithBothCurrencies(product.price),
-    compare: product.compareAtPrice ? formatPriceWithBothCurrencies(product.compareAtPrice) : null,
+    displayPrice: formatPriceWithBothCurrencies(product.price),
+    strikePrice: product.compareAtPrice ? formatPriceWithBothCurrencies(product.compareAtPrice) : null,
     discount: product.compareAtPrice 
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
       : 0
@@ -47,6 +49,7 @@ export function ProductCard({ product }: ProductCardProps) {
               images={product.images as Array<{ url: string; alt?: string | null; id?: string }>}
               productName={product.name}
               discount={prices.discount}
+              isOpening={product.isOpening}
               variant="card"
               showThumbnails={false}
               additionalBadges={
@@ -82,16 +85,16 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-lg font-bold text-primary-600">
-                  {prices.main.ars}
+                  {prices.displayPrice.ars}
                 </span>
-                {prices.compare && (
+                {prices.strikePrice && (
                   <span className="text-sm text-gray-400 line-through">
-                    {prices.compare.ars}
+                    {prices.strikePrice.ars}
                   </span>
                 )}
               </div>
               <div className="text-xs text-gray-500">
-                {prices.main.usd}
+                {prices.displayPrice.usd}
               </div>
             </div>
           </div>

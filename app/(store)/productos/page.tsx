@@ -69,7 +69,13 @@ export default async function ProductsPage({
   // Pre-calcular precios
   const productsWithPrices = products.map(product => ({
     ...product,
-    calculatedPrices: calculateProductPrices(product.price, product.compareAtPrice, exchangeRate)
+    calculatedPrices: calculateProductPrices(
+      product.price, 
+      product.compareAtPrice, 
+      product.openingPrice, 
+      exchangeRate,
+      product.isOpening
+    )
   }))
 
   const totalPages = Math.ceil(total / limit)

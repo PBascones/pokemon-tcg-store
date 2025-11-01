@@ -15,6 +15,7 @@ interface ProductImageGalleryProps {
   images: ProductImage[]
   productName: string
   discount?: number
+  isOpening?: boolean
   variant?: 'card' | 'detail' // Nueva prop para controlar el estilo
   showThumbnails?: boolean // Nueva prop para mostrar/ocultar thumbnails
   additionalBadges?: React.ReactNode // Badges adicionales a mostrar
@@ -24,6 +25,7 @@ export function ProductImageGallery({
   images,
   productName,
   discount = 0,
+  isOpening = false,
   variant = 'detail',
   showThumbnails = true,
   additionalBadges,
@@ -93,7 +95,7 @@ export function ProductImageGallery({
         <div className={`${badgeClass.replace('absolute', 'absolute')} flex flex-col gap-2`}>
           {discount > 0 && (
             <Badge variant="destructive">
-              -{discount}%
+              -{discount}% {isOpening && '- Promo Aperturas'}
             </Badge>
           )}
           {additionalBadges}

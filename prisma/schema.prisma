@@ -137,6 +137,7 @@ model Product {
   // Precio e inventario
   price       Float
   compareAtPrice Float? // Precio anterior para mostrar descuentos
+  openingPrice Float? // Precio de aperturas
   stock       Int      @default(0)
   
   // Imágenes
@@ -154,6 +155,7 @@ model Product {
   // SEO y visibilidad
   featured    Boolean  @default(false)
   isActive    Boolean  @default(true)
+  isOpening   Boolean  @default(false)
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

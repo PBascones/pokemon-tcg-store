@@ -36,12 +36,14 @@ interface Product {
   description: string | null
   price: number
   compareAtPrice: number | null
+  openingPrice: number | null
   stock: number
   expansionId: string
   setId: string | null
   language: string | null
   featured: boolean
   isActive: boolean
+  isOpening: boolean
   images: ProductImage[]
 }
 
@@ -65,12 +67,14 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
     description: product?.description || '',
     price: product?.price || 0,
     compareAtPrice: product?.compareAtPrice || 0,
+    openingPrice: product?.openingPrice || 0,
     stock: product?.stock || 0,
     expansionId: product?.expansionId || expansions[0]?.id || '',
     setId: product?.setId || '',
     language: product?.language || 'Inglés',
     featured: product?.featured || false,
     isActive: product?.isActive ?? true,
+    isOpening: product?.isOpening ?? false,
   })
   
   // Filtrar sets por expansión seleccionada
@@ -359,7 +363,7 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
               <CardTitle>Precio y Stock</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
                     Precio (USD) *
@@ -368,29 +372,47 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
                     name="price"
                     type="number"
                     min="0"
-                    step="0.01"
+                    step="1"
                     value={formData.price}
                     onChange={handleChange}
                     required
-                    placeholder="5500"
+                    placeholder="10"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Precio Comparación (opcional)
+                    Precio Comparación
                   </label>
                   <Input
                     name="compareAtPrice"
                     type="number"
                     min="0"
-                    step="0.01"
+                    step="1"
                     value={formData.compareAtPrice || ''}
                     onChange={handleChange}
-                    placeholder="6500"
+                    placeholder="0"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Para mostrar descuento tachado
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Precio de Aperturas
+                  </label>
+                  <Input
+                    name="openingPrice"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formData.openingPrice || ''}
+                    onChange={handleChange}
+                    placeholder="0"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Precio exclusivo de aperturas en vivo
                   </p>
                 </div>
               </div>
@@ -570,6 +592,22 @@ export function ProductForm({ product, expansions, sets }: ProductFormProps) {
               </label>
               <p className="text-xs text-gray-500">
                 Se muestra en la página principal
+              </p>
+
+              <label className="flex items-center gap-3 mt-4">
+                <input
+                  type="checkbox"
+                  name="isOpening"
+                  checked={formData.isOpening}
+                  onChange={handleChange}
+                  className="w-4 h-4 text-primary-600 rounded focus:ring-primary-500"
+                />
+                <span className="text-sm font-medium">
+                  Apertura activa
+                </span>
+              </label>
+              <p className="text-xs text-gray-500">
+                Tiene un precio promocional para aperturas
               </p>
             </CardContent>
           </Card>

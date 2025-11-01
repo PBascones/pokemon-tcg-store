@@ -20,12 +20,14 @@ export async function POST(request: Request) {
       description,
       price,
       compareAtPrice,
+      openingPrice,
       stock,
       expansionId,
       setId,
       language,
       featured,
       isActive,
+      isOpening,
       images,
     } = body
 
@@ -65,12 +67,14 @@ export async function POST(request: Request) {
         description: description || null,
         price: parseFloat(price),
         compareAtPrice: compareAtPrice ? parseFloat(compareAtPrice) : null,
+        openingPrice: openingPrice ? parseFloat(openingPrice) : null,
         stock: parseInt(stock),
         expansionId,
         setId: setId || null,
         language: language || null,
         featured: featured || false,
         isActive: isActive !== undefined ? isActive : true,
+        isOpening: isOpening || false,
         images: {
           create: images.map((img: any, index: number) => ({
             url: img.url,
