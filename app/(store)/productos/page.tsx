@@ -6,6 +6,7 @@ import { calculateProductPrices } from '@/lib/utils'
 
 interface SearchParams {
   expansion?: string
+  set?: string
   search?: string
   page?: string
 }
@@ -34,6 +35,12 @@ export default async function ProductsPage({
     }
   }
 
+  if (params.set) {
+    where.set = {
+      slug: params.set,
+    }
+  }
+
   if (params.search) {
     where.OR = [
       { name: { contains: params.search, mode: 'insensitive' } },
@@ -43,7 +50,7 @@ export default async function ProductsPage({
   }
 
   // Get products and count
-  const [products, total, expansions] = await Promise.all([
+  const [products, total, expansions, sets] = await Promise.all([
     prisma.product.findMany({
       where,
       include: {
@@ -63,7 +70,16 @@ export default async function ProductsPage({
       take: limit,
     }),
     prisma.product.count({ where }),
-    prisma.expansion.findMany(),
+    prisma.expansion.findMany({
+      orderBy: {
+        releaseDate: { sort: 'desc', nulls: 'last' },
+      },
+    }),
+    prisma.set.findMany({
+      orderBy: {
+        releaseDate: { sort: 'desc', nulls: 'last' },
+      },
+    }),
   ])
 
   // Pre-calcular precios
@@ -88,12 +104,108 @@ export default async function ProductsPage({
           <Card className="p-6">
             <h2 className="text-xl font-bold mb-4">Filtros</h2>
 
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold mb-2">Expansiones</h3>
-                <div className="space-y-2">
+            {/* Search */}
+            <div className="mb-6">
+              <form action="/productos" method="get" className="space-y-2">
+                <input
+                  type="text"
+                  id="search"
+                  name="search"
+                  defaultValue={params.search}
+                  placeholder="Nombre del producto..."
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+                {params.expansion && (
+                  <input type="hidden" name="expansion" value={params.expansion} />
+                )}
+                {params.set && (
+                  <input type="hidden" name="set" value={params.set} />
+                )}
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 bg-primary-600 cursor-pointer text-white rounded-lg hover:bg-primary-700 transition"
+                >
+                  Buscar
+                </button>
+                {params.search && (
                   <a
-                    href="/productos"
+                    href={`/productos?${new URLSearchParams(
+                      Object.fromEntries(
+                        Object.entries(params).filter(([key]) => key !== 'search' && key !== 'page')
+                      )
+                    )}`}
+                    className="block text-center text-sm text-gray-600 hover:text-primary-600"
+                  >
+                    Limpiar búsqueda
+                  </a>
+                )}
+              </form>
+            </div>
+
+            <div className="space-y-4">
+              {/* Sets Filter */}
+              <details className="group">
+                <summary className="font-semibold mb-2 cursor-pointer flex items-center justify-between hover:text-primary-600 transition">
+                  <span>Sets</span>
+                  <svg
+                    className="w-4 h-4 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="space-y-2 mt-2 max-h-64 overflow-y-auto">
+                  <a
+                    href={`/productos?${new URLSearchParams(
+                      Object.fromEntries(
+                        Object.entries(params).filter(([key]) => key !== 'set' && key !== 'page')
+                      )
+                    )}`}
+                    className={`block text-sm py-1 hover:text-primary-600 transition ${!params.set ? 'text-primary-600 font-semibold' : ''
+                      }`}
+                  >
+                    Todos
+                  </a>
+                  {sets.map((set) => (
+                    <a
+                      key={set.id}
+                      href={`/productos?${new URLSearchParams({
+                        ...Object.fromEntries(
+                          Object.entries(params).filter(([key]) => key !== 'page')
+                        ),
+                        set: set.slug,
+                      })}`}
+                      className={`block text-sm py-1 hover:text-primary-600 transition ${params.set === set.slug ? 'text-primary-600 font-semibold' : ''
+                        }`}
+                    >
+                      {set.name}
+                    </a>
+                  ))}
+                </div>
+              </details>
+
+              {/* Expansions Filter */}
+              <details className="group">
+                <summary className="font-semibold mb-2 cursor-pointer flex items-center justify-between hover:text-primary-600 transition">
+                  <span>Expansiones</span>
+                  <svg
+                    className="w-4 h-4 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="space-y-2 mt-2">
+                  <a
+                    href={`/productos?${new URLSearchParams(
+                      Object.fromEntries(
+                        Object.entries(params).filter(([key]) => key !== 'expansion' && key !== 'page')
+                      )
+                    )}`}
                     className={`block text-sm py-1 hover:text-primary-600 transition ${!params.expansion ? 'text-primary-600 font-semibold' : ''
                       }`}
                   >
@@ -102,7 +214,12 @@ export default async function ProductsPage({
                   {expansions.map((expansion) => (
                     <a
                       key={expansion.id}
-                      href={`/productos?expansion=${expansion.slug}`}
+                      href={`/productos?${new URLSearchParams({
+                        ...Object.fromEntries(
+                          Object.entries(params).filter(([key]) => key !== 'page')
+                        ),
+                        expansion: expansion.slug,
+                      })}`}
                       className={`block text-sm py-1 hover:text-primary-600 transition ${params.expansion === expansion.slug ? 'text-primary-600 font-semibold' : ''
                         }`}
                     >
@@ -110,7 +227,7 @@ export default async function ProductsPage({
                     </a>
                   ))}
                 </div>
-              </div>
+              </details>
             </div>
           </Card>
         </aside>
@@ -120,13 +237,20 @@ export default async function ProductsPage({
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">
-                {params.expansion
+                {params.set
+                  ? sets.find((s) => s.slug === params.set)?.name || 'Productos'
+                  : params.expansion
                   ? expansions.find((e) => e.slug === params.expansion)?.name || 'Productos'
                   : 'Todos los Productos'}
               </h1>
               <p className="text-gray-600">
                 {total} {total === 1 ? 'producto encontrado' : 'productos encontrados'}
               </p>
+              {params.search && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Resultados para: &quot;{params.search}&quot;
+                </p>
+              )}
             </div>
           </div>
 
