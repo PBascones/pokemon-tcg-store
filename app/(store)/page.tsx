@@ -24,10 +24,11 @@ export default async function HomePage() {
           order: 'asc',
         },
       },
+      set: true,
     },
     orderBy: [
       { featured: 'desc' },
-      { createdAt: 'desc' },
+      { set: { releaseDate: { sort: 'desc', nulls: 'last' } } },
     ],
     take: 8,
   })

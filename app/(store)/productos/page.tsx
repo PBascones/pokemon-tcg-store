@@ -57,7 +57,7 @@ export default async function ProductsPage({
       },
       orderBy: [
         { featured: 'desc' },
-        { createdAt: 'desc' },
+        { set: { releaseDate: { sort: 'desc', nulls: 'last' } } },
       ],
       skip,
       take: limit,
