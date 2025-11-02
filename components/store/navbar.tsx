@@ -39,12 +39,12 @@ export function Navbar() {
               <Link href="/productos" className="transition hover:text-gray-300">
                 Productos
               </Link>
-              <Link href="" className="transition hover:text-gray-300">
+              {/* <Link href="" className="transition hover:text-gray-300">
                 Expansiones
               </Link>
               <Link href="" className="transition hover:text-gray-300">
                 Ofertas
-              </Link>
+              </Link> */}
               <Link href="" className="transition hover:text-gray-300">
                 Nosotros
               </Link>
@@ -135,12 +135,12 @@ export function Navbar() {
               <Link href="/productos" className="font-medium hover:font-bold">
                 Productos
               </Link>
-              <Link href="" className="font-medium hover:font-bold">
+              {/* <Link href="" className="font-medium hover:font-bold">
                 Expansiones
               </Link>
               <Link href="/ofertas" className="font-medium hover:font-bold">
                 Ofertas
-              </Link>
+              </Link> */}
               <Link href="/nosotros" className="font-medium hover:font-bold">
                 Nosotros
               </Link>
