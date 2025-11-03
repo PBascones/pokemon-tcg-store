@@ -45,7 +45,7 @@ export function Navbar() {
               <Link href="" className="transition hover:text-gray-300">
                 Ofertas
               </Link> */}
-              <Link href="" className="transition hover:text-gray-300">
+              <Link href="/nosotros" className="transition hover:text-gray-300">
                 Nosotros
               </Link>
             </div>
