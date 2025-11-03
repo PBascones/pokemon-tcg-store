@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 
 export default function NosotrosPage() {
   return (
-    <div className="relative h-screen overflow-hidden">
+    <div className="relative min-h-screen lg:h-screen lg:overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -18,12 +18,12 @@ export default function NosotrosPage() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4">
+      <div className="relative z-10 min-h-screen lg:h-full flex items-center justify-center px-4 py-8 lg:py-0">
         <div className="w-full max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Image Section */}
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-md aspect-square rounded-2xl overflow-hidden shadow-2xl">
+            <div className="flex justify-center order-1 lg:order-none">
+              <div className="relative w-full max-w-sm lg:max-w-md aspect-square rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="/images/about-us-picture.jpeg"
                   alt="Joaco y Ceci - PokeAddiction"
@@ -35,12 +35,12 @@ export default function NosotrosPage() {
             </div>
 
             {/* Text Section */}
-            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl border border-orange-200/30">
-              <h1 className="text-3xl md:text-4xl font-bold text-primary-600 mb-4">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl border border-orange-200/30 order-2 lg:order-none">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-600 mb-4">
                 Nosotros
               </h1>
               
-              <div className="space-y-3 text-gray-900 text-base md:text-xl leading-relaxed">
+              <div className="space-y-3 text-gray-900 text-sm md:text-base lg:text-xl leading-relaxed">
                 <p>
                   ¡Hola! Somos Joaco y Ceci y queremos compartir con vos nuestra pasión por el Mundo Pokémon.
                 </p>
