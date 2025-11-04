@@ -173,6 +173,19 @@ export function Footer() {
               Política de Privacidad
             </Link>
           </div>
+          <div className="mt-4 text-xs text-gray-500">
+            <p>
+              Crafted with ❤️ by{' '}
+              <a
+                href="https://www.linkedin.com/in/pablo-bascones-busch/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors underline"
+              >
+                Pablo Bascones Busch
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
