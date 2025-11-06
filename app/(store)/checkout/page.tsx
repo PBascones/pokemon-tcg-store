@@ -367,7 +367,7 @@ export default function CheckoutPage() {
                   type="submit"
                   className="w-full"
                   size="lg"
-                  disabled={loading || whatsappLoading}
+                  disabled={loading || whatsappLoading || true}
                 >
                   {loading ? (
                     <>
