@@ -106,6 +106,8 @@ export function ProductCard({ product }: ProductCardProps) {
               id: product.id,
               name: product.name,
               price: product.price,
+              openingPrice: product.openingPrice,
+              isOpening: product.isOpening,
               image: product.images[0]?.url || '/placeholder.png',
               slug: product.slug,
               stock: product.stock,

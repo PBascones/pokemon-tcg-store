@@ -10,6 +10,8 @@ interface AddToCartButtonProps {
     id: string
     name: string
     price: number
+    openingPrice?: number | null
+    isOpening?: boolean
     image: string
     slug: string
     stock: number
@@ -32,7 +34,16 @@ export function AddToCartButton({
 
   const handleAddToCart = (e?: React.MouseEvent) => {
     e?.preventDefault() // Prevenir navegación cuando se usa dentro de un Link
-    addItem(product)
+    
+    // Calcular el precio correcto según isOpening y openingPrice
+    const finalPrice = product.isOpening && product.openingPrice 
+      ? product.openingPrice 
+      : product.price
+    
+    addItem({
+      ...product,
+      price: finalPrice
+    })
     
     // Toast elaborado solo en modo 'default' (página de detalle)
     if (variant === 'default') {

@@ -80,10 +80,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               )}
             </div>
             <div className="text-lg text-gray-600 mb-2">
-              {prices.displayPrice.usd}
+              {prices.displayPrice.usd} USD
               {prices.strikePrice && (
                 <span className="text-sm text-gray-400 line-through ml-2">
-                  {prices.strikePrice.usd}
+                  {prices.strikePrice.usd} USD
                 </span>
               )}
             </div>
@@ -144,6 +144,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
               id: product.id,
               name: product.name,
               price: product.price,
+              openingPrice: product.openingPrice,
+              isOpening: product.isOpening,
               image: product.images[0]?.url || '/placeholder.png',
               slug: product.slug,
               stock: product.stock,
