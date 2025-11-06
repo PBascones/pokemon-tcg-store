@@ -44,7 +44,6 @@ async function updateUSDPrice(): Promise<number> {
     }
     return newPrice
   } catch (error) {
-    console.error('❌ Error actualizando precio USD:', error)
     currencyCache.isUpdating = false
     
     // Si falla, usar el último valor conocido o fallback
@@ -98,15 +97,25 @@ export function convertARSToUSD(arsAmount: number): number {
 // Función para obtener precio USD de forma confiable en servidor
 export async function getUSDPriceForSSR(): Promise<number> {
   // 1. OPTIMIZACIÓN: Chequear cache en memoria primero (si está inicializada y fresca)
+  // Esto garantiza que TODAS las páginas usen el MISMO valor durante el mismo request
   if (!isCacheExpired() && currencyCache.usdPrice > 1000) {
     return currencyCache.usdPrice
   }
   
-  // 2. GARANTÍA: Fetchear de la API si cache expiró o no está inicializada
+  // 2. Si ya se está actualizando, esperar un poco y retornar el cache actual
+  if (currencyCache.isUpdating && currencyCache.usdPrice > 0) {
+    return currencyCache.usdPrice
+  }
+  
+  // 3. Marcar como actualizando para evitar múltiples fetches simultáneos
+  currencyCache.isUpdating = true
+  
+  // 4. GARANTÍA: Fetchear de la API si cache expiró o no está inicializada
   try {
     const response = await fetch('https://criptoya.com/api/dolar', {
-      cache: 'force-cache',
-      next: { revalidate: 1800 } // 30 minutos - Next.js cache
+      // Usar 'no-store' para garantizar que obtenemos el valor más reciente
+      // y luego lo cacheamos en memoria nosotros mismos
+      cache: 'no-store'
     })
     
     if (!response.ok) {
@@ -117,18 +126,18 @@ export async function getUSDPriceForSSR(): Promise<number> {
     const price = data.blue?.ask || data.oficial?.price || 1500
     
     // Actualizar cache en memoria para próximos requests
+    // Este cache es compartido por TODAS las páginas en el mismo proceso
     currencyCache = {
       usdPrice: price,
       lastUpdated: Date.now(),
       isUpdating: false
     }
-    
     return price
   } catch (error) {
-    console.error('❌ Error obteniendo precio USD para SSR:', error)
+    currencyCache.isUpdating = false
     
     // Fallback: usar cache si está disponible, sino valor conservador
-    if (currencyCache.usdPrice > 1000) {
+    if (currencyCache.usdPrice > 0) {
       return currencyCache.usdPrice
     }
     
