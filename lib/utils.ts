@@ -27,7 +27,7 @@ export function generateOrderNumber(): string {
     String.fromCharCode(65 + Math.floor(Math.random() * 26))
   ).join('')
   
-  return `PKM-PKADD-${randomChars}-${month}${day}${hour}${minute}`
+  return `PKADD-${randomChars}-${month}${day}${hour}${minute}`
 }
 
 export function slugify(text: string): string {
