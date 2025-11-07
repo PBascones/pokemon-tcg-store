@@ -14,9 +14,20 @@ export function formatPrice(price: number, currency?: string): string {
 }
 
 export function generateOrderNumber(): string {
-  const timestamp = Date.now().toString(36).toUpperCase()
-  const random = Math.random().toString(36).substring(2, 7).toUpperCase()
-  return `PKM-${timestamp}-${random}`
+  const now = new Date()
+  
+  // Formato: MM DD HH mm (8 dígitos numéricos)
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  const hour = String(now.getHours()).padStart(2, '0')
+  const minute = String(now.getMinutes()).padStart(2, '0')
+  
+  // 3 caracteres aleatorios A-Z (17,576 combinaciones posibles)
+  const randomChars = Array.from({ length: 3 }, () => 
+    String.fromCharCode(65 + Math.floor(Math.random() * 26))
+  ).join('')
+  
+  return `PKM-PKADD-${randomChars}-${month}${day}${hour}${minute}`
 }
 
 export function slugify(text: string): string {
