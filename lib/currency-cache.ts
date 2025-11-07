@@ -9,7 +9,7 @@ interface CurrencyCache {
 
 // Cache global en memoria
 let currencyCache: CurrencyCache = {
-  usdPrice: 1000, // Valor por defecto fallback
+  usdPrice: 1500, // Valor por defecto fallback
   lastUpdated: 0,
   isUpdating: false
 }
@@ -47,7 +47,7 @@ async function updateUSDPrice(): Promise<number> {
     currencyCache.isUpdating = false
     
     // Si falla, usar el último valor conocido o fallback
-    return currencyCache.usdPrice || 1000
+    return currencyCache.usdPrice || 1500
   }
 }
 
@@ -141,7 +141,7 @@ export async function getUSDPriceForSSR(): Promise<number> {
       return currencyCache.usdPrice
     }
     
-    return 1200 // Valor más realista que 1000
+    return 1500 // Valor más realista que 1000
   }
 }
 // NOTA: Ya no inicializamos la cache en el cliente porque:

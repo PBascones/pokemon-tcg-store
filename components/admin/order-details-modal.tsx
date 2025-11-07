@@ -31,6 +31,7 @@ interface Order {
   id: string
   orderNumber: string
   shippingName: string
+  phone: string | null
   email: string
   total: number
   subtotal: number
@@ -92,8 +93,8 @@ export function OrderDetailsModal({ order, isOpen, onClose }: OrderDetailsModalP
                 <p className="font-medium">{order.shippingName}</p>
               </div>
               <div>
-                <span className="text-gray-500">Email:</span>
-                <p className="font-medium">{order.email}</p>
+                <span className="text-gray-500">Teléfono:</span>
+                <p className="font-medium">{order.phone}</p>
               </div>
             </div>
           </div>

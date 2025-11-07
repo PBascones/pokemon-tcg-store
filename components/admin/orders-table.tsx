@@ -34,6 +34,7 @@ interface Order {
   id: string
   orderNumber: string
   shippingName: string
+  phone: string | null
   email: string
   total: number
   subtotal: number
@@ -49,19 +50,6 @@ interface Order {
 interface OrdersTableProps {
   orders: Order[]
   itemsPerPage?: number
-}
-
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'PAID':
-      return 'success'
-    case 'PENDING':
-      return 'warning'
-    case 'FAILED':
-      return 'destructive'
-    default:
-      return 'default'
-  }
 }
 
 const getOrderStatusColor = (status: string) => {
@@ -96,7 +84,7 @@ export function OrdersTable({ orders, itemsPerPage = 10 }: OrdersTableProps) {
       cell: (order) => (
         <div className="text-sm">
           <div className="font-medium">{order.shippingName}</div>
-          <div className="text-gray-500">{order.email}</div>
+          <div className="text-gray-500">{order.phone}</div>
         </div>
       )
     },

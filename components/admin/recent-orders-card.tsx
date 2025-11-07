@@ -23,6 +23,7 @@ interface Order {
   paymentStatus: string
   paymentMethod: string | null
   user: User
+  phone: string | null
   items: OrderItem[]
 }
 
@@ -49,6 +50,7 @@ export function RecentOrdersCard({ orders }: RecentOrdersCardProps) {
               <div className="flex-1">
                 <p className="font-semibold">#{order.orderNumber}</p>
                 <p className="text-sm text-gray-600">{order.user.email}</p>
+                <p className="text-sm text-gray-600">{order.phone}</p>
               </div>
               <div className="flex-shrink-0">
                 <MarkOrderAsPaidButton
