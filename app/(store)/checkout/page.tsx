@@ -30,6 +30,8 @@ export default function CheckoutPage() {
   const subtotal = getTotalPrice()
   const total = subtotal // Sin costo de envío - se coordina por WhatsApp
 
+  const hasOpeningProducts = items.some(item => item.isOpening)
+  
   if (status === 'loading') {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
@@ -257,7 +259,7 @@ export default function CheckoutPage() {
                   <div>
                     <p className="font-semibold">MercadoPago</p>
                     <p className="text-sm text-gray-600">
-                      Tarjeta, efectivo o transferencia
+                      Tarjeta, efectivo o transferencia.
                     </p>
                   </div>
                 </div>
@@ -363,21 +365,28 @@ export default function CheckoutPage() {
                   )}
                 </Button>
 
-                <Button
-                  type="submit"
-                  className="w-full"
-                  size="lg"
-                  disabled={loading || whatsappLoading || true}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Procesando...
-                    </>
-                  ) : (
-                    'Pagar con MercadoPago'
+                <div className={hasOpeningProducts ? "group relative w-full" : "w-full"}>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    size="lg"
+                    disabled={loading || whatsappLoading || hasOpeningProducts}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Procesando...
+                      </>
+                    ) : (
+                      'Pagar con MercadoPago'
+                    )}
+                  </Button>
+                  {hasOpeningProducts && (
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-10 w-[240px] bg-blue-50 text-blue-800 text-xs rounded px-3 py-1 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity shadow-lg text-center">
+                      Por el momento los productos de aperturas en vivo no pueden abonarse por MercadoPago
+                    </div>
                   )}
-                </Button>
+                </div>
 
                 <p className="text-xs text-gray-500 text-center">
                   Al continuar, serás redirigido a MercadoPago para completar tu pago de forma segura.

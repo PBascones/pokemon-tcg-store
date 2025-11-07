@@ -5,6 +5,7 @@ interface CartItem {
   id: string
   name: string
   price: number
+  isOpening?: boolean
   image: string
   slug: string
   quantity: number
