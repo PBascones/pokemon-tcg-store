@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   const router = useRouter()
   const { data: session, status } = useSession()
   const { items, getTotalPrice, clearCart } = useCartStore()
+  const formRef = useRef<HTMLFormElement>(null)
 
   const [loading, setLoading] = useState(false)
   const [whatsappLoading, setWhatsappLoading] = useState(false)
@@ -93,6 +94,13 @@ export default function CheckoutPage() {
 
   const handleWhatsAppPayment = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    
+    // Validar el formulario antes de proceder
+    if (!formRef.current?.checkValidity()) {
+      formRef.current?.reportValidity()
+      return
+    }
+    
     setWhatsappLoading(true)
 
     try {
@@ -136,7 +144,7 @@ export default function CheckoutPage() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Finalizar Compra</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Shipping Info */}
           <div className="lg:col-span-2 space-y-6">
