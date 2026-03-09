@@ -1,14 +1,25 @@
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { getToken } from "next-auth/jwt"
 
 // Middleware para modo mantenimiento y autenticación
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const isMaintenanceMode = process.env.PUBLIC_MAINTENANCE_MODE === 'true'
   const isMaintenancePage = req.nextUrl.pathname === '/maintenance'
   
-  // MODO MANTENIMIENTO: Bloquear TODO el acceso al sitio
-  if (isMaintenanceMode && !isMaintenancePage) {
+  // Obtener el token del usuario para verificar si es ADMIN
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+  const isAdmin = token?.role === "ADMIN"
+  
+  // MODO MANTENIMIENTO: Bloquear TODO excepto para ADMIN y la página de login
+  const isLoginPage = req.nextUrl.pathname === '/auth/login'
+  if (isMaintenanceMode && !isMaintenancePage && !isLoginPage) {
+    // Si es ADMIN, permitir acceso
+    if (isAdmin) {
+      return NextResponse.next()
+    }
+    // Si NO es ADMIN, redirigir a mantenimiento
     return NextResponse.redirect(new URL('/maintenance', req.url))
   }
   
@@ -59,10 +70,11 @@ export const config = {
      * 
      * ¿Por qué es necesario?
      * - En MODO MANTENIMIENTO: Necesita interceptar TODO (home, productos, admin, etc.)
+     *   pero permite acceso a usuarios ADMIN para que puedan trabajar
      * - En MODO NORMAL: Solo aplica autenticación a rutas protegidas (/admin, /cuenta, /checkout)
      * 
      * Este matcher permite que el middleware verifique TODAS las solicitudes,
-     * pero la lógica interna decide si aplicar bloqueo o autenticación según la ruta.
+     * pero la lógica interna decide si aplicar bloqueo o autenticación según la ruta y el rol del usuario.
      * 
      * Excluye: archivos estáticos, imágenes (públicas y optimizadas), favicon, archivos de assets
      */
