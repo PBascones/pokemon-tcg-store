@@ -78,6 +78,7 @@ Si quieres personalizar la página de mantenimiento (agregar texto, cambiar esti
 /app/maintenance/page.tsx
 ```
 
+
 ## Notas importantes
 
 - ⚠️ El modo mantenimiento NO afecta los archivos estáticos (imágenes, CSS, JS)
