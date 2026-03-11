@@ -7,19 +7,18 @@ import { getToken } from "next-auth/jwt"
 export async function middleware(req: NextRequest) {
   const isMaintenanceMode = process.env.PUBLIC_MAINTENANCE_MODE === 'true'
   const isMaintenancePage = req.nextUrl.pathname === '/maintenance'
-  
-  // Obtener el token del usuario para verificar si es ADMIN
+  const isLoginPage = req.nextUrl.pathname === '/auth/login'
+  const isAuthApiRoute = req.nextUrl.pathname.startsWith('/api/auth')
+
+  // getToken lee el JWT de la cookie del usuario
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
   const isAdmin = token?.role === "ADMIN"
-  
-  // MODO MANTENIMIENTO: Bloquear TODO excepto para ADMIN y la página de login
-  const isLoginPage = req.nextUrl.pathname === '/auth/login'
-  if (isMaintenanceMode && !isMaintenancePage && !isLoginPage) {
-    // Si es ADMIN, permitir acceso
+
+  // MODO MANTENIMIENTO: Bloquear TODO excepto ADMIN, login y rutas de next-auth
+  if (isMaintenanceMode && !isMaintenancePage && !isLoginPage && !isAuthApiRoute) {
     if (isAdmin) {
       return NextResponse.next()
     }
-    // Si NO es ADMIN, redirigir a mantenimiento
     return NextResponse.redirect(new URL('/maintenance', req.url))
   }
   
@@ -34,7 +33,6 @@ export async function middleware(req: NextRequest) {
     const protectedPaths = ['/admin', '/cuenta', '/checkout']
     const isProtectedRoute = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
     
-    // Solo aplicar withAuth si es una ruta protegida
     if (isProtectedRoute) {
       return withAuth(
         function middleware(req) {

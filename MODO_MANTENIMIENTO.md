@@ -41,7 +41,7 @@ O elimina la variable por completo.
 
 Los usuarios con rol **ADMIN** pueden ingresar al sitio normalmente:
 
-1. Ve a `/auth/login`
+1. Ve a `tudominio.com/auth/login`
 2. Inicia sesión con tu cuenta ADMIN
 3. Accede a cualquier ruta del sitio (home, admin, productos, etc.)
 4. Trabaja normalmente mientras el sitio está cerrado al público
@@ -55,11 +55,14 @@ Los usuarios con rol **ADMIN** pueden ingresar al sitio normalmente:
 - ✅ Productos (`/productos`)
 - ✅ Carrito (`/carrito`)
 - ✅ Checkout (`/checkout`)
-- ✅ Autenticación (`/auth/login`, `/auth/register`)
-- ✅ APIs (`/api/*`)
 - ✅ Cualquier otra ruta personalizada
 
-**Para usuarios ADMIN:**
+**Rutas siempre accesibles** (necesarias para el funcionamiento del login):
+- `/auth/login` — para que el ADMIN pueda iniciar sesión
+- `/api/auth/*` — rutas internas de next-auth para procesar la autenticación
+- `/maintenance` — la propia página de mantenimiento
+
+**Para usuarios ADMIN (una vez logueados):**
 - ❌ Ninguna ruta se bloquea, acceso completo al sitio
 
 ## Imagen de mantenimiento
