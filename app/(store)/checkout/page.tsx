@@ -378,7 +378,7 @@ export default function CheckoutPage() {
                     type="submit"
                     className="w-full"
                     size="lg"
-                    disabled={loading || whatsappLoading || hasOpeningProducts}
+                    disabled={true || loading || whatsappLoading || hasOpeningProducts}
                   >
                     {loading ? (
                       <>
